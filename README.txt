@@ -2,3 +2,5 @@ Team members: Akash Mullick, Mazen Selim, Jamael Smith, Donovan Nickol, Joshua K
 Project option: Standard project
 Team name: Rainforest
 Gitlab repository: https://gitlab.oit.duke.edu/cs-316-team-rainforest/mini-amazon
+
+Mazen's weekly update: Created wireframe for seller history and inventory pages.
