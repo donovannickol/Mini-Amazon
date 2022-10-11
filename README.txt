@@ -2,4 +2,4 @@ Team members: Akash Mullick, Mazen Selim, Jamael Smith, Donovan Nickol, Joshua K
 Project option: Standard project
 Team name: Rainforest
 
-https://gitlab.oit.duke.edu/cs-316-team-rainforest/mini-amazon/-/tree/main/
+Git repo: https://gitlab.oit.duke.edu/cs-316-team-rainforest/mini-amazon/-/tree/main/
