@@ -7,3 +7,4 @@ The code for creating and populating a sample database is in the create_ms2.sql 
 
 Mazen's weekly update: Created wireframe for seller history and inventory pages.
 Akash's weekly updates: Created wireframe for products and added code for creating and populating sample Products and Categories databases.
+Jamael's weekly update: Created wireframe for user accounts, currently working on wireframe for purchase pages.
