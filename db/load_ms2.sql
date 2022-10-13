@@ -22,3 +22,18 @@ SELECT pg_catalog.setval('public.purchases_id_seq',
 \COPY Cart FROM 'Cart_ms2.csv' WITH DELIMITER ',' NULL '' CSV
 
 \COPY OrderHistory FROM 'OrderHistory_ms2.csv' WITH DELIMITER ',' NULL '' CSV
+
+\COPY productRating FROM 'productRating_ms2.csv' WITH DELIMITER ',' NULL '' CSV
+
+\COPY sellerRating FROM 'sellerRating_ms2.csv' WITH DELIMITER ',' NULL '' CSV
+
+\COPY message FROM 'message_ms2.csv' WITH DELIMITER ',' NULL '' CSV
+SELECT pg_catalog.setval('public.message_id_seq',
+                         (SELECT MAX(id)+1 FROM message),
+                         false);
+
+\COPY messageThread FROM 'messageThread_ms2.csv' WITH DELIMITER ',' NULL '' CSV
+SELECT pg_catalog.setval('public.messageThread_id_seq',
+                         (SELECT MAX(id)+1 FROM messageThread),
+                         false);
+
