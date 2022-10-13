@@ -5,17 +5,20 @@ SELECT pg_catalog.setval('public.users_id_seq',
                          (SELECT MAX(id)+1 FROM Users),
                          false);
 
-\COPY Products FROM 'Products.csv' WITH DELIMITER ',' NULL '' CSV
+\COPY Products FROM 'Products_ms2.csv' WITH DELIMITER ',' NULL '' CSV
 SELECT pg_catalog.setval('public.products_id_seq',
                          (SELECT MAX(id)+1 FROM Products),
                          false);
 
-\COPY Categories FROM 'Categories.csv' WITH DELIMITER ',' NULL '' CSV
+\COPY Categories FROM 'Categories_ms2.csv' WITH DELIMITER ',' NULL '' CSV
 SELECT pg_catalog.setval('public.categories_id_seq',
                          (SELECT MAX(id)+1 FROM Categories),
                          false);       
 
-\COPY Purchases FROM 'Purchases.csv' WITH DELIMITER ',' NULL '' CSV
+\COPY Purchases FROM 'Purchases_ms2.csv' WITH DELIMITER ',' NULL '' CSV
 SELECT pg_catalog.setval('public.purchases_id_seq',
                          (SELECT MAX(id)+1 FROM Purchases),
                          false);
+\COPY Cart FROM 'Cart_ms2.csv' WITH DELIMITER ',' NULL '' CSV
+
+\COPY OrderHistory FROM 'OrderHistory_ms2.csv' WITH DELIMITER ',' NULL '' CSV
