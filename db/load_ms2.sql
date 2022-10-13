@@ -23,6 +23,13 @@ SELECT pg_catalog.setval('public.purchases_id_seq',
 
 \COPY OrderHistory FROM 'OrderHistory_ms2.csv' WITH DELIMITER ',' NULL '' CSV
 
+<<<<<<< HEAD
+\COPY Inventory FROM 'Inventory_ms2.csv' WITH DELIMITER ',' NULL '' CSV
+
+\COPY Seller FROM 'Seller_ms2.csv' WITH DELIMITER ',' NULL '' CSV
+
+\COPY Sales FROM 'Sales_ms2.csv' WITH DELIMITER ',' NULL '' CSV
+=======
 \COPY productRating FROM 'productRating_ms2.csv' WITH DELIMITER ',' NULL '' CSV
 
 \COPY sellerRating FROM 'sellerRating_ms2.csv' WITH DELIMITER ',' NULL '' CSV
@@ -37,3 +44,4 @@ SELECT pg_catalog.setval('public.messageThread_id_seq',
                          (SELECT MAX(id)+1 FROM messageThread),
                          false);
 
+>>>>>>> fab264b5ba959093495e80efde78d865ffa5a59d
