@@ -56,7 +56,6 @@ CREATE TABLE OrderHistory(
     PRIMARY KEY(uid,order_number, pid, sellerid)
 );
 
-<<<<<<< HEAD
 CREATE TABLE Inventory(
     pid INT NOT NULL REFERENCES Products(id),
     sid INT NOT NULL REFERENCES Seller(id),
@@ -80,7 +79,6 @@ CREATE TABLE Sales(
     buyer_address VARCHAR(255),
     PRIMARY KEY(buyer_id,sid,date-time)
 )
-=======
 CREATE TABLE productRating (
 	uid INT NOT NULL REFERENCES Users(id),
 	pid INT NOT NULL REFERENCES Products(id),
@@ -110,4 +108,3 @@ CREATE TABLE messageThread (
 	sender_id INT NOT NULL REFERENCES message(sender_id),
 	recipient_id INT NOT NULL REFERENCES message(recipient_id)
 	);
->>>>>>> fab264b5ba959093495e80efde78d865ffa5a59d
