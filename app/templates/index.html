@@ -24,6 +24,7 @@
       <th scope="col">Product Name</th>
       <th scope="col">Category</th>
       <th scope="col">Price</th>
+      <th scope="col">Image</th>
     </tr>
   </thead>
   <tbody>
@@ -33,6 +34,7 @@
         <td>{{product.name}}</td>
         <td>{{product.category}}</td>
         <td>{{"${:.2f}".format(product.price)}}</td>
+        <td><img src="{{product.img_url}}" alt="product image" width="100" height="100"></td>
       </tr>
     {% endfor %}
   </tbody>
