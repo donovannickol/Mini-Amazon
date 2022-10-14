@@ -1,6 +1,6 @@
-1,vanilla ice cream,2.99,true
-2,chocolate ice cream,2.99,true
-3,strawberry ice cream,2.99,true
-4,6-pack of paycheck pilsners,11.49,true
-5,seven fabergé easter eggs,1199000.00,true
-6,painting - the storm on the sea of galilee,44000000.00,true
+1,vanilla ice cream,This ice cream is vanilla,https://cdn.vectorstock.com/i/1000x1000/90/48/picture-icon-image-symbol-vector-20419048.webp,2.99,food
+2,chocolate ice cream,This ice cream is chocolate,https://cdn.vectorstock.com/i/1000x1000/90/48/picture-icon-image-symbol-vector-20419048.webp,2.99,food
+3,strawberry ice cream,This ice cream is strawberry,https://cdn.vectorstock.com/i/1000x1000/90/48/picture-icon-image-symbol-vector-20419048.webp,2.99,food
+4,6-pack of paycheck pilsners,This beer is good,https://cdn.vectorstock.com/i/1000x1000/90/48/picture-icon-image-symbol-vector-20419048.webp,11.49,food
+5,seven fabergé easter eggs,This egg is good,https://cdn.vectorstock.com/i/1000x1000/90/48/picture-icon-image-symbol-vector-20419048.webp,1199000.00,food
+6,painting - the storm on the sea of galilee,This art is good,https://cdn.vectorstock.com/i/1000x1000/90/48/picture-icon-image-symbol-vector-20419048.webp,44000000.00,art
