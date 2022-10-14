@@ -9,8 +9,9 @@
 <form action="{{ url_for('products.k_most_expensive') }}" method="POST">
   <div class="form-group">
     <label for="k">k</label>
-    <!-- keyCode 69 is for "e" -->
-    <input type="number" class="form-control" id="k" name="k" onkeydown="return event.keyCode !== 69" required>
+    <!-- only allow positive integers -->
+    <input type="number" class="form-control" id="k" name="k" 
+    step="1" min="1" onkeypress="return event.charCode >= 48 && event.charCode <= 57" onkeydown="return event.keyCode !== 69" required>
   </div>
   <button type="submit" class="btn btn-primary">Submit</button>
 </form>
