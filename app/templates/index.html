@@ -11,7 +11,7 @@
     <label for="k">k</label>
     <!-- only allow positive integers -->
     <input type="number" class="form-control" id="k" name="k" 
-    step="1" min="1" onkeypress="return event.charCode >= 48 && event.charCode <= 57" onkeydown="return event.keyCode !== 69" required>
+    step="1" min="1" max="9223372036854775807" onkeypress="return event.charCode >= 48 && event.charCode <= 57" onkeydown="return event.keyCode !== 69" required>
   </div>
   <button type="submit" class="btn btn-primary">Submit</button>
 </form>
