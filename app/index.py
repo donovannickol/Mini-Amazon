@@ -1,4 +1,4 @@
-from flask import render_template
+from flask import render_template, request
 from flask_login import current_user
 import datetime
 
@@ -23,3 +23,12 @@ def index():
     return render_template('index.html',
                            avail_products=products,
                            purchase_history=purchases)
+
+# route for /top/{k} to get top k products by price
+@bp.route('/most_expensive/', methods=['POST'])
+def k_most_expensive():
+    k = request.form['k']
+    k_most_expensive = Product.get_k_most_expensive(k)
+    return render_template('k_most_expensive.html',
+                           k = k,
+                           k_most_expensive = k_most_expensive)
