@@ -4,6 +4,18 @@
 
 <br><br>
 
+<!-- text box for input and button for search for top k most expensive products. submit takes user to /most_expensive -->
+<h2>Search for the top k most expensive products:</h2>
+<form action="{{ url_for('products.k_most_expensive') }}" method="POST">
+  <div class="form-group">
+    <label for="k">k</label>
+    <input type="number" class="form-control" id="k" name="k" required>
+  </div>
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
+<br><br>
+
 <h2>Products for sale:</h2>
 <table class='table table-hover table-bordered container'>
   <thead class="thead-dark">
