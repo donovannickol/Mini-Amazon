@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<br><br>
+
+<h2>{{ product.name.capitalize() }}:</h2>
+Price: {{ "${:.2f}".format(product.price) }}
+
+{% endblock %}
