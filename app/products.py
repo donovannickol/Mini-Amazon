@@ -13,3 +13,9 @@ def k_most_expensive():
     return render_template('k_most_expensive.html',
                            k = k,
                            k_most_expensive = k_most_expensive)
+
+# route for individual product page
+@bp.route('/product/<int:id>')
+def product(id):
+    product = Product.get(id)
+    return render_template('product.html', product=product)
