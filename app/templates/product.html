@@ -4,7 +4,12 @@
 
 <br><br>
 
+<p>Category: {{ product.category }}</p>
 <h2>{{ product.name.capitalize() }}:</h2>
 Price: {{ "${:.2f}".format(product.price) }}
+<img src="{{product.img_url}}" alt="product image" width="200" height="200">
+<br><br>
+<h3>Product Details</h3>
+<p>{{ product.description }}</p>
 
 {% endblock %}
