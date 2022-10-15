@@ -50,16 +50,15 @@
 
 <body>
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <a class="navbar-brand" href="#">StuffHub</a>
+    <a class="navbar-brand" href="{{ url_for('index.index') }}">StuffHub</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-                <a class="nav-link" href="{{ url_for('index.index') }}">Home <span class="sr-only">(current)</span></a>
-            </li>
+              <a id="index.index" class="nav-link" href="{{ url_for('index.index') }}">Home <span class="sr-only"></span></a>
+              <a id="products.cards" class="nav-link" href="{{ url_for('products.cards') }}">Card View <span class="sr-only"></span></a>
         </ul>
     </div>
 </nav>
@@ -81,3 +80,8 @@
 </body>
 
 </html>
+
+<script>
+  $(document).ready(function () {
+    document.getElementById("{{request.endpoint}}").classList.add("active"); })
+</script>

@@ -19,3 +19,9 @@ def k_most_expensive():
 def product(id):
     product = Product.get(id)
     return render_template('product.html', product=product)
+
+# route to view proucts as cards instead of table
+@bp.route('/cards/')
+def cards():
+    products = Product.get_all()
+    return render_template('cards.html', avail_products=products)
