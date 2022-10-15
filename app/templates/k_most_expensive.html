@@ -2,10 +2,18 @@
 
 {% block content %}
 
+{% block scripts %}
+  <script>
+    $(document).ready(function () {
+      $('#products').DataTable();
+    });
+  </script>
+{% endblock %}
+
 <br><br>
 
 <h2>{{ (k_most_expensive | length) }} most expensive products:</h2>
-<table class='table table-hover table-bordered container'>
+<table id="products" class='table table-hover table-bordered'>
   <thead class="thead-dark">
     <tr>
       <th scope="col">Product ID</th>
