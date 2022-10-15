@@ -41,14 +41,16 @@ WHERE email = :email
     @staticmethod
     def register(email, password, firstname, lastname):
         try:
+            #TODO: update this and corresponding form to include user's address (@Jamael)
             rows = app.db.execute("""
-INSERT INTO Users(email, password, firstname, lastname)
-VALUES(:email, :password, :firstname, :lastname)
+INSERT INTO Users(email, password, firstname, lastname, user_address, user_city, user_state, balance)
+VALUES(:email, :password, :firstname, :lastname, :user_address, :user_city, :user_state, :balance)
 RETURNING id
 """,
                                   email=email,
                                   password=generate_password_hash(password),
-                                  firstname=firstname, lastname=lastname)
+                                  firstname=firstname, lastname=lastname,
+                                  user_address="dummyAddress", user_city="dummyCity", user_state="dummyState", balance=0)
             id = rows[0][0]
             return User.get(id)
         except Exception as e:
