@@ -40,3 +40,23 @@ LIMIT :k
 ''',
                               k=k)
         return [Product(*row) for row in rows]
+
+    @staticmethod
+    def get_page_of_products(page, limit=8):
+        rows = app.db.execute('''
+SELECT id, name, description, img_url, price, category
+FROM Products
+LIMIT :limit
+OFFSET :page
+''',
+                              page=page*limit,
+                              limit=limit)
+        return [Product(*row) for row in rows]
+
+    @staticmethod
+    def get_num_avail_products():
+        rows = app.db.execute('''
+SELECT COUNT(*)
+FROM Products
+''')
+        return rows[0][0]

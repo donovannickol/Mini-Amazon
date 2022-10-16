@@ -21,7 +21,17 @@ def product(id):
     return render_template('product.html', product=product)
 
 # route to view proucts as cards instead of table
+@bp.route('/cards?page=<int:page>')
 @bp.route('/cards/')
 def cards():
+    PRODUCTS_PER_PAGE = 8
+    page = request.args.get('page', 0, type=int)
+    num_products = Product.get_num_avail_products()
+    products = Product.get_page_of_products(page, PRODUCTS_PER_PAGE)
+    return render_template('cards.html', avail_products=products, num_products=num_products, products_per_page = PRODUCTS_PER_PAGE, curr_page = page)
+
+    # route to view proucts as cards instead of table
+@bp.route('/cards_table')
+def cards_table():
     products = Product.get_all()
-    return render_template('cards.html', avail_products=products)
+    return render_template('cards_table.html', avail_products=products)
