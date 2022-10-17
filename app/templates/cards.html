@@ -25,6 +25,21 @@
     </div>
 </div>
 
+<!-- Dropdown for sort options -->
+<div class="dropdown offset-md-9">
+  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    Sort by: {{ sort_by }}
+  </button>
+  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+    {% set sort_options = ['Default', 'Price: Low to High', 'Price: High to Low'] %}
+    {% for option in sort_options %}
+      {% if option != sort_by %}
+        <a class="dropdown-item" href="{{ url_for('products.cards', page='0', search_term=search_term, sort_by=option) }}">{{ option }}</a>
+      {% endif %}
+    {% endfor %}
+  </div>
+</div>
+
 <!-- Content cards -->
 {% for product_row in avail_products | batch(4, '&nbsp;') %}
 <div class="row justify-content-center">
@@ -47,16 +62,16 @@
 <!-- Badly coded pagination menu that needs to be updated -->
 <nav class = "offset-md-8" aria-label="Page navigation example">
   <ul class="pagination">
-    <li class="page-item"><a class="page-link" href="{{url_for('products.cards', page = [curr_page - 1, 0] | max, search_term = search_term)}}">Previous</a></li>
+    <li class="page-item"><a class="page-link" href="{{url_for('products.cards', page = [curr_page - 1, 0] | max, search_term = search_term, sort_by = sort_by)}}">Previous</a></li>
     {% set max_num_pages = [-(num_products // -products_per_page) - 1, 5] | min %}
     {% for n in range(max_num_pages) %}
-      <li class="page-item"><a class="page-link" href="{{ url_for('products.cards', page = n, search_term = search_term) }}">{{n}}</a></li>
+      <li class="page-item"><a class="page-link" href="{{ url_for('products.cards', page = n, search_term = search_term, sort_by = sort_by) }}">{{n}}</a></li>
     {% endfor %}
     {% if max_num_pages < -(num_products // -products_per_page) %}
       <li class="page-item"><a class="page-link">...</a></li>
-      <li class="page-item"><a class="page-link" href="{{url_for('products.cards', page = (num_products//products_per_page) - 1, search_term = search_term)}}">{{(num_products//products_per_page) - 1}}</a></li>
+      <li class="page-item"><a class="page-link" href="{{url_for('products.cards', page = (num_products//products_per_page) - 1, search_term = search_term, sort_by = sort_by)}}">{{(num_products//products_per_page) - 1}}</a></li>
     {% endif %}
-    <li class="page-item"><a class="page-link" href="{{url_for('products.cards', page = [curr_page + 1, (num_products/products_per_page) | int - 1] | min, search_term = search_term)}}">Next</a></li>
+    <li class="page-item"><a class="page-link" href="{{url_for('products.cards', page = [curr_page + 1, (num_products/products_per_page) | int - 1] | min, search_term = search_term, sort_by = sort_by)}}">Next</a></li>
     <li class="page-item mx-4 my-1">Page {{'{curr} / {total}'.format(curr=curr_page, total=(num_products/products_per_page) | int - 1)}}</li>
   </ul>
 </nav>

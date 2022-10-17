@@ -42,11 +42,18 @@ LIMIT :k
         return [Product(*row) for row in rows]
 
     @staticmethod
-    def get_page_of_products(page, limit=8, search_term=""):
+    def get_page_of_products(page=0, limit=8, search_term="", sort_by="Default"):
+        sort_map = {
+            "Default": "id",
+            "Price: Low to High": "price ASC",
+            "Price: High to Low": "price DESC",
+        }
+        print(sort_map[sort_by])
         rows = app.db.execute('''
 SELECT id, name, description, img_url, price, category
 FROM Products
 WHERE name LIKE :search_term OR description LIKE :search_term
+ORDER BY ''' + sort_map[sort_by] + '''
 LIMIT :limit
 OFFSET :page
 ''',

@@ -1,9 +1,11 @@
-from flask import render_template, request, redirect
+from flask import render_template, request, redirect, redirect
 
 from .models.product import Product
 
 from flask import Blueprint
 bp = Blueprint('products', __name__)
+
+PRODUCTS_PER_PAGE = 8
 
 PRODUCTS_PER_PAGE = 8
 
@@ -27,9 +29,10 @@ def product(id):
 def cards():
     page = request.args.get('page', 0, type=int)
     search_term = request.args.get('search_term', "", type=str)
+    sort_by=request.args.get('sort_by', "Default", type=str)
     num_products = Product.get_num_matching_products(search_term)
-    products = Product.get_page_of_products(page, PRODUCTS_PER_PAGE, search_term)
-    return render_template('cards.html', avail_products=products, num_products=num_products, products_per_page = PRODUCTS_PER_PAGE, curr_page = page, search_term = search_term)
+    products = Product.get_page_of_products(page, PRODUCTS_PER_PAGE, search_term, sort_by)
+    return render_template('cards.html', avail_products=products, num_products=num_products, products_per_page = PRODUCTS_PER_PAGE, curr_page = page, search_term = search_term, sort_by = sort_by)
 
 # route to search products
 @bp.route('/cards/search', methods=['POST'])
