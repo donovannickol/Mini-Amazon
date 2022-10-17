@@ -5,7 +5,9 @@
 {% block scripts %}
   <script>
     $(document).ready(function () {
-      $('#products').DataTable();
+      $('#products').DataTable({
+        "order": [[ 3, "desc" ]]
+      });
     });
   </script>
 {% endblock %}
