@@ -2,11 +2,35 @@
 
 {% block content %}
 
+<!-- Search bar -->
+<div class="row mt-3">
+  <div class="col-md-2 offset-md-1 pt-1">
+    {% if search_term %}
+      <p class="mt-1">Search results for "{{search_term}}":</p>
+    {% else %}
+      <p class="mt-1">Showing all products:</p>
+    {% endif %}
+  </div>
+  <div class="col-md-3 offset-md-5">
+    <form action="{{ url_for('products.search', page='0') }}" method="POST">
+      <div class="input-group">
+        <input type="text" name="search_term" class="form-control" placeholder="Search">
+        <div class="input-group-btn">
+          <button class="btn btn-default" type="submit">
+            <i class="bi bi-search"></i>
+          </button>
+        </div>
+      </div>
+    </form>
+    </div>
+</div>
+
+<!-- Content cards -->
 {% for product_row in avail_products | batch(4, '&nbsp;') %}
 <div class="row justify-content-center">
     {% for product in product_row %}
     {% if product is not string %}
-    <div class="card m-4" style="width:300px">
+    <div class="card m-4 col-md-2 p-0" style="width:300px">
       <img class="card-img-top" src="{{product.img_url}}" alt="Card image" style="width:100%">
       <div class="card-body">
         <h4 class="card-title">{{product.name}}</h4>
@@ -20,23 +44,20 @@
 </div>
 {% endfor %}
 
-<div id="demo"></div>
-
-<nav class = "offset-md-7" aria-label="Page navigation example">
+<!-- Badly coded pagination menu that needs to be updated -->
+<nav class = "offset-md-8" aria-label="Page navigation example">
   <ul class="pagination">
-    <li class="page-item"><a class="page-link" href="{{'/cards?page={n}'.format(n = [curr_page - 1, 0] | max)}}">Previous</a></li>
-    {% set max_num_pages = [-(num_products // -products_per_page), 5] | min %}
+    <li class="page-item"><a class="page-link" href="{{url_for('products.cards', page = [curr_page - 1, 0] | max, search_term = search_term)}}">Previous</a></li>
+    {% set max_num_pages = [-(num_products // -products_per_page) - 1, 5] | min %}
     {% for n in range(max_num_pages) %}
-      <li class="page-item"><a class="page-link" href="{{'/cards?page={n}'.format(n = n)}}">{{n}}</a></li>
+      <li class="page-item"><a class="page-link" href="{{ url_for('products.cards', page = n, search_term = search_term) }}">{{n}}</a></li>
     {% endfor %}
     {% if max_num_pages < -(num_products // -products_per_page) %}
       <li class="page-item"><a class="page-link">...</a></li>
-      <li class="page-item"><a class="page-link" href="{{'/cards?page={n}'.format(n = (num_products//products_per_page) - 1)}}">{{(num_products//products_per_page) - 1}}</a></li>
+      <li class="page-item"><a class="page-link" href="{{url_for('products.cards', page = (num_products//products_per_page) - 1, search_term = search_term)}}">{{(num_products//products_per_page) - 1}}</a></li>
     {% endif %}
-    <li class="page-item"><a class="page-link" href="{{'/cards?page={n}'.format(n = [curr_page + 1, (num_products/products_per_page) | int - 1] | min)}}">Next</a></li>
+    <li class="page-item"><a class="page-link" href="{{url_for('products.cards', page = [curr_page + 1, (num_products/products_per_page) | int - 1] | min, search_term = search_term)}}">Next</a></li>
     <li class="page-item mx-4 my-1">Page {{'{curr} / {total}'.format(curr=curr_page, total=(num_products/products_per_page) | int - 1)}}</li>
   </ul>
 </nav>
-}
-
 {% endblock %}
