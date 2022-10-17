@@ -42,7 +42,7 @@ LIMIT :k
         return [Product(*row) for row in rows]
 
     @staticmethod
-    def get_page_of_products(page, sort_by, limit=8, search_term=""):
+    def get_page_of_products(page=0, limit=8, search_term="", sort_by="Default"):
         sort_map = {
             "Default": "id",
             "Price: Low to High": "price ASC",
