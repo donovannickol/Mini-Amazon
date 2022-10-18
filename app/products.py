@@ -1,4 +1,4 @@
-from flask import render_template, request, redirect, redirect
+from flask import render_template, request, redirect, url_for
 
 from .models.product import Product
 
@@ -27,19 +27,23 @@ def product(id):
 # route to view proucts as cards instead of table
 @bp.route('/cards/')
 def cards():
+    categories = Product.get_all_categories()
+    category = request.args.get('category', 'All', type=str)
     page = request.args.get('page', 0, type=int)
     search_term = request.args.get('search_term', "", type=str)
     sort_by=request.args.get('sort_by', "Default", type=str)
-    num_products = Product.get_num_matching_products(search_term)
-    products = Product.get_page_of_products(page, PRODUCTS_PER_PAGE, search_term, sort_by)
-    return render_template('cards.html', avail_products=products, num_products=num_products, products_per_page = PRODUCTS_PER_PAGE, curr_page = page, search_term = search_term, sort_by = sort_by)
+    # update this too
+    num_products = Product.get_num_matching_products(search_term, category)
+    products = Product.get_page_of_products(page, PRODUCTS_PER_PAGE, search_term, sort_by, category)
+    return render_template('cards.html', avail_products=products, num_products=num_products, products_per_page = PRODUCTS_PER_PAGE, curr_page = page, search_term = search_term, sort_by = sort_by, categories = categories, curr_category = category)
 
 # route to search products
 @bp.route('/cards/search', methods=['POST'])
 def search():
     search_term = request.form['search_term']
-    # redirect to /cards with search_term as a query parameter
-    return redirect('/cards?search_term=' + search_term)
+    sort_by=request.args.get('sort_by', "Default", type=str)
+    category = request.args.get('category', 'All', type=str)
+    return redirect(url_for('products.cards', search_term=search_term, sort_by=sort_by, category=category))
 
     # route to view proucts as cards instead of table
 @bp.route('/cards_table')
