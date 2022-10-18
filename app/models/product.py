@@ -42,32 +42,41 @@ LIMIT :k
         return [Product(*row) for row in rows]
 
     @staticmethod
-    def get_page_of_products(page=0, limit=8, search_term="", sort_by="Default"):
+    def get_page_of_products(page=0, limit=8, search_term="", sort_by="Default", category="All"):
+        category_select = "1=1" if category == "All" else f"category = \'{category}\'"
         sort_map = {
             "Default": "id",
             "Price: Low to High": "price ASC",
             "Price: High to Low": "price DESC",
         }
-        print(sort_map[sort_by])
-        rows = app.db.execute('''
+        rows = app.db.execute(f'''
 SELECT id, name, description, img_url, price, category
 FROM Products
-WHERE name LIKE :search_term OR description LIKE :search_term
-ORDER BY ''' + sort_map[sort_by] + '''
-LIMIT :limit
-OFFSET :page
+WHERE {category_select} AND (name LIKE :search_term OR description LIKE :search_term)
+ORDER BY {sort_map[sort_by]}
+LIMIT {limit}
+OFFSET {page * limit}
 ''',
-                              search_term='%' + search_term + '%',
-                              page=page*limit,
-                              limit=limit)
+                              search_term='%' + search_term + '%')
         return [Product(*row) for row in rows]
 
     @staticmethod
-    def get_num_matching_products(search_term=""):
-        rows = app.db.execute('''
+    def get_num_matching_products(search_term="", category="All"):
+        category_select = "1=1" if category == "All" else f"category = \'{category}\'"
+        rows = app.db.execute(f'''
 SELECT COUNT(*)
 FROM Products
-WHERE name LIKE :search_term OR description LIKE :search_term
+WHERE {category_select}  AND (name LIKE :search_term OR description LIKE :search_term)
 ''',
                               search_term='%' + search_term + '%')
         return rows[0][0]
+
+
+    @staticmethod
+    def get_all_categories():
+        rows = app.db.execute('''
+SELECT DISTINCT category
+FROM Products
+'''
+        )
+        return ["All"] + [row[0] for row in rows]
