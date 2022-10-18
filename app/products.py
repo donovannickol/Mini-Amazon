@@ -5,9 +5,7 @@ from .models.product import Product
 from flask import Blueprint
 bp = Blueprint('products', __name__)
 
-PRODUCTS_PER_PAGE = 8
-
-PRODUCTS_PER_PAGE = 8
+PRODUCTS_PER_PAGE = 10
 
 # route to get top k products by price
 @bp.route('/most_expensive/', methods=['POST'])
@@ -29,10 +27,9 @@ def product(id):
 def cards():
     categories = Product.get_all_categories()
     category = request.args.get('category', 'All', type=str)
-    page = request.args.get('page', 0, type=int)
+    page = request.args.get('page', 1, type=int)
     search_term = request.args.get('search_term', "", type=str)
     sort_by=request.args.get('sort_by', "Default", type=str)
-    # update this too
     num_products = Product.get_num_matching_products(search_term, category)
     products = Product.get_page_of_products(page, PRODUCTS_PER_PAGE, search_term, sort_by, category)
     return render_template('cards.html', avail_products=products, num_products=num_products, products_per_page = PRODUCTS_PER_PAGE, curr_page = page, search_term = search_term, sort_by = sort_by, categories = categories, curr_category = category)
@@ -44,6 +41,14 @@ def search():
     sort_by=request.args.get('sort_by', "Default", type=str)
     category = request.args.get('category', 'All', type=str)
     return redirect(url_for('products.cards', search_term=search_term, sort_by=sort_by, category=category))
+
+@bp.route('/cards/page', methods=['POST'])
+def go_to_page():
+    page = request.form['go_to_page']
+    search_term = request.args.get('search_term', "", type=str)
+    sort_by = request.args.get('sort_by', "Default", type=str)
+    category = request.args.get('category', 'All', type=str)
+    return redirect(url_for('products.cards', page=page, search_term=search_term, sort_by=sort_by, category=category))
 
     # route to view proucts as cards instead of table
 @bp.route('/cards_table')
