@@ -46,12 +46,16 @@
         background-color: #000 !important;
         color: #fff;
     }
+
+    .navbar {
+      background-color: #000;
+    }
   </style>
 </head>
 
 <body>
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <a class="navbar-brand" href="{{ url_for('index.index') }}">StuffHub</a>
+  <nav class="navbar navbar-expand-lg navbar-dark">
+    <a class="navbar-brand" href="{{ url_for('index.index') }}"><img src= '../static/css/images/Logo.png' width="120"></a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
@@ -62,19 +66,15 @@
               <a id="products.cards" class="nav-link" href="{{ url_for('products.cards') }}">Card View <span class="sr-only"></span></a>
         </ul>
     </div>
+    <div style="color: aliceblue; text-align: right; margin-bottom: 10px; margin-top:10px">
+      {% if current_user.is_authenticated %}
+        Hello {{current_user.firstname}}! <a href="{{ url_for('users.logout') }}" type="button" class="btn btn-light">Log out</a>
+      {% else %}
+        <a href="{{ url_for('users.login') }}" type="button" class="btn btn-light">Log in</a>
+      {% endif %}
+    </div>
 </nav>
-  <div class="sidenav">
-    {% block msg %}
-      <h1 style="color:aliceblue">Welcome to CompSci 316 Mini Amazon!</h1>
-      <div style="color: aliceblue; text-align: right; margin-bottom: 25px">
-        {% if current_user.is_authenticated %}
-          Hello {{current_user.firstname}}! <a href="{{ url_for('users.logout') }}" type="button" class="btn btn-light">Log out</a>
-        {% else %}
-          <a href="{{ url_for('users.login') }}" type="button" class="btn btn-light">Log in</a>
-        {% endif %}
-      </div>
-    {% endblock %}
-  </div>
+
   <div class="main">
     {% block content %}{% endblock %}
   </div>

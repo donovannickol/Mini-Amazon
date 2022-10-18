@@ -43,6 +43,13 @@ CREATE TABLE Cart(
     PRIMARY KEY(uid, pid, sellerid)
 );
 
+CREATE TABLE Inventory (
+    uid INT NOT NULL REFERENCES Users(id),
+    pid INT NOT NULL REFERENCES Products(id),
+    count INT NOT NULL,
+    PRIMARY KEY(uid, pid)
+);
+
 CREATE TABLE OrderHistory(
     uid INT NOT NULL REFERENCES Users(id),
     order_number INT NOT NULL,
