@@ -23,11 +23,11 @@ WHERE pid = :pid
         return Inventory(*(rows[0])) if rows else None
 
     @staticmethod
-    def get_by_uid(id):
+    def get_by_uid(uid):
         rows = app.db.execute('''
 SELECT uid, pid, count
 FROM Inventory
 WHERE uid = :uid
 ''',
-                              id=id)
-        return Inventory(*(rows[0])) if rows else None
+                              uid=uid)
+        return [Inventory(*row) for row in rows]
