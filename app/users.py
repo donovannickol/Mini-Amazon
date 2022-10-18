@@ -6,6 +6,7 @@ from wtforms import StringField, PasswordField, BooleanField, SubmitField
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo
 
 from .models.user import User
+from .models.purchase import Purchase
 
 
 from flask import Blueprint
@@ -36,6 +37,14 @@ def login():
 
         return redirect(next_page)
     return render_template('login.html', title='Sign In', form=form)
+
+@bp.route('/all_purchases/', methods = ['POST'])
+def get_all_purchases():
+    uid = request.form['uid']
+    get_all_purchases = Purchase.get_all_by_uid(uid)
+    return render_template('get_all_purchases.html',
+                            uid = uid, 
+                            get_all_purchases = get_all_purchases)
 
 
 class RegistrationForm(FlaskForm):
