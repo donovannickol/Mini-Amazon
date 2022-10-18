@@ -34,7 +34,7 @@ def cards():
     products = Product.get_page_of_products(page, PRODUCTS_PER_PAGE, search_term, sort_by, category)
     return render_template('cards.html', avail_products=products, num_products=num_products, products_per_page = PRODUCTS_PER_PAGE, curr_page = page, search_term = search_term, sort_by = sort_by, categories = categories, curr_category = category)
 
-# route to search products
+# route to handle product search
 @bp.route('/cards/search', methods=['POST'])
 def search():
     search_term = request.form['search_term']
@@ -42,6 +42,7 @@ def search():
     category = request.args.get('category', 'All', type=str)
     return redirect(url_for('products.cards', search_term=search_term, sort_by=sort_by, category=category))
 
+# route to handle request to go to arbitrary page
 @bp.route('/cards/page', methods=['POST'])
 def go_to_page():
     page = request.form['go_to_page']
@@ -50,7 +51,7 @@ def go_to_page():
     category = request.args.get('category', 'All', type=str)
     return redirect(url_for('products.cards', page=page, search_term=search_term, sort_by=sort_by, category=category))
 
-    # route to view proucts as cards instead of table
+# (unused) route to view products as a table of cards
 @bp.route('/cards_table')
 def cards_table():
     products = Product.get_all()

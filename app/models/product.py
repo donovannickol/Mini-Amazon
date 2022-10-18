@@ -11,6 +11,7 @@ class Product:
         self.category = category
 
     @staticmethod
+    # get a product by id
     def get(id):
         rows = app.db.execute('''
 SELECT id, name, description, img_url, price, category
@@ -21,6 +22,7 @@ WHERE id = :id
         return Product(*(rows[0])) if rows is not None else None
 
     @staticmethod
+    # get all products
     def get_all():
         rows = app.db.execute('''
 SELECT id, name, description, img_url, price, category
@@ -42,6 +44,7 @@ LIMIT :k
         return [Product(*row) for row in rows]
 
     @staticmethod
+    # get a page of products matching all the given criteria
     def get_page_of_products(page=0, limit=8, search_term="", sort_by="Default", category="All"):
         category_select = "1=1" if category == "All" else f"category = \'{category}\'"
         sort_map = {
@@ -61,6 +64,7 @@ OFFSET {(page - 1) * limit}
         return [Product(*row) for row in rows]
 
     @staticmethod
+    # get the number of products matching all the given criteria
     def get_num_matching_products(search_term="", category="All"):
         category_select = "1=1" if category == "All" else f"category = \'{category}\'"
         rows = app.db.execute(f'''
@@ -73,6 +77,7 @@ WHERE {category_select}  AND (name LIKE :search_term OR description LIKE :search
 
 
     @staticmethod
+    # get a list of all categories
     def get_all_categories():
         rows = app.db.execute('''
 SELECT DISTINCT category

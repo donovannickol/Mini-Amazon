@@ -3,7 +3,7 @@
 {% block content %}
 
 <div class="row mt-3">
-  <!-- Search text -->
+  <!-- Search results text -->
   <div class="col-md-2 offset-md-1 pt-1">
     {% if search_term %}
       <p class="mt-1">Search results for "{{search_term}}":</p>
@@ -73,7 +73,6 @@
 </div>
 {% endfor %}
 
-<!-- Badly coded pagination menu that needs to be updated -->
 <nav class="offset-md-8" aria-label="Page navigation example">
   <ul class="pagination">
     <li class="page-item {{'disabled' if curr_page==1}}"><a class="page-link" href="{{url_for('products.cards', page=curr_page - 1, search_term=search_term, sort_by=sort_by, category=curr_category)}}">Previous</a></li>
