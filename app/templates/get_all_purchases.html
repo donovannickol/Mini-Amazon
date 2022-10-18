@@ -2,16 +2,6 @@
 
 {% block content %}
 
-{% block scripts %}
-<script>
-    $(document).ready(function () {
-        $('#purchases').DataTable({
-            "order": [[3, "desc"]]
-        });
-    });
-</script>
-{% endblock %}
-
 <br><br>
 
 <h2>Purchases made by user {{ uid }}:</h2>
