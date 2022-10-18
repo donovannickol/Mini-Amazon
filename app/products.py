@@ -5,7 +5,7 @@ from .models.product import Product
 from flask import Blueprint
 bp = Blueprint('products', __name__)
 
-PRODUCTS_PER_PAGE = 10
+PRODUCTS_PER_PAGE = 8
 
 # route to get top k products by price
 @bp.route('/most_expensive/', methods=['POST'])
