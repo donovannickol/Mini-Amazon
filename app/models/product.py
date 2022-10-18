@@ -52,7 +52,7 @@ LIMIT :k
         rows = app.db.execute(f'''
 SELECT id, name, description, img_url, price, category
 FROM Products
-WHERE {category_select} AND (name LIKE :search_term OR description LIKE :search_term)
+WHERE {category_select} AND (LOWER(name) LIKE LOWER(:search_term) OR LOWER(description) LIKE LOWER(:search_term))
 ORDER BY {sort_map[sort_by]}
 LIMIT {limit}
 OFFSET {(page - 1) * limit}
