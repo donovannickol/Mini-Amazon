@@ -50,9 +50,3 @@ def go_to_page():
     sort_by = request.args.get('sort_by', "Default", type=str)
     category = request.args.get('category', 'All', type=str)
     return redirect(url_for('products.cards', page=page, search_term=search_term, sort_by=sort_by, category=category))
-
-# (unused) route to view products as a table of cards
-@bp.route('/cards_table')
-def cards_table():
-    products = Product.get_all()
-    return render_template('cards_table.html', avail_products=products)
