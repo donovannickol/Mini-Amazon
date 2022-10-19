@@ -25,6 +25,7 @@ CREATE TABLE Products (
     img_url VARCHAR(511) NOT NULL,
     price DECIMAL(12,2) NOT NULL,
     category VARCHAR(255) NOT NULL,
+    stock INT NOT NULL DEFAULT 0,
     FOREIGN KEY (category) REFERENCES Categories(name)
 );
 
@@ -60,3 +61,24 @@ CREATE TABLE OrderHistory(
     fullfilldate timestamp without time zone NOT NULL DEFAULT (current_timestamp AT TIME ZONE 'UTC'),
     PRIMARY KEY(uid,order_number, pid, sellerid)
 );
+
+
+-- triggers
+
+create or replace function update_product_stock()
+returns trigger as $$
+begin
+    if (TG_OP = 'INSERT') then
+        update products set stock = stock + new.count where id = new.pid;
+    elsif (TG_OP = 'DELETE') then
+        update products set stock = stock - old.count where id = old.pid;
+    elsif (TG_OP = 'UPDATE') then
+        update products set stock = stock - old.count + new.count where id = new.pid;
+    end if;
+    return null;
+end;
+$$ language plpgsql;
+
+create trigger update_product_stock
+after insert or delete or update on Inventory
+for each row execute procedure update_product_stock();

@@ -10,11 +10,11 @@ SELECT pg_catalog.setval('public.categories_id_seq',
                          (SELECT MAX(id)+1 FROM Categories),
                          false);    
 
-\COPY Products FROM 'Products.csv' WITH DELIMITER ',' NULL '' CSV
+\COPY Products (id, name, description, img_url, price, category) FROM 'Products.csv' WITH DELIMITER ',' NULL '' CSV
 SELECT pg_catalog.setval('public.products_id_seq',
                          (SELECT MAX(id)+1 FROM Products),
                          false);  
-
+                         
 \COPY Purchases FROM 'Purchases.csv' WITH DELIMITER ',' NULL '' CSV
 SELECT pg_catalog.setval('public.purchases_id_seq',
                          (SELECT MAX(id)+1 FROM Purchases),
