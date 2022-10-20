@@ -58,7 +58,7 @@ CREATE TABLE OrderHistory(
     uid INT NOT NULL REFERENCES Users(id),
     order_number INT NOT NULL,
     pid INT NOT NULL REFERENCES Products(id),
-    sellerid INT NOT NULL REFERENCES Users(id)s,
+    sellerid INT NOT NULL REFERENCES Users(id),
     quantity INT NOT NULL,
     price DECIMAL(12,2) NOT NULL,
     fullfilldate timestamp without time zone NOT NULL DEFAULT (current_timestamp AT TIME ZONE 'UTC'),
