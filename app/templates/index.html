@@ -64,6 +64,20 @@
 
 <br><br>
 
+<div class="col-md-5">
+  <h3>Return all cart items by user with id:</h2>
+    <form action="{{ url_for('cart.user_cart') }}" method="POST">
+      <div class="form-group">
+        <label for="uid">uid</label>
+        <!-- only allow positive integers -->
+        <input type="number" class="form-control" id="uid" name="uid" step="1" min="0" max="9223372036854775807"
+          onkeypress="return event.charCode >= 48 && event.charCode <= 57" onkeydown="return event.keyCode !== 69"
+          required>
+      </div>
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
+
 <h2>Products for sale:</h2>
 <table id="products" class='table table-hover table-bordered'>
   <thead class="thead-dark">
