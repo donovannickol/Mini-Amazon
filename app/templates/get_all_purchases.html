@@ -2,6 +2,16 @@
 
 {% block content %}
 
+{% block scripts %}
+<script>
+    $(document).ready(function () {
+        $('#purchases').DataTable({
+            "order": [[4, "desc"]]
+        });
+    });
+</script>
+{% endblock %}
+
 <br><br>
 
 <h2>Purchases made by user {{ uid }}:</h2>
@@ -19,7 +29,7 @@
         {% for purchase in get_all_purchases %}
         <tr>
             <td>{{purchase.id}}</td>
-            <td>{{purchase.price}}</td>
+            <td>{{"${:.2f}".format(purchase.total_price)}}</td>
             <td>{{purchase.num_of_items}}</td>
             <td>{{purchase.order_status}}</td>
             <td>{{purchase.time_purchased}}</td>

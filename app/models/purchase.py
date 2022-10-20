@@ -2,10 +2,13 @@ from flask import current_app as app
 
 
 class Purchase:
-    def __init__(self, id, uid, pid, time_purchased):
+    def __init__(self, id, uid, total_price, 
+    num_of_items, order_status, time_purchased):
         self.id = id
         self.uid = uid
-        self.pid = pid
+        self.total_price = total_price
+        self.num_of_items = num_of_items
+        self.order_status = order_status
         self.time_purchased = time_purchased
 
     @staticmethod
@@ -34,7 +37,7 @@ ORDER BY time_purchased DESC
     @staticmethod
     def get_all_by_uid(uid):
         rows = app.db.execute('''
-SELECT id, uid, pid, time_purchased
+SELECT id, uid, total_price, num_of_items, order_status, time_purchased
 FROM Purchases
 WHERE uid = :uid
 ORDER BY time_purchased DESC
