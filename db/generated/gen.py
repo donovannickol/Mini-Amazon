@@ -18,21 +18,21 @@ def gen_users(num_users):
     with open('Users.csv', 'w') as f:
         writer = get_csv_writer(f)
         print('Users...', end=' ', flush=True)
-        for uid in range(num_users):
-            if uid % 10 == 0:
-                print(f'{uid}', end=' ', flush=True)
+        for id in range(num_users):
+            if id % 10 == 0:
+                print(f'{id}', end=' ', flush=True)
             profile = fake.profile()
             email = profile['mail']
-            plain_password = f'pass{uid}'
+            plain_password = f'pass{id}'
             password = generate_password_hash(plain_password)
             name_components = profile['name'].split(' ')
             firstname = name_components[0]
             lastname = name_components[-1]
-            address = profile['address']
-            city = profile['current_location'][0]
-            state = profile['current_location'][1]
+            user_address = profile['address']
+            user_city = profile['current_location'][0]
+            user_state = profile['current_location'][1]
             balance = f'{str(fake.random_int(max=500))}.{fake.random_int(max=99):02}'
-            writer.writerow([uid, email, firstname, lastname, address, city, state, balance])
+            writer.writerow([id, email,password, firstname, lastname, user_address, user_city, user_state, balance])
         print(f'{num_users} generated')
     return
 
@@ -76,9 +76,11 @@ def gen_purchases(num_purchases, available_pids):
             if id % 100 == 0:
                 print(f'{id}', end=' ', flush=True)
             uid = fake.random_int(min=0, max=num_users-1)
-            pid = fake.random_element(elements=available_pids)
+            total_price = f'{str(fake.random_int(max=500))}.{fake.random_int(max=99):02}'
+            num_of_items = fake.random_int(min=0)
+            order_status = fake.random_element(elements=['Ordered', 'Returned', 'En Route'])
             time_purchased = fake.date_time()
-            writer.writerow([id, uid, pid, time_purchased])
+            writer.writerow([id, uid, total_price, num_of_items, order_status, time_purchased])
         print(f'{num_purchases} generated')
     return
 
