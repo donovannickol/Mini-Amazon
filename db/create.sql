@@ -65,6 +65,16 @@ CREATE TABLE OrderHistory(
     PRIMARY KEY(uid,order_number, pid, sellerid)
 );
 
+CREATE TABLE productRating (
+	user_id INT NOT NULL REFERENCES Users(id),
+	pid INT NOT NULL REFERENCES Products(id),
+	starsOutOfFive INT NOT NULL,
+	ratingContent varchar(5000),
+	submissionDate timestamp without time zone NOT NULL DEFAULT (current_timestamp AT TIME ZONE 'UTC'),
+	PRIMARY KEY(user_id, pid)
+    );
+
+
 
 -- triggers
 

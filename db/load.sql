@@ -26,3 +26,5 @@ SELECT pg_catalog.setval('public.purchases_id_seq',
 
 
 \COPY OrderHistory FROM 'OrderHistory.csv' WITH DELIMITER ',' NULL '' CSV;
+
+\COPY productRating FROM 'productRating.csv' WITH DELIMITER ',' NULL '' CSV
