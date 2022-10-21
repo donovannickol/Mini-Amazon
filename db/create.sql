@@ -51,6 +51,7 @@ CREATE TABLE Inventory (
     uid INT NOT NULL REFERENCES Users(id),
     pid INT NOT NULL REFERENCES Products(id),
     count INT NOT NULL,
+    price DECIMAL(12,2) NOT NULL,
     PRIMARY KEY(uid, pid)
 );
 
