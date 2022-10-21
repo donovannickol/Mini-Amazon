@@ -1,6 +1,7 @@
 from flask import render_template, request, redirect, url_for
 
 from .models.product import Product
+from .models.inventory import Inventory
 
 from flask import Blueprint
 bp = Blueprint('products', __name__)
@@ -20,7 +21,8 @@ def k_most_expensive():
 @bp.route('/product/<int:id>')
 def product(id):
     product = Product.get(id)
-    return render_template('product.html', product=product)
+    sellers = Inventory.get_by_pid(id)
+    return render_template('product.html', product=product, sellers=sellers)
 
 # route to view proucts as cards instead of table
 @bp.route('/cards/')

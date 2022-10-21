@@ -15,14 +15,49 @@
       <h3>Category</h3>
       <span class="badge rounded-pill bg-info text-light mb-4">{{product.category}}</span>
       <h3>Price</h3>
-      <h5>${{product.price}}</h5>
+      <h5>{{"$" + (product.price | string) if (product.price == product.price) else 'Unavailable'}}</h5>
       <br>
       {% if product.stock == 0 %}
           <h3 class="text-danger">Out of stock</h3>
       {% else %}
-        <h3>Total stock: {{product.stock}}</h3>
+        <!-- insert add to cart and stock per seller here -->
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th scope="col">Seller</th>
+              <th scope="col">Price</th>
+              <th scope="col">Stock</th>
+              <th scope="col"></th>
+            </tr>
+          </thead>
+          <tbody>
+        {% for seller in sellers %}
+        <!-- Table containg seller uid, price, stock, and an add to cart with quantity form -->
+          <tr>
+            <th scope="row">{{seller.uid}}</th>
+            <td>{{"$" + (seller.price | string) if (seller.price == seller.price) else 'Unavailable'}}</td>
+            <td>{{seller.count}}</td>
+            <td>
+              <form>
+                <div class="input-group">
+                  <!-- hidden inputs for pid, sid, price -->
+                  <input type="hidden" name="pid" value={{product.pid}}>
+                  <input type="hidden" name="sid" value={{seller.sid}}>
+                  <input type="hidden" name="price" value={{seller.price}}>
+                  <label for="quantity">Quantity: </label>
+                  <input class="form-control ml-1 mr-2" type="number" name="quantity" min="1" max={{seller.count}}>
+                  <span class="input-group-btn">
+                    <button class="btn btn-warning" type="submit">Add to Cart</button>
+                  </span>
+                </div>
+              </form>
+            </td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
       {% endif %}
-      <!-- insert add to cart and stock per seller here -->
+      
     </div>
   </div>
 </div>

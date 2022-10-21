@@ -38,6 +38,7 @@ FROM Products
         rows = app.db.execute('''
 SELECT id, name, description, img_url, price, category, stock
 FROM Products
+WHERE price <> 'NaN'
 ORDER BY price DESC
 LIMIT :k
 ''',
@@ -57,7 +58,7 @@ LIMIT :k
 SELECT id, name, description, img_url, price, category, stock
 FROM Products
 WHERE {category_select} AND (LOWER(name) LIKE LOWER(:search_term) OR LOWER(description) LIKE LOWER(:search_term))
-ORDER BY {sort_map[sort_by]}
+ORDER BY (stock != 0) DESC, {sort_map[sort_by]}
 LIMIT {limit}
 OFFSET {(page - 1) * limit}
 ''',
