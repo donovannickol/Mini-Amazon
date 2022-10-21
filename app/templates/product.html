@@ -17,7 +17,11 @@
       <h3>Price</h3>
       <h5>${{product.price}}</h5>
       <br>
-      <h3>Total stock: {{product.stock}}</h3>
+      {% if product.stock == 0 %}
+          <h3 class="text-danger">Out of stock</h3>
+      {% else %}
+        <h3>Total stock: {{product.stock}}</h3>
+      {% endif %}
       <!-- insert add to cart and stock per seller here -->
     </div>
   </div>
