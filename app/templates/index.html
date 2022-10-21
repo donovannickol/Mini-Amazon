@@ -78,6 +78,21 @@
     </form>
 </div>
 
+<div class="col-md-5">
+  <h3>Return 5 most recent feedback of a given user_id: </h2>
+    <form action="{{ url_for('productRatings.get_five_feedbacks') }}" method="POST">
+      <div class="form-group">
+        <label for="user_id">user_id</label>
+        <!-- only allow positive integers -->
+        <input type="number" class="form-control" id="user_id" name="user_id" step="1" min="0" max="9223372036854775807"
+          onkeypress="return event.charCode >= 48 && event.charCode <= 57" onkeydown="return event.keyCode !== 69"
+          required>
+      </div>
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
+
+
 <h2>Products for sale:</h2>
 <table id="products" class='table table-hover table-bordered'>
   <thead class="thead-dark">

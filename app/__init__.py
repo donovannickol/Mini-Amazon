@@ -30,4 +30,8 @@ def create_app():
     from .carts import bp as cart_bp
     app.register_blueprint(cart_bp)
 
+    from .productRatings import bp as productRatings_bp
+    app.register_blueprint(productRatings_bp)
+
+
     return app
