@@ -23,8 +23,8 @@ CREATE TABLE Products (
     name VARCHAR(255) NOT NULL,
     description VARCHAR(511) NOT NULL,
     img_url VARCHAR(511) NOT NULL,
-    price DECIMAL(12,2) NOT NULL,
     category VARCHAR(255) NOT NULL,
+    price DECIMAL(12,2) NOT NULL DEFAULT 'NaN',
     stock INT NOT NULL DEFAULT 0,
     FOREIGN KEY (category) REFERENCES Categories(name)
 );
@@ -96,3 +96,16 @@ $$ language plpgsql;
 create trigger update_product_stock
 after insert or delete or update on Inventory
 for each row execute procedure update_product_stock();
+
+
+create or replace function update_product_lowest_price()
+returns trigger as $$
+begin
+    update products set price = (select COALESCE(min(price), 0) from inventory where pid = new.pid) where id = new.pid;
+    return null;
+end;
+$$ language plpgsql;
+
+create trigger update_product_lowest_price
+after insert or delete or update on Inventory
+for each row execute procedure update_product_lowest_price();

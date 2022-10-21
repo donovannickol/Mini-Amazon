@@ -7,21 +7,20 @@ class Inventory:
         replacing new columns, etc. for your design.
     """
     def __init__(self, uid, pid, count, price):
-        self.id = id
         self.uid = uid
         self.pid = pid
         self.count = count
         self.price = price
 
     @staticmethod
-    def get_by_pid(id):
+    def get_by_pid(pid):
         rows = app.db.execute('''
 SELECT uid, pid, count, price
 FROM Inventory
 WHERE pid = :pid
 ''',
-                              pid=id)
-        return Inventory(*(rows[0])) if rows else None
+                              pid=pid)
+        return [Inventory(*row) for row in rows]
 
     @staticmethod
     def get_by_uid(uid):
