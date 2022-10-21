@@ -77,7 +77,7 @@ def gen_purchases(num_purchases, available_pids):
                 print(f'{id}', end=' ', flush=True)
             uid = fake.random_int(min=0, max=num_users-1)
             total_price = f'{str(fake.random_int(max=500))}.{fake.random_int(max=99):02}'
-            num_of_items = fake.random_int(min=0)
+            num_of_items = fake.random_int(min=1, max = 20)
             order_status = fake.random_element(elements=['Ordered', 'Returned', 'En Route'])
             time_purchased = fake.date_time()
             writer.writerow([id, uid, total_price, num_of_items, order_status, time_purchased])
