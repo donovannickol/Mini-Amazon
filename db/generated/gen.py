@@ -6,6 +6,7 @@ from faker import Faker
 num_users = 100
 num_products = 2000
 num_purchases = 2500
+categories = ['Books', 'Movies', 'Music']
 
 Faker.seed(0)
 fake = Faker()
@@ -48,14 +49,10 @@ def gen_products(num_products):
                 print(f'{pid}', end=' ', flush=True)
             name = fake.sentence(nb_words=2)[:-1]
             description = fake.paragraph(nb_sentences=4)
-            # generate random valid img url
-            # img_url = f'https://picsum.photos/id/{fake.random_int(min=0, max=500)}/200'
-            # generate img url using faker
-            img_url = fake.image_url(width=200, height=200)
-            price = f'{str(fake.random_int(max=500))}.{fake.random_int(max=99):02}'
-            category = fake.random_element(elements=['Books', 'Movies', 'Music'])
+            img_url = f'https://picsum.photos/id/{fake.random_int(min=0, max=500)}/200'
+            category = fake.random_element(elements=categories)
             available_pids.append(pid)
-            writer.writerow([pid, name, description, img_url, price, category])
+            writer.writerow([pid, name, description, img_url, category])
         print(f'{num_products} generated; {len(available_pids)} available')
     return available_pids
 
@@ -63,7 +60,7 @@ def gen_categories():
     with open('Categories.csv', 'w') as f:
         writer = get_csv_writer(f)
         print('Categories...', end=' ', flush=True)
-        for category in ['Books', 'Movies', 'Music']:
+        for category in categories:
             writer.writerow([category])
         print('generated')
     return
