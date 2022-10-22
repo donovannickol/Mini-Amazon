@@ -55,6 +55,8 @@ LIMIT :k
             "Default": "id",
             "Price: Low to High": "price ASC",
             "Price: High to Low": "price DESC",
+            "Rating: Low to High": "average_rating ASC",
+            "Rating: High to Low": "NULLIF(average_rating, 'NaN') DESC NULLS LAST"
         }
         rows = app.db.execute(f'''
 SELECT id, name, description, img_url, price, category, stock, average_rating, num_ratings
