@@ -26,6 +26,8 @@ CREATE TABLE Products (
     category VARCHAR(255) NOT NULL,
     price DECIMAL(12,2) NOT NULL DEFAULT 'NaN',
     stock INT NOT NULL DEFAULT 0,
+    average_rating DECIMAL(12,2) NOT NULL DEFAULT 'NaN',
+    num_ratings INT NOT NULL DEFAULT 0,
     FOREIGN KEY (category) REFERENCES Categories(name)
 );
 
@@ -101,7 +103,7 @@ for each row execute procedure update_product_stock();
 create or replace function update_product_lowest_price()
 returns trigger as $$
 begin
-    update products set price = (select COALESCE(min(price), 0) from inventory where pid = new.pid) where id = new.pid;
+    update products set price = (select COALESCE(min(price), 'NaN') from inventory where pid = new.pid) where id = new.pid;
     return null;
 end;
 $$ language plpgsql;
@@ -109,3 +111,29 @@ $$ language plpgsql;
 create trigger update_product_lowest_price
 after insert or delete or update on Inventory
 for each row execute procedure update_product_lowest_price();
+
+
+create or replace function update_product_average_rating()
+returns trigger as $$
+begin
+    update products set average_rating = (select COALESCE(avg(starsOutOfFive), 'NaN') from productRating where pid = new.pid) where id = new.pid;
+    return null;
+end;
+$$ language plpgsql;
+
+create trigger update_product_average_rating
+after insert or delete or update on productRating
+for each row execute procedure update_product_average_rating();
+
+
+create or replace function update_product_num_ratings()
+returns trigger as $$
+begin
+    update products set num_ratings = (select count(*) from productRating where pid = new.pid) where id = new.pid;
+    return null;
+end;
+$$ language plpgsql;
+
+create trigger update_product_num_ratings
+after insert or delete or update on productRating
+for each row execute procedure update_product_num_ratings();
