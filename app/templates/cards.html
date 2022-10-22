@@ -44,7 +44,7 @@
     Sort by: {{ sort_by }}
   </button>
   <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-    {% set sort_options=['Default', 'Price: Low to High', 'Price: High to Low'] %}
+    {% set sort_options=['Default', 'Price: Low to High', 'Price: High to Low', 'Rating: Low to High', 'Rating: High to Low'] %}
     {% for option in sort_options %}
       {% if option != sort_by %}
         <a class="dropdown-item" href="{{ url_for('products.cards', page='1', search_term=search_term, sort_by=option, category=curr_category) }}">{{ option }}</a>
