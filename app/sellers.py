@@ -9,6 +9,6 @@ bp = Blueprint('sellers', __name__)
 def seller_inventory():
     sid = request.form['sid']
     seller_inventory = Inventory.get_by_uid(sid)
-    return render_template('seller_inventory.html',
+    return render_template('HW4/seller_inventory.html',
                            sid = sid,
                            seller_inventory = seller_inventory)
