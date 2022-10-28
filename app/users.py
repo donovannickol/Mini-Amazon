@@ -42,7 +42,7 @@ def login():
 def get_all_purchases():
     uid = request.form['uid']
     get_all_purchases = Purchase.get_all_by_uid(uid)
-    return render_template('get_all_purchases.html',
+    return render_template('HW4/get_all_purchases.html',
                             uid = uid, 
                             get_all_purchases = get_all_purchases)
 

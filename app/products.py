@@ -17,7 +17,7 @@ PRODUCTS_PER_PAGE = 8
 def k_most_expensive():
     k = request.form['k']
     k_most_expensive = Product.get_k_most_expensive(k)
-    return render_template('k_most_expensive.html',
+    return render_template('HW4/k_most_expensive.html',
                            k = k,
                            k_most_expensive = k_most_expensive)
 
