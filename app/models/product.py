@@ -76,7 +76,7 @@ OFFSET {(page - 1) * limit}
         rows = app.db.execute(f'''
 SELECT COUNT(*)
 FROM Products
-WHERE {category_select}  AND (name LIKE :search_term OR description LIKE :search_term)
+WHERE {category_select} AND (LOWER(name) LIKE LOWER(:search_term) OR LOWER(description) LIKE LOWER(:search_term))
 ''',
                               search_term='%' + search_term + '%')
         return rows[0][0]
