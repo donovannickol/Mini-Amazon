@@ -18,7 +18,7 @@
   <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
     {% for category in categories %}
     {% if category != curr_category %}
-      <a class="dropdown-item" href="{{ url_for('products.cards', category=category, search_term=search_term, sort_by=sort_by) }}">{{category}}</a>
+      <a class="dropdown-item" href="{{ url_for('index.index', category=category, search_term=search_term, sort_by=sort_by) }}">{{category}}</a>
     {% endif %}
     {% endfor %}
   </div>
@@ -47,7 +47,7 @@
     {% set sort_options=['Default', 'Price: Low to High', 'Price: High to Low', 'Rating: Low to High', 'Rating: High to Low'] %}
     {% for option in sort_options %}
       {% if option != sort_by %}
-        <a class="dropdown-item" href="{{ url_for('products.cards', page='1', search_term=search_term, sort_by=option, category=curr_category) }}">{{ option }}</a>
+        <a class="dropdown-item" href="{{ url_for('index.index', page='1', search_term=search_term, sort_by=option, category=curr_category) }}">{{ option }}</a>
       {% endif %}
     {% endfor %}
   </div>
@@ -63,7 +63,7 @@
       <img class="card-img-top" src="{{product.img_url}}" alt="Card image" style="width:100%">
       <div class="card-body">
         <h4 class="card-title">{{product.name}}</h4>
-        <p class="card-text">Price: {{"$" + (product.price | string) if (product.price == product.price) else 'Unavailable'}}<a href="{{ url_for('products.cards', category=product.category, search_term=search_term, sort_by=sort_by) }}"><span class="badge rounded-pill bg-info text-light mx-4">{{product.category}}</span></a></p>
+        <p class="card-text">Price: {{"$" + (product.price | string) if (product.price == product.price) else 'Unavailable'}}<a href="{{ url_for('index.index', category=product.category, search_term=search_term, sort_by=sort_by) }}"><span class="badge rounded-pill bg-info text-light mx-4">{{product.category}}</span></a></p>
         <!-- link to individual product page -->
         <a href="{{ url_for('products.product', id=product.id) }}" class="btn btn-primary stretched-link">View</a>
         <!-- display out of stock message if stock is 0 -->
@@ -103,7 +103,7 @@
 
 <nav class="offset-md-8" aria-label="Page navigation example">
   <ul class="pagination">
-    <li class="page-item {{'disabled' if curr_page==1}}"><a class="page-link" href="{{url_for('products.cards', page=curr_page - 1, search_term=search_term, sort_by=sort_by, category=curr_category)}}">Previous</a></li>
+    <li class="page-item {{'disabled' if curr_page==1}}"><a class="page-link" href="{{url_for('index.index', page=curr_page - 1, search_term=search_term, sort_by=sort_by, category=curr_category)}}">Previous</a></li>
     {% set num_pages=[(num_products / products_per_page) | round(method='ceil') | int, 1] | max %}
     <div class="row ml-1 mr-2">
       <form action="{{ url_for('products.go_to_page', search_term=search_term, sort_by=sort_by, category=curr_category) }}" method="POST">
@@ -114,7 +114,7 @@
       <span class="my-2"> {{' / {total}'.format(curr=curr_page, total=num_pages)}}</span>
     </div>
 
-    <li class="page-item {{'disabled' if curr_page==num_pages}}"><a class="page-link" href="{{url_for('products.cards', page=curr_page + 1, search_term=search_term, sort_by=sort_by, category=curr_category)}}">Next</a></li>
+    <li class="page-item {{'disabled' if curr_page==num_pages}}"><a class="page-link" href="{{url_for('index.index', page=curr_page + 1, search_term=search_term, sort_by=sort_by, category=curr_category)}}">Next</a></li>
   </ul>
 </nav>
 {% endblock %}

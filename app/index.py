@@ -19,7 +19,7 @@ def index():
     sort_by=request.args.get('sort_by', "Default", type=str)
     num_products = Product.get_num_matching_products(search_term, category)
     products = Product.get_page_of_products(page, PRODUCTS_PER_PAGE, search_term, sort_by, category)
-    return render_template('cards.html', avail_products=products, num_products=num_products, products_per_page = PRODUCTS_PER_PAGE, curr_page = page, search_term = search_term, sort_by = sort_by, categories = categories, curr_category = category)
+    return render_template('index.html', avail_products=products, num_products=num_products, products_per_page = PRODUCTS_PER_PAGE, curr_page = page, search_term = search_term, sort_by = sort_by, categories = categories, curr_category = category)
 
 
 # route to our old home page (up until 10/27/2022)
