@@ -63,7 +63,7 @@ class RegistrationForm(FlaskForm):
 @bp.route('/account', methods = ['GET','POST'])
 def publicView():
     id_number = current_user.id
-    name = current_user.firstname + " " + current_user.lastname
+    name = f'{current_user.firstname} {current_user.lastname}'
     email = current_user.email
     return render_template('user_public_view.html', id = id_number, name = name, email = email)
 
