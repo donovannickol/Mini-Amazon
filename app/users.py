@@ -42,8 +42,7 @@ def login():
 def get_all_purchases():
     uid = request.form['uid']
     get_all_purchases = Purchase.get_all_by_uid(uid)
-    return render_template('HW4/get_all_purchases.html',
-                            uid = uid, 
+    return render_template('get_all_purchases.html',
                             get_all_purchases = get_all_purchases)
 
 
@@ -60,6 +59,13 @@ class RegistrationForm(FlaskForm):
     def validate_email(self, email):
         if User.email_exists(email.data):
             raise ValidationError('Already a user with this email.')
+
+@bp.route('/account', methods = ['GET','POST'])
+def publicView():
+    id_number = current_user.id
+    name = current_user.firstname + " " + current_user.lastname
+    email = current_user.email
+    return render_template('user_public_view.html', id = id_number, name = name, email = email)
 
 
 @bp.route('/register', methods=['GET', 'POST'])
