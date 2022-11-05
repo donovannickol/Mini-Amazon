@@ -53,6 +53,10 @@
     .navbar {
       background-color: #000;
     }
+
+    .icon-white {
+      color: white;
+    }
   </style>
 </head>
 
@@ -70,12 +74,14 @@
         <a id="index.index" class="nav-link" href="{{ url_for('index.index') }}">Home<span class="sr-only"></span></a>
         <a id="index.oldIndex" class="nav-link" href="{{ url_for('index.oldIndex') }}">Old Home<span
             class="sr-only"></span></a>
-        {% if current_user.is_authenticated %}<a id="products.new" class="nav-link"
+        {% if current_user.is_authenticated %}
+        <a id="products.new" class="nav-link"
           href="{{ url_for('products.new') }}">New Product <span class="sr-only"></span></a>{% endif %}
       </ul>
     </div>
     <div style="color: aliceblue; text-align: right; margin-bottom: 10px; margin-top:10px">
       {% if current_user.is_authenticated %}
+      <a href="{{ url_for('cart.user_cart')}}" type="icon" class="bi bi-cart icon-white pr-4" style = "font-size: 30px"></a>
       <span class="mr-3">Hello {{current_user.firstname}}!</span>
       <a href="{{ url_for('users.publicView') }}" type="button" class="btn btn-light">My account</a>
       <a href="{{ url_for('users.logout') }}" type="button" class="btn btn-light">Log out</a>

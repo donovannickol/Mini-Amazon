@@ -60,14 +60,14 @@
             <td>{{"$" + (seller.price | string) if (seller.price == seller.price) else 'Unavailable'}}</td>
             <td>{{seller.count}}</td>
             <td>
-              <form>
+              <form action="{{ url_for('cart.add_to_cart') }}" method="POST">
                 <div class="input-group">
                   <!-- hidden inputs for pid, sid, price -->
-                  <input type="hidden" name="pid" value={{product.pid}}>
-                  <input type="hidden" name="sid" value={{seller.sid}}>
+                  <input type="hidden" name="pid" value={{product.id}}>
+                  <input type="hidden" name="sid" value={{seller.uid}}>
                   <input type="hidden" name="price" value={{seller.price}}>
                   <label for="quantity">Quantity: </label>
-                  <input class="form-control ml-1 mr-2" type="number" name="quantity" min="1" max={{seller.count}}>
+                  <input class="form-control ml-1 mr-2" type="number" name="quantity" min="1" value = "1" max={{seller.count}}>
                   <span class="input-group-btn">
                     <button class="btn btn-warning" type="submit">Add to Cart</button>
                   </span>
@@ -79,7 +79,15 @@
         </tbody>
       </table>
       {% endif %}
-
+      <p>
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+          {% for message in messages %}
+          {{ message }}
+          {% endfor %}
+        {% endif %}
+        {% endwith %}
+      </p>
       <!-- show edit button if current user is a seller of this product -->
       {% if current_user.id in (sellers | map(attribute='uid') | list) %}
       <a href="{{ url_for('products.edit', id=product.id) }}" class="btn btn-primary">Edit Product</a>
