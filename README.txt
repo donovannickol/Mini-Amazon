@@ -9,4 +9,4 @@ Mazen's weekly update: Created wireframe for seller history and inventory pages.
 Akash's updates: Created home page with all products (sorting, searching, filtering, pagination), individual product pages, form to add/edit products, and added triggers to db.
 Jamael's weekly update: Created wireframe for user accounts and purchase pages; added code for creating and populating sample Users and Purchases databases.
 Donovan's weekly update: Created wireframe for cart and order details, added code for creating and  populating sample cart and orderhistory databases.
-Joshua's weekly update: Created wireframe for feedback, view of product reviews, view of seller reviews, view of reviews by user, and messaging. Added code for creating sample product and seller feedback, as well as messaging.
+Joshua's updates: Add sellerRating database; made seller rating summary page; added product rating summary table if user is signed in; created triggers for productRating and sellerRating; create the foundations for messaging
