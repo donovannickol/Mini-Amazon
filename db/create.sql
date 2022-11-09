@@ -80,7 +80,6 @@ CREATE TABLE productRating (
 
 
 -- triggers
-
 create or replace function update_product_stock()
 returns trigger as $$
 begin
