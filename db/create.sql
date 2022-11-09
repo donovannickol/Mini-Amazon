@@ -75,7 +75,14 @@ CREATE TABLE productRating (
 	PRIMARY KEY(user_id, pid)
     );
 
-
+CREATE TABLE sellerRating (
+	user_id INT NOT NULL REFERENCES Users(id),
+	seller_id INT NOT NULL REFERENCES Users(id),
+	starsOutOfFive INT NOT NULL,
+	ratingContent varchar(5000),
+	submissionDate timestamp without time zone NOT NULL DEFAULT (current_timestamp AT TIME ZONE 'UTC'),
+	PRIMARY KEY(user_id, seller_id)
+    );
 
 -- triggers
 
