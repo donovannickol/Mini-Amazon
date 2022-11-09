@@ -2,10 +2,6 @@ from flask import current_app as app
 
 
 class Cart:
-    """
-    This is just a TEMPLATE for Cart, you should change this by adding or 
-        replacing new columns, etc. for your design.
-    """
     def __init__(self, uid, pid, sellerid, quantity, price):
         self.uid = uid
         self.pid = pid
@@ -25,3 +21,15 @@ WHERE uid = :uid
                               uid=uid)
                         
         return [Cart(*row) for row in rows]
+
+    @staticmethod
+    def add_to_cart(uid, pid, sid, quantity, price):
+        app.db.execute('''
+INSERT INTO Cart (uid, pid, sellerid, quantity, price)
+VALUES (:uid, :pid, :sid, :quantity, :price)
+''',
+                       uid=uid,
+                       pid=pid,
+                       sid=sid,
+                       quantity=quantity,
+                       price=price)

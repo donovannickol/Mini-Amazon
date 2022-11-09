@@ -2,13 +2,35 @@
 
 {% block content %}
 
-
 <div class="row my-5">
     <div class="col-md-5 text-center">
-      <img src={{product.img_url}} class='h-75 w-75' alt='Product Image' />
+      <img src={{product.img_url}} class='w-75' alt='Product Image' />
     </div>
     <div class="col-md-5">
-      <h1>{{product.name}}</h2>
+      <h1>{{product.name}}</h1>
+      <div class="my-3">
+        {% if product.average_rating == product.average_rating %}
+        {% set fraction = product.average_rating % 1 %}
+        {% for i in range(1, 6) %}
+          {% if product.average_rating >= i %}
+            <span class="bi bi-star-fill"></span>
+          {% elif product.average_rating >= i - 1 %}
+            {% if fraction >= 0.75 %}
+              <span class="bi bi-star-fill"</span>
+            {% elif fraction >= 0.25 and fraction < 0.75 %}
+              <span class="bi bi-star-half"></span>
+            {% else %}
+              <span class="bi bi-star"></span>
+            {% endif %}
+          {% else %}
+            <span class="bi bi-star"></span>
+          {% endif %}
+        {% endfor %}
+        <span class="text-secondary mx-2 align-text-top">{{ product.num_ratings }} rating{{ 's' if product.num_ratings > 1 }}</span>
+        {% else %}
+            No reviews
+        {% endif %}
+      </div>
       <p class="text-wrap mb-4">
         {{product.description}}
       </p>
@@ -38,14 +60,14 @@
             <td>{{"$" + (seller.price | string) if (seller.price == seller.price) else 'Unavailable'}}</td>
             <td>{{seller.count}}</td>
             <td>
-              <form>
+              <form action="{{ url_for('cart.add_to_cart') }}" method="POST">
                 <div class="input-group">
                   <!-- hidden inputs for pid, sid, price -->
-                  <input type="hidden" name="pid" value={{product.pid}}>
-                  <input type="hidden" name="sid" value={{seller.sid}}>
+                  <input type="hidden" name="pid" value={{product.id}}>
+                  <input type="hidden" name="sid" value={{seller.uid}}>
                   <input type="hidden" name="price" value={{seller.price}}>
                   <label for="quantity">Quantity: </label>
-                  <input class="form-control ml-1 mr-2" type="number" name="quantity" min="1" max={{seller.count}}>
+                  <input class="form-control ml-1 mr-2" type="number" name="quantity" min="1" value = "1" max={{seller.count}}>
                   <span class="input-group-btn">
                     <button class="btn btn-warning" type="submit">Add to Cart</button>
                   </span>
@@ -56,6 +78,19 @@
         {% endfor %}
         </tbody>
       </table>
+      {% endif %}
+      <p>
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+          {% for message in messages %}
+          {{ message }}
+          {% endfor %}
+        {% endif %}
+        {% endwith %}
+      </p>
+      <!-- show edit button if current user is a seller of this product -->
+      {% if current_user.id in (sellers | map(attribute='uid') | list) %}
+      <a href="{{ url_for('products.edit', id=product.id) }}" class="btn btn-primary">Edit Product</a>
       {% endif %}
       
     </div>

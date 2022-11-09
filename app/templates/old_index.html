@@ -1,0 +1,148 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{% block scripts %}
+<script>
+  $(document).ready(function () {
+    $('#products').DataTable();
+  });
+</script>
+{% endblock %}
+
+<br><br>
+
+<!-- text box for input and button for search for top k most expensive products. submit takes user to /most_expensive -->
+<div class="col-md-5">
+  <h3>Search for the top k most expensive products:</h2>
+    <form action="{{ url_for('products.k_most_expensive') }}" method="POST">
+      <div class="form-group">
+        <label for="k">k</label>
+        <!-- only allow positive integers -->
+        <input type="number" class="form-control" id="k" name="k" step="1" min="1" max="9223372036854775807"
+          onkeypress="return event.charCode >= 48 && event.charCode <= 57" onkeydown="return event.keyCode !== 69"
+          required>
+      </div>
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
+
+<br><br>
+
+<!-- text box for input and button for search for top k most expensive products. submit takes user to /most_expensive -->
+<div class="col-md-5">
+  <h3>Search for products by seller:</h2>
+    <form action="{{ url_for('sellers.seller_inventory') }}" method="POST">
+      <div class="form-group">
+        <label for="seller id">sid</label>
+        <!-- only allow positive integers -->
+        <input type="number" class="form-control" id="sid" name="sid" step="1" min="0" max="9223372036854775807"
+          onkeypress="return event.charCode >= 48 && event.charCode <= 57" onkeydown="return event.keyCode !== 69"
+          required>
+      </div>
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
+
+<br><br>
+
+<!-- text box for input and button for search for all purchases by user uid. 
+   submit takes user to /all_purchases -->
+<div class="col-md-5">
+  <h3>Return all purchases by user with id:</h2>
+    <form action="{{ url_for('users.get_all_purchases') }}" method="POST">
+      <div class="form-group">
+        <label for="uid">uid</label>
+        <!-- only allow positive integers -->
+        <input type="number" class="form-control" id="uid" name="uid" step="1" min="0" max="9223372036854775807"
+          onkeypress="return event.charCode >= 48 && event.charCode <= 57" onkeydown="return event.keyCode !== 69"
+          required>
+      </div>
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
+
+<br><br>
+
+<div class="col-md-5">
+  <h3>Return all cart items by user with id:</h2>
+    <form action="{{ url_for('cart.user_cart') }}" method="POST">
+      <div class="form-group">
+        <label for="uid">uid</label>
+        <!-- only allow positive integers -->
+        <input type="number" class="form-control" id="uid" name="uid" step="1" min="0" max="9223372036854775807"
+          onkeypress="return event.charCode >= 48 && event.charCode <= 57" onkeydown="return event.keyCode !== 69"
+          required>
+      </div>
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
+
+<br><br>
+
+<div class="col-md-5">
+  <h3>Return 5 most recent feedback of a given user_id: </h2>
+    <form action="{{ url_for('productRatings.get_five_feedbacks') }}" method="POST">
+      <div class="form-group">
+        <label for="user_id">user_id</label>
+        <!-- only allow positive integers -->
+        <input type="number" class="form-control" id="user_id" name="user_id" step="1" min="0" max="9223372036854775807"
+          onkeypress="return event.charCode >= 48 && event.charCode <= 57" onkeydown="return event.keyCode !== 69"
+          required>
+      </div>
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
+
+<br><br>
+
+<h2>Products for sale:</h2>
+<table id="products" class='table table-hover table-bordered'>
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">Product ID</th>
+      <th scope="col">Product Name</th>
+      <th scope="col">Category</th>
+      <th scope="col">Price</th>
+      <th scope="col">Image</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for product in avail_products%}
+    <tr>
+      <th scope="row"><a href="{{ url_for('products.product', id=product.id) }}">{{product.id}}</a></th>
+      <td>{{product.name}}</td>
+      <td>{{product.category}}</td>
+      <td>{{"${:.2f}".format(product.price)}}</td>
+      <td><img src="{{product.img_url}}" alt="product image" width="100" height="100"></td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<br><br>
+{% if current_user.is_authenticated %}
+<h2>Your recent purchases:</h2>
+<table class='table table-hover table-bordered container'>
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">Purchase ID</th>
+      <th scope="col">Product Name</th>
+      <th scope="col">Price</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for purchase in purchase_history%}
+    <tr>
+      <th scope="row">{{purchase.id}}</th>
+      <td>{{purchase.pid}}</td>
+      <td>{{purchase.time_purchased}}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p><a href="{{ url_for('users.login') }}">Log in</a> to see your purchase history!</p>
+{% endif %}
+
+{% endblock %}
