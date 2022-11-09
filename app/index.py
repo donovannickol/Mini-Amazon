@@ -24,7 +24,7 @@ def index():
     #productRatings if they're signed in
     #productRating = productRating.get_by_user_id_tot(user_id)
     if current_user.is_authenticated:
-        productRatings = ProductRating.get_by_user_id_tot(1) #current_user.id
+        productRatings = ProductRating.get_by_user_id_tot(1) #change to current_user.id
     else:
         productRatings = None
     return render_template('index.html', avail_products=products, num_products=num_products, products_per_page = PRODUCTS_PER_PAGE, curr_page = page, search_term = search_term, sort_by = sort_by, categories = categories, curr_category = category, productRatings=productRatings)
