@@ -42,8 +42,8 @@ orders_by_user = {}
 
 valid_sellers = {}
 
-# num_users = 109153
-num_users = 1000
+num_users = 109153
+# num_users = 1000
 
 fake = Faker()
 
@@ -55,7 +55,7 @@ def gen_data():
     # num_df_rows = 100
 
     global num_users
-    num_users = 10000
+    num_users = 109153
 
 
     set_num_sales(products_df)
@@ -272,7 +272,7 @@ def gen_reviews(sellers_df, sales_df, df):
 
         for j in range(len(buyers)):
             buyer_id = buyers[j]
-            rating = randrange(1,5)
+            rating = randint(1,5)
             if rating == 5:
                 print(rating)
             prompt = "Write a " + rating_map[rating] + " review about \'" + title + "\'"
