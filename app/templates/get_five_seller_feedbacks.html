@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{% block scripts %}
+  <script>
+  $(document).ready(function () {
+    $('#sellerRatings').DataTable();
+  });
+  </script>
+{% endblock %}
+
+<br><br>
+
+<h2>Ratings for seller_id {{ seller_id }}, descending by date:</h2>
+<table id="sellerRatings" class='table table-hover table-bordered'>
+  <thead class="thead-dark">
+    <tr>
+      
+      <th scope="col">Reviewer ID</th>
+      <th scope="col">Stars out of five</th>
+      <th scope="col">Rating content</th>
+      <th scope="col">Submission date</th>
+    </tr>
+  </thead>
+  
+    <tbody>
+      
+        {% for rating in get_all_sratings%}
+      <tr>
+        <td>{{rating.user_id}}</td>
+        <td>{{rating.starsOutOfFive}}</td>
+        <td>{{rating.ratingContent}}</td>
+        <td>{{rating.submissionDate}}</td>
+      </tr>
+    {% endfor %}
+      
+    </tbody>
+</table>
+
+{% endblock %}

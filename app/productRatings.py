@@ -20,3 +20,5 @@ def get_five_feedbacks():
 def productRating(pid):
     productRating = productRating.get_by_pid(0)
     return render_template('product.html', productRating=productRating)
+
+
