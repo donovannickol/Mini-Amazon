@@ -2,100 +2,94 @@
 
 {% block content %}
 
-<div class="row mt-3">
-  <!-- Search results text -->
-  <div class="col-md-2 offset-md-1 pt-1">
-    {% if search_term %}
-      <p class="mt-1">Search results for "{{search_term}}":</p>
-    {% endif %}
-  </div>
+{% block scripts %}
+<script>
+  $(document).ready(function () {
+    $('#products').DataTable();
+  });
+</script>
+{% endblock %}
 
-  <!-- Dropdown for categories -->
-  <div class="dropdown offset-md-3">
-  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-    {{ curr_category }}
-  </button>
-  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-    {% for category in categories %}
-    {% if category != curr_category %}
-      <a class="dropdown-item" href="{{ url_for('index.index', category=category, search_term=search_term, sort_by=sort_by) }}">{{category}}</a>
-    {% endif %}
-    {% endfor %}
-  </div>
-  </div>
+<br><br>
 
-  <!-- Search bar -->
-  <div class="col-md-3">
-    <form action="{{ url_for('products.search', page='1', sort_by=sort_by, category=curr_category) }}" method="POST">
-      <div class="input-group">
-        <input type="text" name="search_term" class="form-control" placeholder="Search">
-        <div class="input-group-btn">
-          <button class="btn btn-default" type="submit">
-            <i class="bi bi-search"></i>
-          </button>
-        </div>
+<!-- text box for input and button for search for top k most expensive products. submit takes user to /most_expensive -->
+<div class="col-md-5">
+  <h3>Search for the top k most expensive products:</h2>
+    <form action="{{ url_for('products.k_most_expensive') }}" method="POST">
+      <div class="form-group">
+        <label for="k">k</label>
+        <!-- only allow positive integers -->
+        <input type="number" class="form-control" id="k" name="k" step="1" min="1" max="9223372036854775807"
+          onkeypress="return event.charCode >= 48 && event.charCode <= 57" onkeydown="return event.keyCode !== 69"
+          required>
       </div>
+      <button type="submit" class="btn btn-primary">Submit</button>
     </form>
-    </div>
-
-    <!-- Dropdown for sort options -->
-<div class="dropdown">
-  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-    Sort by: {{ sort_by }}
-  </button>
-  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-    {% set sort_options=['Default', 'Price: Low to High', 'Price: High to Low', 'Rating: Low to High', 'Rating: High to Low'] %}
-    {% for option in sort_options %}
-      {% if option != sort_by %}
-        <a class="dropdown-item" href="{{ url_for('index.index', page='1', search_term=search_term, sort_by=option, category=curr_category) }}">{{ option }}</a>
-      {% endif %}
-    {% endfor %}
-  </div>
-</div>
 </div>
 
-<!-- Content cards -->
-{% for product_row in avail_products | batch(4, '&nbsp;') %}
-<div class="row justify-content-center">
-    {% for product in product_row %}
-    {% if product is not string %}
-    <div class="card m-4 col-md-2 p-0" style="width:300px">
-      <img class="card-img-top" src="{{product.img_url}}" alt="Card image" style="width:100%">
-      <div class="card-body">
-        <h4 class="card-title">{{product.name}}</h4>
-        <p class="card-text">Price: {{"$" + (product.price | string) if (product.price == product.price) else 'Unavailable'}}<a href="{{ url_for('index.index', category=product.category, search_term=search_term, sort_by=sort_by) }}"><span class="badge rounded-pill bg-info text-light mx-4">{{product.category}}</span></a></p>
-        <!-- link to individual product page -->
-        <a href="{{ url_for('products.product', id=product.id) }}" class="btn btn-primary stretched-link">View</a>
-        <!-- display out of stock message if stock is 0 -->
-        {% if product.stock == 0 %}
-          <span class="text-danger mx-5">Out of stock</span>
-        {% endif %}
+<br><br>
+
+<!-- text box for input and button for search for top k most expensive products. submit takes user to /most_expensive -->
+<div class="col-md-5">
+  <h3>Search for products by seller:</h2>
+    <form action="{{ url_for('sellers.seller_inventory') }}" method="POST">
+      <div class="form-group">
+        <label for="seller id">sid</label>
+        <!-- only allow positive integers -->
+        <input type="number" class="form-control" id="sid" name="sid" step="1" min="0" max="9223372036854775807"
+          onkeypress="return event.charCode >= 48 && event.charCode <= 57" onkeydown="return event.keyCode !== 69"
+          required>
       </div>
-      <!-- display the average_rating using stars, including half-stars -->
-      <div class="card-footer">
-        {% if product.average_rating == product.average_rating %}
-        {% set fraction = product.average_rating % 1 %}
-        {% for i in range(1, 6) %}
-          {% if product.average_rating >= i %}
-            <span class="bi bi-star-fill"></span>
-          {% elif product.average_rating >= i - 1 %}
-            {% if fraction >= 0.75 %}
-              <span class="bi bi-star-fill"</span>
-            {% elif fraction >= 0.25 and fraction < 0.75 %}
-              <span class="bi bi-star-half"></span>
-            {% else %}
-              <span class="bi bi-star"></span>
-            {% endif %}
-          {% else %}
-            <span class="bi bi-star"></span>
-          {% endif %}
-        {% endfor %}
-        <span class="text-secondary mx-2 align-text-top">{{ product.num_ratings }}</span>
-        {% else %}
-            No reviews
-        {% endif %}
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
+
+<br><br>
+
+<!-- text box for input and button for search for all purchases by user uid. 
+   submit takes user to /all_purchases -->
+<div class="col-md-5">
+  <h3>Return all purchases by user with id:</h2>
+    <form action="{{ url_for('users.get_all_purchases') }}" method="POST">
+      <div class="form-group">
+        <label for="uid">uid</label>
+        <!-- only allow positive integers -->
+        <input type="number" class="form-control" id="uid" name="uid" step="1" min="0" max="9223372036854775807"
+          onkeypress="return event.charCode >= 48 && event.charCode <= 57" onkeydown="return event.keyCode !== 69"
+          required>
       </div>
-<<<<<<< HEAD
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
+
+<br><br>
+
+<div class="col-md-5">
+  <h3>Return all cart items by user with id:</h2>
+    <form action="{{ url_for('cart.user_cart') }}" method="POST">
+      <div class="form-group">
+        <label for="uid">uid</label>
+        <!-- only allow positive integers -->
+        <input type="number" class="form-control" id="uid" name="uid" step="1" min="0" max="9223372036854775807"
+          onkeypress="return event.charCode >= 48 && event.charCode <= 57" onkeydown="return event.keyCode !== 69"
+          required>
+      </div>
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
+
+<br><br>
+
+<div class="col-md-5">
+  <h3>Return 5 most recent feedback of a given user_id: </h2>
+    <form action="{{ url_for('productRatings.get_five_feedbacks') }}" method="POST">
+      <div class="form-group">
+        <label for="user_id">user_id</label>
+        <!-- only allow positive integers -->
+        <input type="number" class="form-control" id="user_id" name="user_id" step="1" min="0" max="9223372036854775807"
+          onkeypress="return event.charCode >= 48 && event.charCode <= 57" onkeydown="return event.keyCode !== 69"
+          required>
+      </div>
       <button type="submit" class="btn btn-primary">Submit</button>
     </form>
 </div>
@@ -154,29 +148,5 @@
 {% endif %}
 
 
-
-
-    </div>
-    {% endif %}
-    {% endfor %}
-</div>
-{% endfor %}
-
-<nav class="offset-md-8" aria-label="Page navigation example">
-  <ul class="pagination">
-    <li class="page-item {{'disabled' if curr_page==1}}"><a class="page-link" href="{{url_for('index.index', page=curr_page - 1, search_term=search_term, sort_by=sort_by, category=curr_category)}}">Previous</a></li>
-    {% set num_pages=[(num_products / products_per_page) | round(method='ceil') | int, 1] | max %}
-    <div class="row ml-1 mr-2">
-      <form action="{{ url_for('products.go_to_page', search_term=search_term, sort_by=sort_by, category=curr_category) }}" method="POST">
-        <div class="input-group px-1">
-          <input class="form-control text-left" type="number" name="go_to_page" value={{curr_page}} type="number" step="1" min="1" max="{{num_pages}}">
-        </div>
-      </form>
-      <span class="my-2"> {{' / {total}'.format(curr=curr_page, total=num_pages)}}</span>
-    </div>
-
-    <li class="page-item {{'disabled' if curr_page==num_pages}}"><a class="page-link" href="{{url_for('index.index', page=curr_page + 1, search_term=search_term, sort_by=sort_by, category=curr_category)}}">Next</a></li>
-  </ul>
-</nav>
 
 {% endblock %}

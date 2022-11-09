@@ -14,7 +14,7 @@ class SellerRating:
     @staticmethod
     #get product rating by pid
     def get_by_seller_id(seller_id):
-		#REMEMBER TO CHECK WITH SELLERRATING, PRODUCTRATING, AND PURCHASES
+		
         rows = app.db.execute('''
                 SELECT sellerRating.user_id, sellerRating.seller_id, sellerRating.starsOutOfFive, sellerRating.ratingContent, sellerRating.submissionDate
                 FROM sellerRating
