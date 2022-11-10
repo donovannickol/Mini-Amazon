@@ -104,7 +104,7 @@ def publicView():
 @bp.route('/update_info', methods = ['GET', 'POST'])
 def update_info():
     return render_template('update_info.html',
-    upFirstName = upFirstName(),
+    upFirstName = UpdateFirstName(),
     upLastName = UpdateLastName(),
     upEmail = UpdateEmail(),
     upAddress = UpdateAddress(),
