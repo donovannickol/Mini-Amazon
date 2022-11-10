@@ -61,9 +61,35 @@ class RegistrationForm(FlaskForm):
                                        EqualTo('password')])
     submit = SubmitField('Register')
 
+class UpdateFirstName(FlaskForm):
+    firstname = StringField('First Name', validators=[DataRequired()])
+    submit = SubmitField('Update First Name')
+class UpdateLastName(FlaskForm):
+    lastname = StringField('Last Name', validators=[DataRequired()])
+    submit = SubmitField('Update Last Name')
+class UpdateEmail(FlaskForm):
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    submit = SubmitField('Update Email')
+
     def validate_email(self, email):
         if User.email_exists(email.data):
             raise ValidationError('Already a user with this email.')
+
+class UpdateAddress(FlaskForm):
+    address = StringField('Address', validators=[DataRequired()])
+    submit = SubmitField('Update Address')
+class UpdateCity(FlaskForm):
+    city = StringField('City', validators=[DataRequired()])
+    submit = SubmitField('Update City')
+class UpdateState(FlaskForm):
+    state = StringField('State', validators=[DataRequired()])
+    submit = SubmitField('Update State')
+class UpdatePassword(FlaskForm):
+    password = PasswordField('Password', validators=[DataRequired()])
+    password2 = PasswordField(
+        'Repeat Password', validators=[DataRequired(),
+                                       EqualTo('password')])
+    submit = SubmitField('Update Password')
 
 @bp.route('/account', methods = ['GET','POST'])
 def publicView():
@@ -75,6 +101,23 @@ def publicView():
     return render_template('user_public_view.html', 
     id = id_number, name = name, email = email, location = location, balance = balance)
 
+@bp.route('/update_info', methods = ['GET', 'POST'])
+def update_info():
+    return render_template('update_info.html',
+    upFirstName = upFirstName,
+    upLastName = UpdateLastName(),
+    upEmail = UpdateEmail(),
+    upAddress = UpdateAddress(),
+    upCity = UpdateCity(),
+    upState = UpdateState(),
+    upPassword = UpdatePassword(),
+    firstname = current_user.firstname, 
+    lastname = current_user.lastname,
+    email = current_user.email,
+    address = current_user.address,
+    city = current_user.city,
+    state = current_user.state, old_user = current_user,
+    id = current_user.id)
 
 @bp.route('/register', methods=['GET', 'POST'])
 def register():
