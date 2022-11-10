@@ -7,6 +7,8 @@ import csv
 from random import randrange, random, randint, uniform, sample
 from math import floor, ceil
 from faker import Faker
+from datetime import date
+import time
 
 def get_csv_writer(f):
     return csv.writer(f, dialect='unix')
@@ -48,38 +50,38 @@ num_users = 109153
 fake = Faker()
 
 def gen_data():
+    start = time.perf_counter()
+
     products_df = pd.read_csv("ai_generated/products.csv", sep=csv_delimiter)
 
     global num_df_rows 
     num_df_rows = products_df.shape[0]
-    # num_df_rows = 100
+    # num_df_rows = 10
 
     global num_users
-    num_users = 109153
-
-
-    set_num_sales(products_df)
-    set_num_reviews(products_df)
-    set_num_conversations(products_df)
-    set_num_sellers(products_df)
-
-    users = [i for i in range(num_users)]
-
+    num_users = 10000
 
     print("Users...")
-    users_df = gen_users(num_users)
+    users_df = gen_users()
 
     users_df = remove_corrupted_data(users_df)
     users_df.to_csv('ai_generated/user_data.csv', sep=csv_delimiter, na_rep='')
     print("Generated ", users_df.shape[0], users_df.shape[1])
     print("Sellers...")
 
+    set_num_sales(products_df)
+    set_num_reviews(products_df)
+    set_num_conversations(products_df)
+    set_num_sellers(products_df)
+
+
+    users = [i for i in range(num_users)]
     sellers_df = gen_sellers(products_df, users)
 
     sellers_df = remove_corrupted_data(sellers_df)
     sellers_df.to_csv('ai_generated/seller_data.csv', sep=csv_delimiter, na_rep='')
     print("Generated ", sellers_df.shape[0], sellers_df.shape[1])
-    print("Sales...")
+    print("Sales...", end=' ', flush=True)
 
     sales_df = gen_sales(products_df)
 
@@ -105,11 +107,15 @@ def gen_data():
     cart_df = gen_carts(sellers_df,users)
 
     cart_df = remove_corrupted_data(sellers_df)
-    sellers_df.to_csv('ai_generated/seller_data.csv', sep=csv_delimiter, na_rep='')
+    cart_df.to_csv('ai_generated/cart_data.csv', sep=csv_delimiter, na_rep='')
 
     print("Generated", cart_df.shape[0], cart_df.shape[1])
-    users_df = remove_corrupted_data(users_df)
-    users_df.to_csv('ai_generated/Users.csv', sep=csv_delimiter, na_rep='')
+    # users_df = remove_corrupted_data(users_df)
+    # users_df.to_csv('ai_generated/Users.csv', sep=csv_delimiter, na_rep='')
+
+    end = time.perf_counter()
+
+    print((end - start)/60)
 
 def remove_corrupted_data(df):
     df_cols = df.columns.values.tolist()
@@ -129,10 +135,10 @@ def gen_carts(sellers_df, users):
 
     for i in range(0,sellers_df.shape[0]):
 
-        asin = sellers_df.at[i, 'seller_product_id']
+        asin = int(sellers_df.at[i, 'seller_product_id'])
         num_sold = ceil(num_sales[asin]*random()/2)
         sales = sample(users, num_sold)
-        prod_id = sellers_df.at[i, 'seller_product_id']
+        prod_id = int(sellers_df.at[i, 'seller_product_id'])
 
         for j in range(len(sales)):
             num_sellers = len(valid_sellers[prod_id])
@@ -145,7 +151,8 @@ def gen_carts(sellers_df, users):
     return carts_df
 
 
-def gen_users(num_users):
+def gen_users():
+    global num_users
     users_df = pd.DataFrame(columns=["user_id","user_email","user_password","user_firstname","user_lastname","user_address","user_city","user_state","user_balance"])
     for id in range(num_users):
         profile = fake.profile()
@@ -160,6 +167,10 @@ def gen_users(num_users):
         user_state = profile['current_location'][1]
         balance = f'{str(fake.random_int(max=500))}.{fake.random_int(max=99):02}'
         users_df.loc[len(users_df.index)] = [id, email,password, firstname, lastname, user_address, user_city, user_state, balance]
+    users_df = users_df.drop_duplicates(subset=['user_id'])
+    users_df = users_df.drop_duplicates(subset=['user_email'])
+    users_df.reset_index(inplace=True, drop=True)
+    num_users = users_df.shape[0]
     return users_df
 
 def gen_conversations(df, sellers_df):
@@ -169,32 +180,32 @@ def gen_conversations(df, sellers_df):
     users = [i for i in range(num_users)]
 
     for i in range(0, sellers_df.shape[0]):
-        pid = sellers_df.at[i, 'seller_product_id']
+        pid = int(sellers_df.at[i, 'seller_product_id'])
         seller_id = sellers_df.at[i, 'seller_id']
-        product_id = sellers_df.at[i, 'seller_product_id']
+        product_id = int(sellers_df.at[i, 'seller_product_id'])
         curr_num_conversations = num_conversations[pid]
         inquiring_users = sample(users, curr_num_conversations)
         for j in range(len(inquiring_users)):
             user_id = inquiring_users[j]
-            title = df.at[i,'Title']
+            title = df.at[product_id,'Title']
             if seller_id != user_id:
                 prompt = "Write a message from a buyer to a seller about \'" + title + "\'"
                 message = "placeholder"
-                # review= openai.Completion.create(
-                #     model=model,
-                #     prompt=prompt,
-                #     max_tokens=max_tokens,
-                #     temperature=temp
-                # )
+                message = openai.Completion.create(
+                    model=model,
+                    prompt=prompt,
+                    max_tokens=max_tokens,
+                    temperature=temp
+                )
                 conversations_df.loc[len(conversations_df.index)] = [seller_id, product_id, seller_id, user_id, message]
                 prompt = "Write a message from a seller to a buyer about \'" + title + "\'"
                 message = "placeholder"
-                # review= openai.Completion.create(
-                #     model=model,
-                #     prompt=prompt,
-                #     max_tokens=max_tokens,
-                #     temperature=temp
-                # )
+                message = openai.Completion.create(
+                    model=model,
+                    prompt=prompt,
+                    max_tokens=max_tokens,
+                    temperature=temp
+                )
                 conversations_df.loc[len(conversations_df.index)] = [seller_id, product_id, user_id, seller_id, message]
 
     return conversations_df
@@ -227,7 +238,7 @@ def get_price(price):
 def gen_sales(df):
     # sales_df = pd.DataFrame(columns=['ASIN', 'sale_seller_id', 'sale_buyer_id','sale_quantity', 'sale_sell_date', 'sale_sell_time', 'sale_fullfilled'])
     sales_df = pd.DataFrame(columns=['buyer_id','order_number', 'product_id', 'seller_id', 'quantity', 'price','sell_date','sell_time', 'fullfill_date'])
-
+    counter = 0
 
     order_num = 0
     for i in range(0,num_df_rows):
@@ -237,13 +248,16 @@ def gen_sales(df):
         num_sold = num_sales[asin]
         sales = sample(users, num_sold)
         for j in range(len(sales)):
+            counter += 1
+            if counter % 250 == 0:
+                print(f'{counter}', end=' ', flush=True)
             num_sellers = len(valid_sellers[i])
             seller_index = randint(0, num_sellers - 1)
             seller_id = valid_sellers[i][seller_index]
             sell_date = fake.date()
             fullfilled = randint(0,1)
             fullfilled = bool(fullfilled)
-            fullfilldate = fake.date_between(sell_date)
+            fullfilldate = fake.date()
             sell_time = fake.time()
             quant_upper_bound = ceil(num_sold*0.5)
             quantity = randint(1, quant_upper_bound)
@@ -259,7 +273,7 @@ def gen_reviews(sellers_df, sales_df, df):
     for i in range(0,sellers_df.shape[0]):
 
         asin = sellers_df.at[i, 'seller_product_id']
-        title = df.at[i,"Title"]
+        title = df.at[asin,"Title"]
         reviews = num_reviews[asin]
         prod_id = sellers_df.at[i, 'seller_product_id']
         seller_id = sellers_df.at[i,'seller_id']
@@ -277,25 +291,25 @@ def gen_reviews(sellers_df, sales_df, df):
                 print(rating)
             prompt = "Write a " + rating_map[rating] + " review about \'" + title + "\'"
             review = "placeholder"
-            # review= openai.Completion.create(
-            #     model=model,
-            #     prompt=prompt,
-            #     max_tokens=max_tokens,
-            #     temperature=temp
-            # )
+            review= openai.Completion.create(
+                model=model,
+                prompt=prompt,
+                max_tokens=max_tokens,
+                temperature=temp
+            )
             reviews_df.loc[len(reviews_df.index)] = [buyer_id, prod_id, rating, review, fake.date()] 
     
     return reviews_df
 
 def set_num_sales(df):
     for asin in range(df.shape[0]):
-        buyers = randint(0,floor(num_users*0.05))
+        buyers = randint(0,10)
         num_sales[asin] = buyers
 
 def set_num_reviews(df):
     for asin in range(df.shape[0]):
         sales = num_sales[asin]
-        reviews = sales*random()
+        reviews = ceil(sales*random())
         if(floor(reviews) < 0 or floor(reviews) >= num_users):
             print(floor(reviews), sales, asin)
         num_reviews[asin] = floor(reviews)
@@ -303,14 +317,14 @@ def set_num_reviews(df):
 def set_num_conversations(df):
     for asin in range(df.shape[0]):
         sales = num_sales[asin]
-        conversations = sales*random()/2
+        conversations = ceil(sales*random()/2)
         conversations = ceil(conversations)
         num_conversations[asin] = conversations
 
 def set_num_sellers(df):
     for asin in range(df.shape[0]):
         sales = num_sales[asin]
-        sellers = sales*uniform(0,0.05)
+        sellers = randint(1,4)
         sellers = max(ceil(sellers),1)
         num_sellers[asin] = sellers
 

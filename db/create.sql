@@ -77,7 +77,14 @@ CREATE TABLE productRating (
 	PRIMARY KEY(user_id, pid)
     );
 
-
+CREATE TABLE sellerRating (
+	user_id INT NOT NULL REFERENCES Users(id),
+	seller_id INT NOT NULL REFERENCES Users(id),
+	starsOutOfFive INT NOT NULL,
+	ratingContent varchar(5000),
+	submissionDate timestamp without time zone NOT NULL DEFAULT (current_timestamp AT TIME ZONE 'UTC'),
+	PRIMARY KEY(user_id, seller_id)
+    );
 
 -- triggers
 create or replace function update_product_stock()
@@ -112,6 +119,7 @@ after insert or delete or update on Inventory
 for each row execute procedure update_product_lowest_price();
 
 
+
 create or replace function update_product_average_rating()
 returns trigger as $$
 begin
@@ -136,3 +144,4 @@ $$ language plpgsql;
 create trigger update_product_num_ratings
 after insert or delete or update on productRating
 for each row execute procedure update_product_num_ratings();
+

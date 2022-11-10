@@ -10,7 +10,7 @@ bp = Blueprint('productRatings', __name__)
 def get_five_feedbacks():
     user_id = request.form['user_id']
     get_all_purchases = ProductRating.get_by_user_id(user_id)
-    return render_template('get_five_feedbacks.html',
+    return render_template('HW4/get_five_feedbacks.html',
                             user_id=user_id, 
                             get_all_purchases = get_all_purchases)
 
@@ -20,3 +20,5 @@ def get_five_feedbacks():
 def productRating(pid):
     productRating = productRating.get_by_pid(0)
     return render_template('product.html', productRating=productRating)
+
+

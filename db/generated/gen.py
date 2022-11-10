@@ -103,6 +103,11 @@ def get_historys():
     purchases_df.to_csv("Purchases.csv", sep="^", line_terminator="\n",header=False, index=False)
     orders_df.to_csv("OrderHistory.csv", sep="^", line_terminator="\n",header=False, index=False)
 
+def get_carts():
+    carts_df = pd.read_csv('/home/vcm/mini-amazon/db/generated/data_faker/ai_generated/sale_data.csv', sep = '^')
+    carts_df.to_csv("OrderHistory.csv", sep="^", line_terminator="\n",header=False, index=False)
+
+
 get_users()
 get_categories()
 get_products()

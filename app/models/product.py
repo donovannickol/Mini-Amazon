@@ -76,7 +76,7 @@ OFFSET {(page - 1) * limit}
         rows = app.db.execute(f'''
 SELECT COUNT(*)
 FROM Products
-WHERE {category_select}  AND (name LIKE :search_term OR description LIKE :search_term)
+WHERE {category_select} AND (LOWER(name) LIKE LOWER(:search_term) OR LOWER(description) LIKE LOWER(:search_term))
 ''',
                               search_term='%' + search_term + '%')
         return rows[0][0]
@@ -91,3 +91,72 @@ FROM Products
 '''
         )
         return ["All"] + [row[0] for row in rows]
+
+    # TODO: update this method to require the user to be logged in and collect th id of the user so that the price and stock are added to inventory
+    @staticmethod
+    def add_product(uid, name, description, img_url, category, price, stock):
+        try:
+            # insert the product into the database and return the new id
+            rows = app.db.execute('''
+INSERT INTO Products (name, description, img_url, category)
+VALUES (:name, :description, :img_url, :category)
+RETURNING id
+''',
+                                    name=name,
+                                    description=description,
+                                    img_url=img_url,
+                                    category=category,
+                                    price=price,
+                                    stock=stock)
+            # update Inventory as well
+            app.db.execute('''
+INSERT INTO Inventory (uid, pid, price, count)
+VALUES (:uid, :pid, :price, :stock)
+''',
+                            uid=uid,
+                            pid=rows[0][0],
+                            price=price,
+                            stock=stock)
+            return rows[0][0]
+        except Exception as e:
+            print(str(e))
+
+    @staticmethod
+    def update_product(uid, id, name, description, img_url, category, price, stock):
+        try:
+            rows = app.db.execute('''
+UPDATE Products
+SET name = :name, description = :description, img_url = :img_url, category = :category
+WHERE id = :id
+''',
+                                  id=id,
+                                  name=name,
+                                  description=description,
+                                  img_url=img_url,
+                                  category=category)
+
+            # update Inventory as well
+            app.db.execute('''
+UPDATE Inventory
+SET price = :price, count = :stock
+WHERE uid = :uid AND pid = :pid
+''',
+                            uid=uid,
+                            pid=id,
+                            price=price,
+                            stock=stock)
+            return rows
+        except Exception as e:
+            print(str(e))
+
+    @staticmethod
+    def delete_product(id):
+        try:
+            rows = app.db.execute('''
+DELETE FROM Products
+WHERE id = :id
+''',
+                                  id=id)
+            return rows[0][0]
+        except Exception as e:
+            print(str(e))
