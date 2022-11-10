@@ -40,4 +40,12 @@ def add_to_cart():
         session.pop('_flashes', None)
         flash('Already in cart')
         return redirect(url_for('products.product', id=pid))
+
+@bp.route('/delete_from_cart/', methods=['GET','POST'])
+def delete_from_cart():
+    uid = current_user.id
+    pid = request.args.get("pid")
+    sid = request.args.get("sid")
+    Cart.delete_from_cart(uid, pid, sid)
+    return redirect(url_for('cart.user_cart'))
     
