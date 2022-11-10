@@ -7,9 +7,9 @@ CREATE TABLE Users (
     password VARCHAR(255) NOT NULL,
     firstname VARCHAR(255) NOT NULL,
     lastname VARCHAR(255) NOT NULL,
-    user_address VARCHAR(255) NOT NULL,
-    user_city VARCHAR(255) NOT NULL,
-    user_state VARCHAR(255) NOT NULL,
+    address VARCHAR(255) NOT NULL,
+    city VARCHAR(255) NOT NULL,
+    state VARCHAR(255) NOT NULL,
     balance DECIMAL(12, 2) NOT NULL
 );
 

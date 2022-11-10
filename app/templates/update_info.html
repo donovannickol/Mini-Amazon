@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>Update Information</h1>
+
+<upFirstName action="" method="post">
+    {{ upFirstName.hidden_tag() }}
+    <p>
+        {{ upFirstName.firstname.label }} {{"(Current First Name: " + firstname + ")"}}<br />
+        {{ upFirstName.firstname(size=32) }}<br />
+        {% for error in upFirstName.firstname.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+    </p>
+    <p>{{ upFirstName.submit() }}</p>
+</upFirstName>
+<upLastName action="" method="post">
+    {{ upLastName.hidden_tag() }}
+    <p>
+        {{ upLastName.lastname.label }} {{"(Current Last Name: " + lastname + ")"}}<br />
+        {{ upLastName.lastname(size=32) }}<br />
+        {% for error in upLastName.lastname.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+    </p>
+    <p>{{ upLastName.submit() }}</p>
+</upLastName>
+<upEmail action="" method="post">
+    {{ upEmail.hidden_tag() }}
+    <p>
+        {{ upEmail.email.label }} {{"(Current Email: " + email + ")"}}<br />
+        {{ upEmail.email(size=64) }}<br />
+        {% for error in upEmail.email.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+    </p>
+    <p>{{ upEmail.submit() }}</p>
+</upEmail>
+<upAddress action="" method="post">
+    {{ upAddress.hidden_tag() }}
+    <p>
+        {{ upAddress.address.label }} {{"(Current Address: " + address + ")"}}<br />
+        {{ upAddress.address(size=64) }}<br />
+        {% for error in upAddress.address.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+    </p>
+    <p>{{ upAddress.submit() }}</p>
+</upAddress>
+<upCity action="" method="post">
+    {{ upCity.hidden_tag() }}
+    <p>
+        {{ upCity.city.label }} {{"(Current City: " + city + ")"}}<br />
+        {{ upCity.city(size=64) }}<br />
+        {% for error in upCity.city.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+    </p>
+    <p>{{ upCity.submit() }}</p>
+</upCity>
+<upState action="" method="post">
+    {{ upState.hidden_tag() }}
+    <p>
+        {{ upState.state.label }} {{"(Current State: " + state + ")"}}<br />
+        {{ upState.state(size=64) }}<br />
+        {% for error in upState.state.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+    </p>
+    <p>{{ upState.submit() }}</p>
+</upState>
+<upPassword action="" method="post">
+    {{ upPassword.hidden_tag() }}
+    <p>
+        {{ upPassword.password.label }}<br />
+        {{ upPassword.password(size=32) }}<br />
+        {% for error in upPassword.password.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+    </p>
+    <p>
+        {{ upPassword.password2.label }}<br />
+        {{ upPassword.password2(size=32) }}<br />
+        {% for error in upPassword.password2.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+    </p>
+    <p>{{ upPassword.submit() }}</p>
+</upPassword>
+
+{% endblock %}

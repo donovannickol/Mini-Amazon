@@ -38,35 +38,86 @@ def login():
         return redirect(next_page)
     return render_template('login.html', title='Sign In', form=form)
 
-@bp.route('/all_purchases/', methods = ['POST'])
+@bp.route('/all_purchases/', methods = ['GET','POST'])
 def get_all_purchases():
-    uid = request.form['uid']
-    get_all_purchases = Purchase.get_all_by_uid(uid)
+    uid = current_user.id
+    get_all_purchases = Purchase.get_all_by_uid(uid - 50)
+    firstname = current_user.firstname
     return render_template('get_all_purchases.html',
-                            get_all_purchases = get_all_purchases)
+                            get_all_purchases = get_all_purchases, 
+                            firstname = firstname)
 
 
 class RegistrationForm(FlaskForm):
     firstname = StringField('First Name', validators=[DataRequired()])
     lastname = StringField('Last Name', validators=[DataRequired()])
     email = StringField('Email', validators=[DataRequired(), Email()])
+    address = StringField('Address', validators=[DataRequired()])
+    city = StringField('City', validators=[DataRequired()])
+    state = StringField('State', validators=[DataRequired()])
     password = PasswordField('Password', validators=[DataRequired()])
     password2 = PasswordField(
         'Repeat Password', validators=[DataRequired(),
                                        EqualTo('password')])
     submit = SubmitField('Register')
 
+class UpdateFirstName(FlaskForm):
+    firstname = StringField('First Name', validators=[DataRequired()])
+    submit = SubmitField('Update First Name')
+class UpdateLastName(FlaskForm):
+    lastname = StringField('Last Name', validators=[DataRequired()])
+    submit = SubmitField('Update Last Name')
+class UpdateEmail(FlaskForm):
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    submit = SubmitField('Update Email')
+
     def validate_email(self, email):
         if User.email_exists(email.data):
             raise ValidationError('Already a user with this email.')
+
+class UpdateAddress(FlaskForm):
+    address = StringField('Address', validators=[DataRequired()])
+    submit = SubmitField('Update Address')
+class UpdateCity(FlaskForm):
+    city = StringField('City', validators=[DataRequired()])
+    submit = SubmitField('Update City')
+class UpdateState(FlaskForm):
+    state = StringField('State', validators=[DataRequired()])
+    submit = SubmitField('Update State')
+class UpdatePassword(FlaskForm):
+    password = PasswordField('Password', validators=[DataRequired()])
+    password2 = PasswordField(
+        'Repeat Password', validators=[DataRequired(),
+                                       EqualTo('password')])
+    submit = SubmitField('Update Password')
 
 @bp.route('/account', methods = ['GET','POST'])
 def publicView():
     id_number = current_user.id
     name = f'{current_user.firstname} {current_user.lastname}'
     email = current_user.email
-    return render_template('user_public_view.html', id = id_number, name = name, email = email)
+    location = current_user.city + ", " + current_user.state
+    balance = "$" + str(current_user.balance)
+    return render_template('user_public_view.html', 
+    id = id_number, name = name, email = email, location = location, balance = balance)
 
+@bp.route('/update_info', methods = ['GET', 'POST'])
+def update_info():
+    return render_template('update_info.html',
+    upFirstName = UpdateFirstName(),
+    upLastName = UpdateLastName(),
+    upEmail = UpdateEmail(),
+    upAddress = UpdateAddress(),
+    upCity = UpdateCity(),
+    upState = UpdateState(),
+    upPassword = UpdatePassword(),
+    firstname = current_user.firstname, 
+    lastname = current_user.lastname,
+    email = current_user.email,
+    address = current_user.address,
+    city = current_user.city,
+    state = current_user.state, old_user = current_user,
+    id = current_user.id)
 
 @bp.route('/register', methods=['GET', 'POST'])
 def register():
@@ -77,7 +128,10 @@ def register():
         if User.register(form.email.data,
                          form.password.data,
                          form.firstname.data,
-                         form.lastname.data):
+                         form.lastname.data,
+                         form.address.data,
+                         form.city.data,
+                         form.state.data):
             flash('Congratulations, you are now a registered user!')
             return redirect(url_for('users.login'))
     return render_template('register.html', title='Register', form=form)
