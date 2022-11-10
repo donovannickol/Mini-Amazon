@@ -61,35 +61,17 @@ class RegistrationForm(FlaskForm):
                                        EqualTo('password')])
     submit = SubmitField('Register')
 
-class UpdateFirstName(FlaskForm):
+class UpdateForm(FlaskForm):
     firstname = StringField('First Name', validators=[DataRequired()])
-    submit = SubmitField('Update First Name')
-class UpdateLastName(FlaskForm):
     lastname = StringField('Last Name', validators=[DataRequired()])
-    submit = SubmitField('Update Last Name')
-class UpdateEmail(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email()])
-    submit = SubmitField('Update Email')
-
-    def validate_email(self, email):
-        if User.email_exists(email.data):
-            raise ValidationError('Already a user with this email.')
-
-class UpdateAddress(FlaskForm):
     address = StringField('Address', validators=[DataRequired()])
-    submit = SubmitField('Update Address')
-class UpdateCity(FlaskForm):
     city = StringField('City', validators=[DataRequired()])
-    submit = SubmitField('Update City')
-class UpdateState(FlaskForm):
     state = StringField('State', validators=[DataRequired()])
-    submit = SubmitField('Update State')
-class UpdatePassword(FlaskForm):
     password = PasswordField('Password', validators=[DataRequired()])
     password2 = PasswordField(
-        'Repeat Password', validators=[DataRequired(),
-                                       EqualTo('password')])
-    submit = SubmitField('Update Password')
+        'Repeat Password', validators=[DataRequired(), EqualTo('password')])
+    submit = SubmitField('Update User')
 
 @bp.route('/account', methods = ['GET','POST'])
 def publicView():
@@ -103,21 +85,25 @@ def publicView():
 
 @bp.route('/update_info', methods = ['GET', 'POST'])
 def update_info():
+    form = UpdateForm()
+    if form.validate_on_submit():
+        if User.update_user(form.firstname.data,
+                            form.lastname.data,
+                            form.email.data,
+                            form.address.data,
+                            form.city.data,
+                            form.state.data,
+                            form.password.data,
+                            current_user.id):
+          return redirect(url_for('users.publicView'))
+    form.firstname.data = current_user.firstname
+    form.lastname.data = current_user.lastname
+    form.email.data = current_user.email
+    form.address.data = current_user.address
+    form.city.data = current_user.city
+    form.state.data = current_user.state
     return render_template('update_info.html',
-    upFirstName = UpdateFirstName(),
-    upLastName = UpdateLastName(),
-    upEmail = UpdateEmail(),
-    upAddress = UpdateAddress(),
-    upCity = UpdateCity(),
-    upState = UpdateState(),
-    upPassword = UpdatePassword(),
-    firstname = current_user.firstname, 
-    lastname = current_user.lastname,
-    email = current_user.email,
-    address = current_user.address,
-    city = current_user.city,
-    state = current_user.state, old_user = current_user,
-    id = current_user.id)
+    old_user = current_user, form = form)
 
 @bp.route('/register', methods=['GET', 'POST'])
 def register():
