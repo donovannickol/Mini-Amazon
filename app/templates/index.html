@@ -62,8 +62,8 @@
     <div class="card m-4 col-md-2 p-0" style="width:300px">
       <img class="card-img-top" src="{{product.img_url}}" alt="Card image" style="width:100%">
       <div class="card-body">
-        <h4 class="card-title">{{product.name}}</h4>
-        <p class="card-text">Price: {{"$" + (product.price | string) if (product.price == product.price) else 'Unavailable'}}<a href="{{ url_for('index.index', category=product.category, search_term=search_term, sort_by=sort_by) }}"><span class="badge rounded-pill bg-info text-light mx-4">{{product.category}}</span></a></p>
+        <h4 class="card-title">{{product.name[:30]}}</h4>
+        <p class="card-text">Price: {{"$" + (product.price | string) if (product.price == product.price) else 'Unavailable'}}<a href="{{ url_for('index.index', category=product.category, search_term=search_term, sort_by=sort_by) }}"><span class="badge rounded-pill bg-info text-light mx-4">{{product.category[:24]}}</span></a></p>
         <!-- link to individual product page -->
         <a href="{{ url_for('products.product', id=product.id) }}" class="btn btn-primary stretched-link">View</a>
         <!-- display out of stock message if stock is 0 -->
