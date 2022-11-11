@@ -13,3 +13,4 @@ Donovan's updates: Created add to cart button on product page, created cart page
 Joshua's weekly update: Created wireframe for feedback, view of product reviews, view of seller reviews, view of reviews by user, and messaging. Added code for creating sample product and seller feedback, as well as messaging.
 Akash's updates: Created home page with all products (sorting, searching, filtering, pagination), individual product pages, form to add/edit products, and added triggers to db.
 Mazen's Weekly Update: added a seller inventory page and created a realistic database for products, sales, reviews, etc.
+Jamael's update: Created public view page for account as well as button to access account, added buttons to that page for user to access their purchase history and update information/balance. Also added address, city, and state fields for registration window. 
