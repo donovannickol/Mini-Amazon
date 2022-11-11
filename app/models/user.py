@@ -61,6 +61,19 @@ WHERE email = :email
             return rows
         except Exception as e:
            print(str(e))
+
+    @staticmethod
+    def update_balance(balance, withdraw, add, id):
+        try:
+            rows = app.db.execute("""
+            UPDATE Users
+            SET balance = (:balance + :add - :withdraw)
+            WHERE id = :id
+            """, balance = balance, add = add, 
+                 withdraw = withdraw, id = id)
+            return rows
+        except Exception as e:
+            print(str(e))
     
     @staticmethod
     def register(email, password, firstname, lastname, address, city, state):
