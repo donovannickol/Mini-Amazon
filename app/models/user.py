@@ -63,7 +63,7 @@ WHERE email = :email
            print(str(e))
     
     @staticmethod
-    def register(email, password, firstname, lastname):
+    def register(email, password, firstname, lastname, address, city, state):
         try:
             #TODO: update this and corresponding form to include user's address (@Jamael)
             rows = app.db.execute("""
