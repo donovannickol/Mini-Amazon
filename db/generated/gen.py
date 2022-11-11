@@ -21,7 +21,7 @@ def isolate_category(long_category):
     if type(long_category) != float:
          return long_category.split(" in ")[-1].split("\n")[0] 
     else:
-        return "None"
+        return "Miscellaneous"
 
 def get_users():
     users_df = pd.read_csv("/home/vcm/mini-amazon/db/generated/data_faker/ai_generated/user_data.csv", sep="^")
@@ -45,7 +45,7 @@ def get_categories():
     categories_df.reset_index(inplace=True, drop=True)
     if('Unnamed: 0' in categories_df.columns.values):
         categories_df = categories_df.drop(columns=['Unnamed: 0'])
-    categories_df.loc[len(categories_df.index)] = 'None'
+    categories_df.loc[len(categories_df.index)] = 'Miscellaneous'
     categories_df.to_csv("Categories.csv", line_terminator = "\n", sep="^",header=False)
 
 def get_products():
