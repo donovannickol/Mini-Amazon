@@ -43,6 +43,26 @@ WHERE email = :email
         return len(rows) > 0
 
     @staticmethod
+    def update_user(firstname, lastname, email, address, city, state, password, id):
+        try:
+            rows = app.db.execute("""
+            UPDATE Users
+            SET firstname = :firstname,
+                lastname = :lastname,
+                email = :email,
+                address = :address,
+                city = :city,
+                state = :state,
+                password = :password
+            WHERE id = :id
+            """, firstname = firstname, lastname = lastname,
+                email = email, address = address,
+                city = city, state = state, password = password, id = id)
+            return rows
+        except Exception as e:
+           print(str(e))
+    
+    @staticmethod
     def register(email, password, firstname, lastname):
         try:
             #TODO: update this and corresponding form to include user's address (@Jamael)
