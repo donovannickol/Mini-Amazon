@@ -24,14 +24,14 @@ def isolate_category(long_category):
         return "None"
 
 def get_users():
-    users_df = pd.read_csv("/home/vcm/mini-amazon/db/generated/data_faker/ai_generated/users.csv", sep="^")
+    users_df = pd.read_csv("/home/vcm/mini-amazon/db/generated/data_faker/ai_generated/user_data.csv", sep="^")
     relevant_columns = ["id","email","password","firstname","lastname","user_address","user_city","user_state","balance"]
     users_df = users_df[relevant_columns].drop_duplicates()
     users_df = users_df.drop_duplicates(subset="email")
     users_df = users_df.drop_duplicates(subset="id")
     if('Unnamed: 0' in users_df.columns.values):
         users_df = users_df.drop(columns=['Unnamed: 0'])
-    users_df.to_csv("Users.csv", sep="^", quoting=1, quotechar='"', line_terminator="\n",header=False, index=False)
+    users_df.to_csv("Users.csv", index=False, sep="^", quoting=1, quotechar='"', line_terminator="\n",header=False)
 
 def get_categories():
     categories_df = pd.read_csv("/home/vcm/mini-amazon/db/generated/data_faker/ai_generated/products.csv", sep="^")
