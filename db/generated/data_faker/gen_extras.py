@@ -55,11 +55,11 @@ def gen_data():
     products_df = pd.read_csv("ai_generated/products.csv", sep=csv_delimiter)
 
     global num_df_rows 
-    num_df_rows = products_df.shape[0]
-    # num_df_rows = 10
+    # num_df_rows = products_df.shape[0]
+    num_df_rows = 1000
 
     global num_users
-    num_users = 10000
+    num_users = 5000
 
     print("Users...")
     users_df = gen_users()
@@ -191,21 +191,21 @@ def gen_conversations(df, sellers_df):
             if seller_id != user_id:
                 prompt = "Write a message from a buyer to a seller about \'" + title + "\'"
                 message = "placeholder"
-                message = openai.Completion.create(
-                    model=model,
-                    prompt=prompt,
-                    max_tokens=max_tokens,
-                    temperature=temp
-                )
+                # message = openai.Completion.create(
+                #     model=model,
+                #     prompt=prompt,
+                #     max_tokens=max_tokens,
+                #     temperature=temp
+                # )
                 conversations_df.loc[len(conversations_df.index)] = [seller_id, product_id, seller_id, user_id, message]
                 prompt = "Write a message from a seller to a buyer about \'" + title + "\'"
                 message = "placeholder"
-                message = openai.Completion.create(
-                    model=model,
-                    prompt=prompt,
-                    max_tokens=max_tokens,
-                    temperature=temp
-                )
+                # message = openai.Completion.create(
+                #     model=model,
+                #     prompt=prompt,
+                #     max_tokens=max_tokens,
+                #     temperature=temp
+                # )
                 conversations_df.loc[len(conversations_df.index)] = [seller_id, product_id, user_id, seller_id, message]
 
     return conversations_df
@@ -272,7 +272,7 @@ def gen_reviews(sellers_df, sales_df, df):
 
     for i in range(0,sellers_df.shape[0]):
 
-        asin = sellers_df.at[i, 'seller_product_id']
+        asin = int(sellers_df.at[i, 'seller_product_id'])
         title = df.at[asin,"Title"]
         reviews = num_reviews[asin]
         prod_id = sellers_df.at[i, 'seller_product_id']
@@ -287,16 +287,14 @@ def gen_reviews(sellers_df, sales_df, df):
         for j in range(len(buyers)):
             buyer_id = buyers[j]
             rating = randint(1,5)
-            if rating == 5:
-                print(rating)
             prompt = "Write a " + rating_map[rating] + " review about \'" + title + "\'"
             review = "placeholder"
-            review= openai.Completion.create(
-                model=model,
-                prompt=prompt,
-                max_tokens=max_tokens,
-                temperature=temp
-            )
+            # review= openai.Completion.create(
+            #     model=model,
+            #     prompt=prompt,
+            #     max_tokens=max_tokens,
+            #     temperature=temp
+            # )
             reviews_df.loc[len(reviews_df.index)] = [buyer_id, prod_id, rating, review, fake.date()] 
     
     return reviews_df
