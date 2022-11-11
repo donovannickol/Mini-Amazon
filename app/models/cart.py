@@ -43,3 +43,13 @@ VALUES (:uid, :pid, :sid, :quantity, :price)
         AND pid = :pid
         AND sellerid = :sid
         ''', uid=uid, pid=pid, sid=sid)
+
+    @staticmethod
+    def change_quantity(uid, pid, sid, quantity):
+        app.db.execute('''
+        UPDATE Cart
+        SET quantity = :quantity
+        WHERE uid = :uid
+        AND pid = :pid
+        AND sellerid = :sid
+        ''', uid=uid, pid=pid, sid=sid, quantity=quantity)

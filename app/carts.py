@@ -22,9 +22,12 @@ def user_cart():
 def user_cart():
     uid = current_user.id
     user_cart = Cart.get_by_uid(uid)
+    # total_price = Cart.get_total_price(uid)
+    total_price = sum([(item.price * item.quantity) for item in user_cart])
     return render_template('user_cart.html',
                            uid = uid,
-                           user_cart = user_cart)
+                           user_cart = user_cart,
+                           total_price = total_price)
 
 @bp.route('/add_to_cart/', methods=['GET','POST'])
 def add_to_cart():
@@ -47,5 +50,14 @@ def delete_from_cart():
     pid = request.args.get("pid")
     sid = request.args.get("sid")
     Cart.delete_from_cart(uid, pid, sid)
+    return redirect(url_for('cart.user_cart'))
+
+@bp.route('/change_quantity/', methods=['GET','POST'])
+def change_quantity():
+    uid = current_user.id
+    pid = request.args.get('pid')
+    sid = request.args.get('sid')
+    quantity = request.form['quantity']
+    Cart.change_quantity(uid, pid, sid, quantity)
     return redirect(url_for('cart.user_cart'))
     
