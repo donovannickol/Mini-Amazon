@@ -170,6 +170,7 @@ def gen_users():
     users_df = users_df.drop_duplicates(subset=['user_id'])
     users_df = users_df.drop_duplicates(subset=['user_email'])
     users_df.reset_index(inplace=True, drop=True)
+    users_df['user_id'] = users_df.index
     num_users = users_df.shape[0]
     return users_df
 
@@ -219,10 +220,10 @@ def gen_sellers(df, users):
         curr_num_sellers = num_sellers[asin]
         sellers = sample(users, curr_num_sellers)
         orig_price = df.at[i,'Price']
-        price = float(get_price(orig_price))
         valid_sellers[i] = sellers
-        quantity = randint(1,10000)
         for j in range(len(sellers)):
+            price = float(get_price(orig_price))
+            quantity = randint(1,10000)
             price_by_id_tuple[(sellers[j], i)] = price
             sellers_df.loc[len(sellers_df.index)] = [sellers[j], i, quantity, price] 
     return sellers_df
