@@ -14,13 +14,14 @@ class Cart:
     @staticmethod
     def get_by_uid(uid):
         rows = app.db.execute('''
-SELECT uid, pid, sellerid, quantity, price
-FROM Cart
+SELECT Products.name, Products.img_url, Cart.quantity, Cart.price, pid, sellerid
+FROM Cart, Products
 WHERE uid = :uid
+AND Cart.pid = Products.id
 ''',
                               uid=uid)
                         
-        return [Cart(*row) for row in rows]
+        return [row for row in rows]
 
     @staticmethod
     def add_to_cart(uid, pid, sid, quantity, price):
@@ -33,3 +34,22 @@ VALUES (:uid, :pid, :sid, :quantity, :price)
                        sid=sid,
                        quantity=quantity,
                        price=price)
+    
+    @staticmethod
+    def delete_from_cart(uid, pid, sid):
+        app.db.execute('''
+        DELETE FROM Cart
+        WHERE uid = :uid
+        AND pid = :pid
+        AND sellerid = :sid
+        ''', uid=uid, pid=pid, sid=sid)
+
+    @staticmethod
+    def change_quantity(uid, pid, sid, quantity):
+        app.db.execute('''
+        UPDATE Cart
+        SET quantity = :quantity
+        WHERE uid = :uid
+        AND pid = :pid
+        AND sellerid = :sid
+        ''', uid=uid, pid=pid, sid=sid, quantity=quantity)
