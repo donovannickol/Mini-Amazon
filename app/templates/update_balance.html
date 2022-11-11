@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1> Update Balance: ${{ balance }} </h1>
+
+<update action="" method="post">
+    {{ update.hidden_tag() }}
+    <p>
+        {{ update.withdraw.label }} <br />
+        {{ update.withdraw(size = 32) }}<br />
+        {% for error in update.withdraw.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+    </p>
+    <p>
+        {{ update.top.label }} <br />
+        {{ update.top(size = 32) }}<br />
+        {% for error in update.top.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+    </p>
+    <p>{{ update.submit() }}</p>
+</update>
+
+{% endblock %}
