@@ -55,6 +55,7 @@
 </div>
 
 <!-- Content cards -->
+<div class="my-2" style="overflow-y: scroll; max-height: 80vh; overflow-x: hidden;">
 {% for product_row in avail_products | batch(4, '&nbsp;') %}
 <div class="row justify-content-center">
     {% for product in product_row %}
@@ -101,6 +102,7 @@
     {% endfor %}
 </div>
 {% endfor %}
+</div>
 
 <nav class="offset-md-8" aria-label="Page navigation example">
   <ul class="pagination">
