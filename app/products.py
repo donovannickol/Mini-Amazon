@@ -16,7 +16,7 @@ PRODUCTS_PER_PAGE = 8
 @bp.route('/product/<int:id>')
 def product(id):
     product = Product.get(id)
-    sellers = Inventory.get_by_pid(id)
+    sellers = Inventory.get_by_pid_inc_name(id)
     return render_template('product.html', product=product, sellers=sellers)
 
 # route to handle product search

@@ -2,8 +2,7 @@ Team members: Akash Mullick, Mazen Selim, Jamael Smith, Donovan Nickol, Joshua K
 Project option: Standard project
 Team name: Rainforest
 Gitlab repository: https://gitlab.oit.duke.edu/cs-316-team-rainforest/mini-amazon
-
-The code for creating and populating a sample database is in the create_ms2.sql and load_ms2.sql files.
+Demo video: http://youtu.be/stfeceOZUkk
 
 All the code for generating and populating code can be found within db/generated. This is done in several steps. The first layer 
 data_cleaner which interacts with data scraped from amazon and reformats it in a meaningful way. Then, there are gen_extras and gen_decsriptions
