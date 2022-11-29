@@ -2,38 +2,137 @@
 
 {% block content %}
 
-{% block scripts %}
-  <script>
-    $(document).ready(function () {
-      $('#inventory').DataTable({
-        "order": [[ 3, "desc" ]]
-      });
-    });
-  </script>
+
+{% block styles %}
+<style>
+  @media (min-width: 1025px) {
+    .h-custom {
+      height: 100vh !important;
+    }
+  }
+
+  .card-registration .select-input.form-control[readonly]:not([disabled]) {
+    font-size: 1rem;
+    line-height: 2.15;
+    padding-left: .75em;
+    padding-right: .75em;
+  }
+
+  .card-registration .select-arrow {
+    top: 13px;
+  }
+
+  .bg-grey {
+    background-color: #eae8e8;
+  }
+
+  @media (min-width: 992px) {
+    .card-registration-2 .bg-grey {
+      border-top-right-radius: 16px;
+      border-bottom-right-radius: 16px;
+    }
+  }
+
+  @media (max-width: 991px) {
+    .card-registration-2 .bg-grey {
+      border-bottom-left-radius: 16px;
+      border-bottom-right-radius: 16px;
+    }
+  }
+
+  section {
+    color: black;
+  }
+</style>
 {% endblock %}
 
-<br><br>
+<section class="h-100 h-custom" style="background-color: white;">
+  <div class="container py-5 h-100">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col-12">
+        <div class="card card-registration card-registration-2" style="border-radius: 15px;">
+          <div class="card-body p-0">
+            <div class="row g-0">
+              <div class="col-lg-8">
+                <div class="p-5">
+                  <div class="d-flex justify-content-between align-items-center mb-5">
+                    <h1 class="fw-bold mb-0 text-black">Shopping Cart</h1>
+                    <h6 class="mb-0 text-muted">{{user_cart | length}} items</h6>
+                  </div>
+                  <hr class="my-4">
 
-<h2>{{ (user_cart | length) }} item(s) in user with ID {{uid}}'s cart:</h2>
-<table id="cart" class='table table-hover table-bordered'>
-  <thead class="thead-dark">
-    <tr>
-      <th scope="col">Product ID</th>
-      <th scope="col">Seller ID</th>
-      <th scope="col">Quantity</th>
-      <th scope="col">Price</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for product in user_cart %}
-      <tr>
-        <td scope="row"><a href="{{ url_for('products.product', id=product.pid) }}">{{product.pid}}</a></td>
-        <td>{{product.sid}}</td>
-        <td>{{product.quantity}}</td>
-        <td>{{product.price}}</td>
-      </tr>
-    {% endfor %}
-  </tbody>
-</table>
+                  {% for product in user_cart %}
+                  <div class="row mb-4 d-flex justify-content-between align-items-center">
+                    <div class="col-md-2 col-lg-2 col-xl-2">
+                      <img src="{{product.img_url}}" class="img-fluid rounded-3" alt="...">
+                    </div>
+                    <div class="col-md-3 col-lg-3 col-xl-3">
+                      <h6 class="text-black mb-0">{{product.name}}</h6>
+                    </div>
+                    <div class="col-md-3 col-lg-3 col-xl-2 d-flex">
 
+                      <form action="{{ url_for('cart.change_quantity', pid=product.pid, sid=product.sellerid) }}"
+                        method="POST">
+                        <input id="form1" min="1" name="quantity" value="{{product.quantity}}" type="number"
+                          class="form-control form-control-sm" />
+                      </form>
+                    </div>
+                    <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
+                      <h6 class="mb-0">${{product.price}}</h6>
+                    </div>
+                    <div class="col-md-1 col-lg-1 col-xl-1 text-end">
+                      <form action="{{ url_for('cart.delete_from_cart', pid=product.pid, sid=product.sellerid) }}"
+                        method="POST">
+                        <button><i class="bi bi-trash"></i></button>
+                      </form>
+                    </div>
+                  </div>
+                  <hr class="my-4">
+                  {% endfor %}
+
+                  <div class="pt-5">
+                    <h6 class="mb-0"><a href="#" onclick="history.back()" class="text-body"><i class="bi bi-arrow-left me-2"></i>Back
+                        to shop</a></h6>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-4 bg-grey">
+                <div class="p-5">
+                  <h3 class="fw-bold mb-5 mt-2 pt-1">Summary</h3>
+                  <hr class="my-4">
+
+                  <div class="d-flex justify-content-between mb-4">
+                  </div>
+
+
+                  <h5 class="text-uppercase mb-3">Provide code</h5>
+
+                  <div class="mb-5">
+                    <div class="form-outline">
+                      <input type="text" id="form3Examplea2" class="form-control form-control-lg" placeholder="Enter your code" />
+                      <label class="form-label" for="form3Examplea2"></label>
+                    </div>
+                  </div>
+
+                  <hr class="my-4">
+
+                  <div class="d-flex justify-content-between mb-5">
+                    <h5 class="text-uppercase">Total price</h5>
+
+
+                    <h5>$ {{total_price}}</h5>
+                  </div>
+
+                  <button type="button" class="btn btn-dark btn-block btn-lg" data-mdb-ripple-color="dark">Submit
+                    Order</button>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 {% endblock %}

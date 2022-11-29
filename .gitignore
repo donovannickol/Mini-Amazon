@@ -4,6 +4,7 @@ env/
 venv/
 migrations/
 gunicorn.conf.py
+datagenconfig.py
 
 # Compiled source #
 ###################

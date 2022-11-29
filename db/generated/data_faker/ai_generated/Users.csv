@@ -1,0 +1,101 @@
+^user_id^user_email^user_password^user_firstname^user_lastname^user_address^user_city^user_state^user_balance
+0^0^amanda27@hotmail.com^pbkdf2:sha256:50000$NeTOoJDZ$ff0367ade9cdfc80c9ac9bd940025c165e9a3052ff1a0bef4175d3566253f5f4^Anthony^Smith^"802 Anderson Common Suite 986
+South Stevenstad, CO 55348"^26.0395935^-7.262459^483.77
+1^1^bergerdavid@hotmail.com^pbkdf2:sha256:50000$cYTZb1ze$6df8e14cd13b048a347adbf2659b0f9b8bd10e72a09749d08f115c33e73af37b^Joanna^Bates^"5768 Pamela Isle Apt. 750
+Clarkchester, NC 73349"^83.150670^164.112773^11.45
+2^2^paynelaura@hotmail.com^pbkdf2:sha256:50000$kVUSMYD5$6a9ce38e497ed0e2d2d34eaa65110fe5cdf3b1be4b4defa39e1956c8d9a95480^Christopher^Bentley^"773 Aaron Center Suite 325
+North Chelseamouth, NE 02338"^-49.7132245^22.765053^192.93
+3^3^patelcharles@gmail.com^pbkdf2:sha256:50000$motktOzB$e75743f37fc79311b3620251073412209dc4ab322760e41f3c23fd72c6ca34e5^Travis^Shannon^"753 Johnson Isle
+New Nicole, MI 57991"^-87.729779^145.307926^449.48
+4^4^hortonholly@yahoo.com^pbkdf2:sha256:50000$EbNTZVUo$0980974e850d16afd93fe51e8bf681540166f60a922c46e66ecc94987e5dedb2^Jordan^Hernandez^"66575 John Bridge
+Lake Natalie, KS 64022"^31.180304^5.650857^193.65
+5^5^ericksonronnie@yahoo.com^pbkdf2:sha256:50000$sii34vNa$8fa07bc422a6191ea4f43ebdea3f2269b79fd7098abb64317b6afcc9621631be^Patricia^Price^"04206 Rebecca Grove
+East Cindy, GA 04485"^86.533246^-50.605626^233.45
+6^6^susanlee@yahoo.com^pbkdf2:sha256:50000$G8FuWDas$27970db2f1d8ce538992efd1ca3a06c6a39ed8bb80781b4461f36a2b5bcb5b6f^Jimmy^Hunt^"967 Amber Wall
+West Dylan, VA 26108"^13.3835115^-122.978496^356.16
+7^7^aprilthompson@gmail.com^pbkdf2:sha256:50000$4MBaGZmb$f53d351e5e91b4148c288aac72df1b1916d356047e3b1f0072a2f382158ae897^Mark^Johnson^"7068 Megan Ways
+Boylemouth, OK 28681"^13.1487835^-111.114652^101.77
+8^8^htorres@yahoo.com^pbkdf2:sha256:50000$KZawYU5K$f7ee13408cca921eab3b67d155a4878663ee018630735bde613d7d410b6c0b90^Tammy^Allen^"Unit 6620 Box 3238
+DPO AP 31905"^-67.417906^137.807790^499.95
+9^9^creid@hotmail.com^pbkdf2:sha256:50000$1WsBnd1r$3e42e07baf44d2c6996666c2dcd39301e9c0e5384bb38c5b5235af886ca81d41^Marisa^Wong^"96110 Steven Vista
+South Carrieshire, MN 68311"^-55.026884^171.516146^91.75
+10^10^matthew07@yahoo.com^pbkdf2:sha256:50000$OCk3aiPV$1197da7456d004a18c9efba6216ea4b6ad862517bf32abd820748adeaedb4203^Jonathan^Reid^"3446 Flores Turnpike
+Wagnerchester, WA 70502"^27.773981^37.106487^115.76
+11^11^matthew81@gmail.com^pbkdf2:sha256:50000$aoRFWgOk$84c4151d0b358bfb13ad9e03dd9f6238868d675ebf16f1097ecd1fc958f57c93^Carla^Thompson^"5010 Anderson Shoals
+Moralestown, LA 08296"^72.785703^-157.458013^373.79
+12^12^sara48@hotmail.com^pbkdf2:sha256:50000$xmNTcqlJ$0eaad98dab5267286d40b3b973567970d8f5f560fa18b84087df007aa8dd7294^Elizabeth^Boone^"085 Carter Harbors Apt. 315
+Stephanieborough, KS 43821"^69.010633^75.138788^348.62
+13^13^justin78@hotmail.com^pbkdf2:sha256:50000$3jskZgk8$83cfcc9b0bc8b2b4a34221e72768ed4eb0bcc1cf24672dfd41ecf2fe797a984d^Lauren^Beasley^"12800 Oscar Light Suite 378
+East Amy, NH 77529"^-56.892316^-88.174122^58.69
+14^14^michellecannon@gmail.com^pbkdf2:sha256:50000$h6JVtUIa$47836b79da5f1aab63a39a3941bc0a4fa57b8d2a161e4b258ff2f48be7ea8601^Kimberly^Johnson^"64704 Christensen Canyon
+Lake Kelly, UT 32496"^4.494847^-108.228819^226.99
+15^15^markmiller@gmail.com^pbkdf2:sha256:50000$fh3xmnd6$aa7566491dc18b68b33e2b16f9bcaf5cb0ac2e01076e0d9f20980f61f46135f4^Michael^Higgins^"30847 Jordan Wall Suite 863
+Katherinebury, MS 36623"^62.2421465^-36.529869^310.96
+16^16^harrisholly@gmail.com^pbkdf2:sha256:50000$Nuh2Xv5S$00f03a6c38b0cccab4187f685359cb3d76fd4cc7375f5a5e0c9cfd7a3c9b5766^Stephanie^Patel^"1208 Richard Parkways
+East Laurenfort, RI 18104"^13.162817^-39.482156^202.75
+17^17^yevans@hotmail.com^pbkdf2:sha256:50000$OimAGZ8z$5712f05504028324e3cd40009f03bd088dfaee913ac084291cce6572660e4403^Donald^Jordan^"Unit 9466 Box 7388
+DPO AE 32641"^55.1954895^1.675679^101.14
+18^18^mark29@yahoo.com^pbkdf2:sha256:50000$IZbnEhRS$3caada56d74b695923dcec62676895baa8043d55991fd1895e9a4702f91f60a8^Maria^Rowland^"3408 Ashley Causeway Apt. 910
+Heatherberg, ND 27638"^63.4085285^-139.753845^490.29
+19^19^jonathan47@hotmail.com^pbkdf2:sha256:50000$Ky5zawcj$691379dd15ce0cb85b714277f7ba6a920126b3a5e6c0dca9afe0599b2dfc8380^Kristen^Holmes^"842 Erica Walk Apt. 634
+Susanberg, VT 12196"^-57.3179425^89.445774^387.63
+20^20^schneiderdenise@gmail.com^pbkdf2:sha256:50000$YIvhNSYD$21a9dd11e49c53b8564d56b37e846ae6f0af374105f5a27a3267dade92fdcff9^Katie^Vaughan^"1772 Samuel Groves
+Browntown, TN 45025"^24.6120855^142.448748^189.53
+21^21^vrichardson@yahoo.com^pbkdf2:sha256:50000$wleZjIhY$167f4d4250ee85dda833b31e59ff683485948db5b72955c62cd9091745cade1d^Christopher^Long^"633 Christopher Center
+Port Deborah, CT 92427"^-84.2847365^-140.018825^368.77
+22^22^antonio33@hotmail.com^pbkdf2:sha256:50000$3MSfk8VI$81bd7b3e8dd105bbba9c9e3703b9b8bff8067990b6b49c5a8ca7a144e015fc21^Crystal^Ayala^"704 Pitts Ramp
+Thomasville, AK 48298"^39.556660^72.594671^469.00
+23^23^gene68@yahoo.com^pbkdf2:sha256:50000$BbjrckqZ$ae2e85f5b7e0e07f5bba1b9490ed6d877a98529933829999183871f8d91cc4b4^Jeremy^Jones^"579 Jones Villages Apt. 848
+North Rebeccaside, NE 57647"^50.437963^-151.337585^27.96
+24^24^adam93@hotmail.com^pbkdf2:sha256:50000$FUvVZdsj$e580648eba6bd440098a7516203fd8c0394cd66c6be1b19d3d28f593f188c20b^Stephen^Bauer^"91985 Johnny Square
+North Mathewmouth, OK 50482"^-70.647075^166.139879^462.36
+25^25^cassandra72@yahoo.com^pbkdf2:sha256:50000$paivtpfQ$bf5ffa96877430f2412b7d9ce0cbc4d0035940121693b42c0a7374baa5b327e0^Ronald^Griffin^"Unit 3780 Box 1166
+DPO AA 83054"^-10.983985^-27.645636^161.30
+26^26^vmoyer@yahoo.com^pbkdf2:sha256:50000$Xj6LUyUh$166bfdb013f637272e5f1ed168f15df79c5813feb4afb866e5388f8ed9e9972d^Marissa^Lopez^"86262 Thomas Union
+Robertfort, KY 07785"^-80.333085^140.632801^252.78
+27^27^aguilarjohn@gmail.com^pbkdf2:sha256:50000$R1BRMoFK$70c3266a85891dbb6f22e60b904d94f88441130268dd09109c6e06ed60b87b55^Elizabeth^Hughes^"1687 Arroyo Row Apt. 494
+Port Erinfurt, CO 12380"^-36.187031^63.937384^353.64
+28^28^pjenkins@hotmail.com^pbkdf2:sha256:50000$IsxoBhaR$8537f371b5fdde02afe4f49716273af513aaa389175fe292048e49771f227773^Barbara^Bowman^"07484 Dale Extensions
+South Matthewberg, NC 88204"^-28.055697^88.940142^144.84
+29^29^sophiafoster@gmail.com^pbkdf2:sha256:50000$m4F5ruw3$d322807e9fb292b54a6f5583f20e1e6a60e88d0e1caff89ac1b7756486cc7a95^Ryan^Johnson^"33403 Curtis Glens
+Hallberg, FL 52990"^17.610962^-57.349252^190.08
+30^30^moniqueberry@gmail.com^pbkdf2:sha256:50000$5qILVakj$21b93b74ef36a510c3f5cbdc2d6c9105fe0ab655dd98ef0b67dcbed3cd8c6fd4^Kyle^Miller^"3156 Solis Throughway
+North Ashleyview, HI 78064"^-71.3454225^-135.697062^306.57
+31^31^xcole@yahoo.com^pbkdf2:sha256:50000$H7XIrPug$7a50a1e9c18e61f787285f5121e0b9b93d800b925306efee8aa7e68930171984^Hannah^Ramirez^"119 Wilson Burg
+Port David, MD 80132"^88.399944^-29.553134^497.64
+32^32^blackjeffrey@gmail.com^pbkdf2:sha256:50000$z1NAqGEt$6cc60312a79e84087c8e1a7eac453824c73268b3d3538a0401b621001a276c75^William^Huber^"340 Walker Ports
+New Victorborough, OR 51207"^-16.9359725^-162.709394^74.80
+33^33^jason37@yahoo.com^pbkdf2:sha256:50000$6eyvgKSK$b6e75732426301d3b69fba321312323ec9dcd1688551f2cbaccbbad6b011c154^Peter^Jackson^"284 Fitzgerald Mall
+West Sharon, OH 12391"^-74.774287^161.485383^310.14
+34^34^mccoykendra@gmail.com^pbkdf2:sha256:50000$ju2NJ5FD$210ee5e9c835df6bb74c0f50619f83f81a9080015fc8bb6437abae3c6845677b^Nicholas^Cox^"46472 Denise Ports Suite 994
+North David, TX 84498"^-10.969195^177.126989^190.25
+35^35^kentcathy@yahoo.com^pbkdf2:sha256:50000$9MruslMz$1a881d6231b3db10f602371074cb15b623334e163b5e253c2785ff6e0384b72a^Aaron^Willis^"326 Gutierrez Roads Apt. 029
+Brownmouth, WI 60143"^-21.373930^-134.425455^197.52
+36^36^jaime50@hotmail.com^pbkdf2:sha256:50000$rZHIODtW$f5bcac3c8aaf0343646b40d4a2be7d694634beae4031b0671b385f9345edb9f0^James^Jordan^"1336 Conner Parkway
+West Brenda, MD 95116"^87.1671365^58.923569^15.32
+37^37^ethompson@gmail.com^pbkdf2:sha256:50000$d8OQAYNP$26ff6868bd56eaed92b46c02800b495ced90b0f50fcd988d1f3c9e618e61ae81^Mr.^Mahoney^"7459 Madison Vista Apt. 035
+Louisville, FL 22027"^23.7948565^-100.853381^403.88
+38^38^oconnordaniel@hotmail.com^pbkdf2:sha256:50000$R128HKFR$c9bb5be62181d579b07e93c521f74741e3b513f4d1d7fa554524ac7a8ea4f53b^Randall^White^"74729 Phillips Ranch Suite 735
+West Katherine, ME 09210"^33.279109^117.280255^19.56
+39^39^markbrown@hotmail.com^pbkdf2:sha256:50000$M0FqDaYo$e3f7916962e7dc661f89ef7a69e220abf250b43150133933991da42de57fdce5^Christina^Webster^"762 Lorraine Mountains
+North Michaelfort, MT 83217"^67.865561^178.285201^87.45
+40^40^morenojacob@yahoo.com^pbkdf2:sha256:50000$7JJ0Kw10$b315ca03cdc53bd903061efee8ac26c6c779b7faff62d326435d2fdb389e4177^Mr.^Patton^"728 Kathy Forks Apt. 702
+Lake Henry, KY 29850"^-48.7840265^-91.145252^129.91
+41^41^plucero@hotmail.com^pbkdf2:sha256:50000$G21Se95L$9c983615a775474e1b6bdb24b8aa52fbcef4f1defd6521cbabe94c867bea7586^Douglas^Garcia^"418 Matthew Orchard Suite 864
+West Kelly, IN 15787"^-20.7676925^-167.106720^323.80
+42^42^ydoyle@yahoo.com^pbkdf2:sha256:50000$cDGuPTnq$3afb63af0eea32ad88822b07af3a2cddf27fa2eaa5f1b9a42140a09740d20143^Mark^Reid^"0031 Graham Valley Apt. 271
+New Joshua, VT 55667"^56.4511055^36.697635^452.80
+43^43^oleon@hotmail.com^pbkdf2:sha256:50000$5L93tFWF$860b74b1e818c4c8f2b286f4bdc32f9f232e7065776081f8c56dc3f5fdf46328^William^Anderson^"0757 Cooper Islands
+West Anashire, CT 69531"^-7.320861^-63.351133^36.66
+44^44^rmoran@yahoo.com^pbkdf2:sha256:50000$GPrVrC9R$ad2c1d659cfbe6418f3b19b97434adf2590ac8cc50a8044e13df30f96c6cd99c^Stephanie^Navarro^"4036 Zachary Vista Suite 870
+Lake Leslie, OH 20257"^88.0879335^88.447958^114.01
+45^45^stevensallen@hotmail.com^pbkdf2:sha256:50000$VfsR8v0A$31e32014e541d26efe12c7bdde12863d4f96884291ca7e3c0450d8fcbf227266^Billy^Brown^"7030 Hernandez Road Apt. 906
+Andreabury, LA 63287"^43.0416955^-158.441793^224.22
+46^46^ostevens@gmail.com^pbkdf2:sha256:50000$6XZs6BrJ$e85e00f006e00f7e15149fd11b1e083b85a66a0005d9b9e4e2d0901a98d61823^Joel^Williams^"669 Wood Wall
+Benjaminstad, MI 23311"^32.373252^-82.285469^269.90
+47^47^tristan44@hotmail.com^pbkdf2:sha256:50000$9xfKN8YJ$ea3a402c753eac9f917e0784053c8588e3f5bede0bc874bcf87599feddca1b61^Christine^Reid^"2917 Chad Crossroad Apt. 261
+Michealfort, NV 99522"^-9.4442665^89.631324^130.69
+48^48^stevensmary@gmail.com^pbkdf2:sha256:50000$ZszuTa1f$aa0f68e1c9fb349e1588c38c06af5d89cb69b1280efcd5a40c04b4d8ea3922c4^Daniel^Rogers^"928 Ricky Landing
+New Randallland, NY 80773"^-47.435554^72.593019^135.31
+49^49^icampos@hotmail.com^pbkdf2:sha256:50000$JbYqmWqs$b2fce654a1f3eb9b3f8eb34973af178eb1f90062fd252d9a44e9133cd60102f6^Donna^Baker^"214 Kelly Creek Apt. 589
+Coxburgh, KS 40266"^-87.623074^-23.716715^461.05

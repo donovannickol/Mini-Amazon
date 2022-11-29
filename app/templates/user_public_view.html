@@ -5,8 +5,15 @@
 <div class="row my-5">
     <div class="col-md-5">
         <h1>{{ name }}</h1>
-        <h3>Account #: {{ id }}</h3>
+        <h3>Account ID: {{ id }}</h3>
         <p>Email: {{ email }}</p>
+        <p>Location: {{ location }}</p>
+        <p>Balance: {{ balance }}</p>
+        <a href="{{ url_for('users.get_all_purchases') }}" type="button" class="btn btn-light">My purchases</a>
+        <a href="{{ url_for('sellers.seller_inventory') }}" type="button" class="btn btn-light">My Inventory</a>
+        <a href="{{ url_for('users.update_info') }}" type="button" class="btn btn-light">Update my information</a>
+        <a href="{{ url_for('users.update_balance') }}" type="button" class="btn btn-light">Update balance</a>
+
     </div>
 </div>
 

@@ -88,6 +88,7 @@ WHERE {category_select} AND (LOWER(name) LIKE LOWER(:search_term) OR LOWER(descr
         rows = app.db.execute('''
 SELECT DISTINCT category
 FROM Products
+ORDER BY category
 '''
         )
         return ["All"] + [row[0] for row in rows]

@@ -15,7 +15,7 @@
   <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
     {{ curr_category }}
   </button>
-  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+  <div class="dropdown-menu pre-scrollable" aria-labelledby="dropdownMenuButton">
     {% for category in categories %}
     {% if category != curr_category %}
       <a class="dropdown-item" href="{{ url_for('index.index', category=category, search_term=search_term, sort_by=sort_by) }}">{{category}}</a>
@@ -55,15 +55,17 @@
 </div>
 
 <!-- Content cards -->
+<div class="my-2" style="overflow-y: scroll; max-height: 80vh; overflow-x: hidden;">
 {% for product_row in avail_products | batch(4, '&nbsp;') %}
 <div class="row justify-content-center">
     {% for product in product_row %}
     {% if product is not string %}
     <div class="card m-4 col-md-2 p-0" style="width:300px">
-      <img class="card-img-top" src="{{product.img_url}}" alt="Card image" style="width:100%">
+      <img class="card-img-top" src="{{product.img_url}}" alt="Card image" style="width:100%; height:50%">
       <div class="card-body">
-        <h4 class="card-title">{{product.name}}</h4>
-        <p class="card-text">Price: {{"$" + (product.price | string) if (product.price == product.price) else 'Unavailable'}}<a href="{{ url_for('index.index', category=product.category, search_term=search_term, sort_by=sort_by) }}"><span class="badge rounded-pill bg-info text-light mx-4">{{product.category}}</span></a></p>
+        <h4 class="card-title">{%if product.name|length > 33 and product.name[29] != " "%} {{product.name[:30] + "..."}} {% elif product.name|length > 33 %} {{product.name[:30]}} {% else %} {{product.name}}  {%endif%}</h4>
+        <p class="card-text">Price: {{"$" + (product.price | string) if (product.price == product.price) else 'Unavailable'}}<a href="{{ url_for('index.index', category=product.category, search_term=search_term, sort_by=sort_by) }}">
+          <br><span class="badge rounded-pill bg-info text-light">{%if product.category|length > 20 and product.category[16] != " "%} {{product.category[:17] + "..."}} {% elif product.category|length > 20 %} {{product.category[:17]}} {% else %} {{product.category}}  {%endif%}</span></a></p>
         <!-- link to individual product page -->
         <a href="{{ url_for('products.product', id=product.id) }}" class="btn btn-primary stretched-link">View</a>
         <!-- display out of stock message if stock is 0 -->
@@ -80,7 +82,7 @@
             <span class="bi bi-star-fill"></span>
           {% elif product.average_rating >= i - 1 %}
             {% if fraction >= 0.75 %}
-              <span class="bi bi-star-fill"</span>
+              <span class="bi bi-star-fill"></span>
             {% elif fraction >= 0.25 and fraction < 0.75 %}
               <span class="bi bi-star-half"></span>
             {% else %}
@@ -92,7 +94,7 @@
         {% endfor %}
         <span class="text-secondary mx-2 align-text-top">{{ product.num_ratings }}</span>
         {% else %}
-            No reviews
+        <span class="text-secondary">No reviews</span>
         {% endif %}
       </div>
     </div>
@@ -100,6 +102,7 @@
     {% endfor %}
 </div>
 {% endfor %}
+</div>
 
 <nav class="offset-md-8" aria-label="Page navigation example">
   <ul class="pagination">
