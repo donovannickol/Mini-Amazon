@@ -14,6 +14,11 @@ def get_five_seller_feedbacks(id):
     return render_template('get_five_seller_feedbacks.html', seller_id=seller_id, get_all_sratings = get_all_sratings)
 
 
+@bp.route('/update_stars_ratings/<int:sid>/<int:uid>')
+def update_stars_ratings(sid, uid):
+    get_updated = SellerRating.get_by_seller_id(sid)
+    return render_template('update_stars_ratings.html', sid=sid, get_updated=get_updated, uid=uid)
+
 # route for individual product and its rating
 '''
 @bp.route('/product/<int:pid>')

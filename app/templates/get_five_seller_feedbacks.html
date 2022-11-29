@@ -30,12 +30,18 @@
       <tr>
         <td>{{rating.user_id}}</td>
         <td>{{rating.starsOutOfFive}}</td>
+        {% if current_user.is_authenticated%}  <!--  and current_user.uid == rating.user_id -->>
+        <td><a href="{{ url_for('sellerRatings.update_stars_ratings', sid=seller_id, uid=rating.user_id) }}">{{rating.ratingContent}}</a></td>
+        {% else %}
         <td>{{rating.ratingContent}}</td>
+        {% endif %}
         <td>{{rating.submissionDate}}</td>
       </tr>
     {% endfor %}
       
     </tbody>
 </table>
+
+
 
 {% endblock %}
