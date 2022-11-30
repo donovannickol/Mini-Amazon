@@ -60,6 +60,7 @@ def add_purchase():
     time_purchased = datetime.now().isoformat(sep=" ", timespec = "seconds")
     Purchase.add_to_purchases(uid, total_price,
     num_of_items,order_status, time_purchased)
+    User.update_balance(current_user.balance, total_price, 0, uid)
     for item in user_cart:
         Cart.delete_from_cart(uid, item.pid, item.sellerid)
     return redirect(url_for('users.get_all_purchases'))
@@ -90,15 +91,19 @@ class UpdateForm(FlaskForm):
         'Repeat Password', validators=[DataRequired(), EqualTo('password')])
     submit = SubmitField('Update User')
 
+def validate_withdrawal(form, field):
+        if (field.data > current_user.balance):
+            raise ValidationError("Must be less than or equal to balance")
+
 class UpdateBalanceForm(FlaskForm):
     withdraw = DecimalField('Withdraw', 
                             validators = [NumberRange(min = 0, 
-                            max = 100,
-                            message = "Must be between 0 and balance")])
-
+                            message = "Must be greater than 0"), validate_withdrawal])
+    
     top = DecimalField('Add to Balance',
                        validators = [NumberRange(min = 0,
                        message = "Must be greater than 0")])
+    
     submit = SubmitField('Update Balance')
 
 @bp.route('/account', methods = ['GET','POST'])
@@ -135,17 +140,17 @@ def update_info():
 
 @bp.route('/balance', methods = ['GET', 'POST'])
 def update_balance():
-    update = UpdateBalanceForm()
-    if update.validate_on_submit():
-        if User.update_balance(current_user.balance,
-                               update.withdraw.data,
-                               top.withdraw.data,
-                               current_user.id):
-            return redirect(url_for('users.publicView'))
-    update.withdraw.data = 0.00
-    update.top.data = 0.00
+    form = UpdateBalanceForm()
+    if form.validate_on_submit():
+        User.update_balance(current_user.balance,
+                            form.withdraw.data,
+                            form.top.data,
+                            current_user.id)          
+        return redirect(url_for('users.publicView'))
+    form.withdraw.data = 0.00
+    form.top.data = 0.00
     return render_template('update_balance.html',
-    update = update, balance = current_user.balance)
+    form = form, balance = current_user.balance)
     
 
 @bp.route('/register', methods=['GET', 'POST'])

@@ -69,8 +69,8 @@ WHERE email = :email
             UPDATE Users
             SET balance = (:balance + :add - :withdraw)
             WHERE id = :id
-            """, balance = balance, add = add, 
-                 withdraw = withdraw, id = id)
+            """, balance = balance, withdraw = withdraw,
+                 add = add, id = id)
             return rows
         except Exception as e:
             print(str(e))
