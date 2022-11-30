@@ -23,9 +23,11 @@ def user_cart():
     uid = current_user.id
     user_cart = Cart.get_by_uid(uid)
     # total_price = Cart.get_total_price(uid)
+    num_of_items = sum([item.quantity for item in user_cart])
     total_price = sum([(item.price * item.quantity) for item in user_cart])
     return render_template('user_cart.html',
                            uid = uid,
+                           num_of_items = num_of_items,
                            user_cart = user_cart,
                            total_price = total_price)
 
