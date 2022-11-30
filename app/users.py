@@ -41,7 +41,7 @@ def login():
 @bp.route('/all_purchases/', methods = ['GET','POST'])
 def get_all_purchases():
     uid = current_user.id
-    get_all_purchases = Purchase.get_all_by_uid(uid - 50)
+    get_all_purchases = Purchase.get_all_by_uid(uid)
     firstname = current_user.firstname
     return render_template('get_all_purchases.html',
                             get_all_purchases = get_all_purchases, 
