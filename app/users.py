@@ -7,6 +7,8 @@ from wtforms.validators import ValidationError, DataRequired, Email, EqualTo, Nu
 
 from .models.user import User
 from .models.purchase import Purchase
+from .models.cart import Cart
+from datetime import datetime
 
 
 from flask import Blueprint
@@ -46,6 +48,21 @@ def get_all_purchases():
     return render_template('get_all_purchases.html',
                             get_all_purchases = get_all_purchases, 
                             firstname = firstname)
+
+@bp.route('/add_purchase/', methods=['GET','POST'])
+def add_purchase():
+    id = request.args.get("pid")
+    uid = current_user.id
+    user_cart = Cart.get_by_uid(uid)
+    total_price = sum([(item.price * item.quantity) for item in user_cart])
+    num_of_items = sum([item.quantity for item in user_cart])
+    order_status = "Ordered"
+    time_purchased = datetime.now().isoformat(sep=" ", timespec = "seconds")
+    Purchase.add_to_purchases(uid, total_price,
+    num_of_items,order_status, time_purchased)
+    for item in user_cart:
+        Cart.delete_from_cart(uid, item.pid, item.sellerid)
+    return redirect(url_for('users.get_all_purchases'))
 
 
 class RegistrationForm(FlaskForm):

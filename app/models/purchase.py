@@ -19,7 +19,27 @@ FROM Purchases
 WHERE id = :id
 ''',
                               id=id)
-        return Purchase(*(rows[0])) if rows else None
+        return Purchase(*(rows[0])) if rows else None    @staticmethod
+    
+    @staticmethod
+    def add_to_purchases(uid, total_price, num_of_items, 
+                         order_status, time_purchased):
+        try:
+            rows = app.db.execute('''
+            INSERT INTO Purchases(uid, total_price, num_of_items, order_status, time_purchased)
+            VALUES(:uid, :total_price, :num_of_items, :order_status, :time_purchased)
+            RETURNING id
+            ''',
+            uid = uid,
+            total_price = total_price,
+            num_of_items = num_of_items,
+            order_status = order_status, 
+            time_purchased = time_purchased) 
+            id = rows[0][0]
+            return Purchase.get(id)
+        except Exception as e:
+            print(str(e))
+            return None
 
     @staticmethod
     def get_all_by_uid_since(uid, since):
