@@ -58,11 +58,14 @@ def add_purchase():
     num_of_items = sum([item.quantity for item in user_cart])
     order_status = "Ordered"
     time_purchased = datetime.now().isoformat(sep=" ", timespec = "seconds")
-    Purchase.add_to_purchases(uid, total_price,
-    num_of_items,order_status, time_purchased)
-    User.update_balance(current_user.balance, total_price, 0, uid)
-    for item in user_cart:
-        Cart.delete_from_cart(uid, item.pid, item.sellerid)
+    if current_user.balance - total_price >= 0:
+        Purchase.add_to_purchases(uid, total_price,
+        num_of_items,order_status, time_purchased)
+        User.update_balance(current_user.balance, total_price, 0, uid)
+        for item in user_cart:
+            Cart.delete_from_cart(uid, item.pid, item.sellerid)
+    else:
+        return(redirect(url_for('cart.user_cart')))
     return redirect(url_for('users.get_all_purchases'))
 
 
