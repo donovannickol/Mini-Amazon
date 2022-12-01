@@ -119,6 +119,22 @@ def publicView():
     return render_template('user_public_view.html', 
     id = id_number, name = name, email = email, location = location, balance = balance)
 
+@bp.route('/user_search', methods = ['GET', 'POST'])
+def userSearch():
+    search_term = request.form['search_term']
+    return redirect(url_for('users.getPublicView', search_term = search_term))
+
+@bp.route('/public_view', methods = ['GET','POST'])
+def getPublicView():
+    id_number = request.args.get('search_term', "", type=str)
+    the_user = User.get(id_number)
+    name = f'{the_user.firstname} {the_user.lastname}'
+    email = the_user.email
+    location = the_user.city + ", " + the_user.state
+    balance = "$" + str(the_user.balance)
+    return render_template('user_actual_public_view.html', 
+    id = id_number, name = name, email = email, location = location, balance = balance)
+
 @bp.route('/update_info', methods = ['GET', 'POST'])
 def update_info():
     form = UpdateForm()

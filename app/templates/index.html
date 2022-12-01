@@ -7,11 +7,28 @@
   <div class="col-md-2 offset-md-1 pt-1">
     {% if search_term %}
     <p class="mt-1">Search results for "{{search_term}}":</p>
+    {%else%}
+    <p class="mt-1">Products for Sale</p>
     {% endif %}
   </div>
 
+  <!-- Search bar for users-->
+  <div class="col-md-3">
+    <form action="{{ url_for('users.userSearch')}}" method="POST">
+      <div class="input-group">
+        <input type="number" name="search_term" class="form-control" placeholder="Search Users (enter user ID)">
+        <div class="input-group-btn">
+          <button class="btn btn-default" type="submit">
+            <i class="bi bi-search"></i>
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+
   <!-- Dropdown for categories -->
-  <div class="dropdown offset-md-3">
+  <div class="dropdown offset-md-1">
     <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
       aria-haspopup="true" aria-expanded="false">
       {{ curr_category }}
