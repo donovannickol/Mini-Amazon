@@ -145,7 +145,9 @@ create trigger update_product_num_ratings
 after insert or delete or update on productRating
 for each row execute procedure update_product_num_ratings();
 
-create or replace function update_productRating()
+
+/*
+create or replace function checkpPairs()
 returns trigger as $$
 begin  
     update productRating set (starsOutOfFive, ratingContent, submissionDate) = (new.starsOutOfFive, new.ratingContent, new.submissionDate)
@@ -155,8 +157,10 @@ end;
 $$ language plpgsql;
 
 create trigger update_productRating
-after update on productRating 
-for each row execute procedure update_productRating();
+after insert on productRating 
+for each row execute procedure checkPairs();
+
+
 
 create or replace function update_sellerRating()
 returns trigger as $$
@@ -170,3 +174,4 @@ $$ language plpgsql;
 create trigger update_sellerRating
 after update on sellerRating 
 for each row execute procedure update_sellerRating();
+*/

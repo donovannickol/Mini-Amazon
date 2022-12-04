@@ -33,7 +33,15 @@ SELECT pg_catalog.setval('public.purchases_id_seq',
 \COPY OrderHistory FROM '/home/vcm/mini-amazon/db/generated/OrderHistory.csv' WITH DELIMITER '^' NULL '' CSV;
 -- \COPY OrderHistory FROM 'OrderHistory.csv' WITH DELIMITER ',' NULL '' CSV;
 
+
+
 \COPY productRating FROM '/home/vcm/mini-amazon/db/generated/Ratings.csv' WITH DELIMITER '^' NULL '' CSV
 -- \COPY productRating FROM 'productRating.csv' WITH DELIMITER ',' NULL '' CSV
 
 \COPY sellerRating FROM 'sellerRating.csv' WITH DELIMITER ',' NULL '' CSV
+
+-- this is mostly an aesthetic table; SHOULD NOT BE USED FOR BUILDING THIS WEBSITE
+CREATE TABLE pRatingNAMES AS
+SELECT Users.firstname, Users.lastname, productRating.user_id, productRating.pid, productRating.starsOutOfFive, productRating.ratingContent, productRating.submissionDate
+FROM Users, productRating
+WHERE Users.id = productRating.user_id;
