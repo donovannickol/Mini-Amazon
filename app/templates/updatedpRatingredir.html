@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{% block scripts %}
+
+{% endblock %}
+
+<br><br>
+<div>{{feedstars}}</div>
+<div>{{past_feed.starsOutOfFive}}</div>
+<table id="productRatings" class='table table-hover table-bordered'>
+    <thead class="thead-dark">
+      <tr>
+        
+        <th scope="col">Product</th>
+        <th scope="col">Stars out of five</th>
+        <th scope="col">Rating content</th>
+        <th scope="col">Submission date</th>
+      </tr>
+    </thead>
+    
+      <tbody>
+        
+          {% for rating in new_feed%}
+            
+            <h5>Your updated rating</h5>
+            <tr>
+              
+              <td>{{productName}}</td>
+              <td>{{rating.starsOutOfFive}}</td>
+              <td>{{rating.ratingContent}}</td> <!--replace 1 with current.user_id-->
+              <td>{{rating.submissionDate}}</td>
+            </tr>
+            
+              
+            
+      {% endfor %}
+        
+      </tbody>
+  </table>
+<div>Redirecting back to product page in 3 seconds...</div>
+<meta http-equiv="refresh" content="3;{{ url_for('products.product', id=pid) }}" />
+
+{% endblock %}
