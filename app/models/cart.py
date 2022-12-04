@@ -53,3 +53,60 @@ VALUES (:uid, :pid, :sid, :quantity, :price)
         AND pid = :pid
         AND sellerid = :sid
         ''', uid=uid, pid=pid, sid=sid, quantity=quantity)
+
+    @staticmethod
+    def get_last_order_number():
+        rows = app.db.execute('''
+        SELECT MAX(order_number) as order_number
+        FROM OrderHistory
+        ''')
+        return rows[0][0]
+
+    @staticmethod
+    def get_balance(uid):
+        rows = app.db.execute('''
+        SELECT balance
+        FROM Users
+        WHERE id = :uid
+        ''', uid=uid)
+        return rows[0][0]
+
+    @staticmethod
+    def get_stock(pid, sid):
+        rows = app.db.execute('''
+        SELECT count
+        FROM Inventory
+        WHERE pid = :pid
+        AND uid = :sid
+        ''', pid=pid, sid=sid)
+        return rows[0][0]
+
+    @staticmethod
+    def submit_order(uid, order_number, pid, sid, quantity, price):
+        app.db.execute('''
+        INSERT INTO OrderHistory (uid, order_number, pid, sellerid, quantity, price)
+        VALUES (:uid, :order_number, :pid, :sid, :quantity, :price)
+        ''', uid = uid, order_number = order_number, pid = pid, sid = sid, quantity = quantity, price = price)
+
+        app.db.execute('''UPDATE Users 
+        SET balance = balance - :price * :quantity
+        WHERE id = :uid
+        ''', quantity = quantity, price = price, uid = uid)
+
+        app.db.execute('''Update Users 
+        SET balance = balance + :price * :quantity
+        WHERE id = :sid
+        ''',sid = sid, price = price, quantity = quantity)
+
+        app.db.execute('''UPDATE Inventory
+        SET count = count - :quantity
+        WHERE pid = :pid
+        AND uid = :sid 
+        ''', quantity = quantity, pid = pid, sid = sid)
+
+    @staticmethod
+    def clear_cart(uid):
+        app.db.execute('''
+        DELETE FROM Cart
+        WHERE uid = :uid
+        ''', uid=uid)
