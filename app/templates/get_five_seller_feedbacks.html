@@ -24,7 +24,7 @@
         <td>{{rating.user_id}}</td>
         <td>{{rating.starsOutOfFive}}</td>
         {% if 1 == rating.user_id%}  <!--  current_user.uid == rating.user_id -->>
-        <td><a href="{{ url_for('sellerRatings.update_stars_ratings', sid=seller_id, uid=1, seller_name = seller_name) }}">{{rating.ratingContent}}</a></td><!--replace 1 with current.user_id-->
+        <td><a href="{{ url_for('sellerRatings.update_stars_ratings', sid=seller_id, uid=1, seller_name = seller_name) }}"> {{rating.ratingContent}}</a></td> <!--replace 1 with current.user_id-->
         {% else %}
         <td>{{rating.ratingContent}}</td>
         {% endif %}

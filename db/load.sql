@@ -39,3 +39,9 @@ SELECT pg_catalog.setval('public.purchases_id_seq',
 -- \COPY productRating FROM 'productRating.csv' WITH DELIMITER ',' NULL '' CSV
 
 \COPY sellerRating FROM 'sellerRating.csv' WITH DELIMITER ',' NULL '' CSV
+
+-- this is mostly an aesthetic table; SHOULD NOT BE USED FOR BUILDING THIS WEBSITE
+CREATE TABLE pRatingNAMES AS
+SELECT Users.firstname, Users.lastname, productRating.user_id, productRating.pid, productRating.starsOutOfFive, productRating.ratingContent, productRating.submissionDate
+FROM Users, productRating
+WHERE Users.id = productRating.user_id;

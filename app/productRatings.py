@@ -3,6 +3,7 @@ from flask import render_template, request, redirect, url_for
 from .models.productRating import ProductRating
 from .models.orderhistory import OrderHistory
 from .models.product import Product
+from .models.pRatingNAMES import pRatingNAMES
 
 from flask import Blueprint
 bp = Blueprint('productRatings', __name__)
@@ -43,13 +44,20 @@ def update(user_id, pid):
     ProductRating.update_p_rating(user_id, pid, past_feed, feedback)
     ProductRating.update_p_stars(user_id, pid, past_stars, feedstars)
     ProductRating.updateDate(user_id, pid)
+
+    pRatingNAMES.update_p_rating(user_id, pid, past_feed, feedback)
+    pRatingNAMES.update_p_stars(user_id, pid, past_stars, feedstars)
+    pRatingNAMES.updateDate(user_id, pid)
     
+    TEST = pRatingNAMES.getNamesRatings(pid)
 
     new_feed = ProductRating.get_by_user_id_pid(user_id, pid)
     productName = Product.get(pid).name
     return render_template('updatedpRatingredir.html',
                             user_id=user_id, pid=pid,
-                            feedback=feedback, new_feed=new_feed, productName=productName, past_feed=past_feed, feedstars=feedstars)
+                            feedback=feedback, new_feed=new_feed, productName=productName, past_feed=past_feed, feedstars=feedstars, TEST=TEST)
+
+
 
 '''
 # route for individual product and its rating

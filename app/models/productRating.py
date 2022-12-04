@@ -1,4 +1,7 @@
 from flask import current_app as app
+#from .user import User
+
+
 
 
 class ProductRating:
@@ -71,7 +74,7 @@ class ProductRating:
         #return [ProductRating(*row) for row in rows]
         return rows
     
-    staticmethod
+    @staticmethod
     #update date
     def updateDate(user_id, pid):
         
@@ -83,5 +86,8 @@ class ProductRating:
             AND pid = :pid''', user_id=user_id, pid=pid)
         #return [ProductRating(*row) for row in rows]
         return rows
+
+    
+
         
 #set submissiondate to now
