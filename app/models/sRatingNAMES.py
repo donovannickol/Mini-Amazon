@@ -5,7 +5,7 @@ from .user import User
 
 
 class sRatingNAMES:
-    def __init__(self, user_id, seller_id, starsOutOfFive, ratingContent, submissionDate, sfName, slName):
+    def __init__(self, user_id, seller_id, starsOutOfFive, ratingContent, submissionDate, sfName, slName, ufName, ulName):
         #user_id, seller_id, starsOutOfFive, ratingContent, submissionDate, seller.firstname, seller.lastname
         
         
@@ -16,5 +16,7 @@ class sRatingNAMES:
         self.submissionDate = submissionDate
         self.sfName = sfName
         self.slName = slName
+        self.ufName = ufName
+        self.ulName = ulName
 
     

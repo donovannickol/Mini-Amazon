@@ -35,5 +35,13 @@ class OrderHistory:
         WHERE uid = :uid   
         ''', uid=uid)    #REPLACE
         return [OrderHistory(*row) for row in rows]
+
+    def sidOrdered(sid):
+        rows = app.db.execute('''
+        SELECT *
+        FROM OrderHistory
+        WHERE sellerid = :sid   
+        ''', sid=sid)    #REPLACE
+        return [OrderHistory(*row) for row in rows]
         
 

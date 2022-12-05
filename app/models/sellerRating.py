@@ -14,13 +14,23 @@ class SellerRating:
         self.submissionDate = submissionDate
 
     @staticmethod
+    def get_all():
+        #user_id, seller_id, starsOutOfFive, ratingContent, submissionDate
+        rows = app.db.execute('''
+            SELECT *
+            FROM SellerRating
+            ''')
+        return [SellerRating(*row) for row in rows]
+        #return rows
+
+    @staticmethod
     #get product rating by user id
-    def get(uid):
+    def get_personal(uid):
         srows = app.db.execute('''
                 
 
                 SELECT *
-                FROM sellerRating 
+                FROM SellerRating 
                 WHERE user_id = :uid
                 
                 ''',
@@ -43,16 +53,71 @@ class SellerRating:
                     temp.append(urow[3])
                     temp.append(urow[4])
                     merged_tables.append(temp)
-                    
-        
+
+             
+
         return merged_tables
+
+    @staticmethod
+    #get product rating by user id
+    def get(sid):
+        srows = app.db.execute('''
+                
+
+                SELECT *
+                FROM SellerRating 
+                WHERE seller_id = :sid
+                
+                ''',
+                              sid=sid)
+
+        urows = app.db.execute('''
+                SELECT *
+                FROM Users
+                              
+                ''')
+
+        merged_tables = []
+        
+
+        for srow in srows:
+            for urow in urows:
+                if srow[0] == urow[0]:
+                    temp = list(srow)
+                    urow = list(urow)
+                    temp.append(urow[3])
+                    temp.append(urow[4])
+                    merged_tables.append(temp)
+
+        '''    
+        for srow in merged_tables:
+            for urow in urows:
+                if srow[0] == urow[0]:
+                    temp = list(srow)
+                    urow = list(urow)
+                    srow.append(urow[3])
+                    srow.append(urow[4])
+        '''       
+
+        return merged_tables
+
+    @staticmethod
+    #insert a rating
+    def insert_s_rating(user_id, sid, newfeedback, newstars):
+        #user_id, seller_id, starsOutOfFive, ratingContent, submissionDate
+        rows = app.db.execute('''
+            INSERT INTO SellerRating (user_id, seller_id, starsOutOfFive, ratingContent, submissionDate)
+            VALUES (:user_id, :sid, :newstars, :newfeedback, NOW())
+            ''', newfeedback = newfeedback, newstars=newstars, user_id=user_id, sid=sid)
+        #return [ProductRating(*row) for row in rows]
+        return rows
 
     @staticmethod
     #get product rating by user id
     def get_by_user_id_sid(user_id, sid):
         rows = app.db.execute('''
                 SELECT user_id, seller_id, starsOutOfFive, ratingContent, submissionDate
-                FROM sellerRating
+                FROM SellerRating
                 WHERE user_id = :user_id
                 AND seller_id = :sid
                 ''',
@@ -67,9 +132,9 @@ class SellerRating:
     def get_by_seller_id(seller_id):
 		
         rows = app.db.execute('''
-                SELECT sellerRating.user_id, sellerRating.seller_id, sellerRating.starsOutOfFive, sellerRating.ratingContent, sellerRating.submissionDate
-                FROM sellerRating
-				WHERE sellerRating.seller_id = :seller_id
+                SELECT SellerRating.user_id, SellerRating.seller_id, SellerRating.starsOutOfFive, SellerRating.ratingContent, SellerRating.submissionDate
+                FROM SellerRating
+				WHERE SellerRating.seller_id = :seller_id
                 ORDER BY submissionDate DESC
                 ''',
                               seller_id=seller_id)
@@ -79,7 +144,7 @@ class SellerRating:
     #update a rating
     def update_s_rating(user_id, sid, oldfeedback, newfeedback):
         rows = app.db.execute('''
-            UPDATE sellerRating
+            UPDATE SellerRating
             SET ratingContent = replace(ratingContent, :oldfeedback, :newfeedback)
             
             WHERE user_id = :user_id
@@ -91,7 +156,7 @@ class SellerRating:
     #update a stars
     def update_s_stars(user_id, sid, oldstars, newstars):
         rows = app.db.execute('''
-            UPDATE sellerRating
+            UPDATE SellerRating
             SET starsOutOfFive = :newstars
             
             WHERE user_id = :user_id
@@ -104,7 +169,7 @@ class SellerRating:
     def updateDate(user_id, sid):
         
         rows = app.db.execute('''
-            UPDATE sellerRating
+            UPDATE SellerRating
             SET submissionDate = NOW()
             
             WHERE user_id = :user_id

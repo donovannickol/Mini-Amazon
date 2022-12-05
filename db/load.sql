@@ -38,7 +38,7 @@ SELECT pg_catalog.setval('public.purchases_id_seq',
 \COPY productRating FROM '/home/vcm/mini-amazon/db/generated/Ratings.csv' WITH DELIMITER '^' NULL '' CSV
 -- \COPY productRating FROM 'productRating.csv' WITH DELIMITER ',' NULL '' CSV
 
-\COPY sellerRating FROM 'sellerRating.csv' WITH DELIMITER ',' NULL '' CSV
+\COPY SellerRating FROM 'sellerRating.csv' WITH DELIMITER ',' NULL '' CSV
 
 -- \COPY message FROM 'messageThread.csv' WITH DELIMITER ',' NULL '' CSV
 SELECT pg_catalog.setval('public.messagethread_thread_id_seq',
@@ -59,8 +59,8 @@ AND productRating.pid = Products.id;
 
 CREATE TABLE sRatingNAMES AS  
 SELECT user_id, seller_id, starsOutOfFive, ratingContent, submissionDate, seller.firstname, seller.lastname
-FROM Users AS seller, sellerRating
-WHERE sellerRating.seller_id = seller.id;
+FROM Users AS seller, SellerRating
+WHERE SellerRating.seller_id = seller.id;
 
 /*
 create or replace function insert_productRating()

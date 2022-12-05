@@ -78,7 +78,7 @@ CREATE TABLE productRating (
 	PRIMARY KEY(user_id, pid)
     );
 
-CREATE TABLE sellerRating (
+CREATE TABLE SellerRating (
 	user_id INT NOT NULL REFERENCES Users(id),
 	seller_id INT NOT NULL REFERENCES Users(id),
 	starsOutOfFive INT NOT NULL,
