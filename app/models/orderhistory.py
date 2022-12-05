@@ -28,12 +28,12 @@ class OrderHistory:
         ''', pid=pid)
         return [OrderHistory(*row) for row in rows]
 
-    def productsUserOrd():
+    def productsUserOrd(uid):
         rows = app.db.execute('''
         SELECT *
         FROM OrderHistory
-        WHERE uid = 1
-        ''')
+        WHERE uid = :uid   
+        ''', uid=uid)    #REPLACE
         return [OrderHistory(*row) for row in rows]
         
 

@@ -7,6 +7,7 @@ from wtforms.validators import ValidationError, DataRequired, Email, EqualTo, Nu
 
 from .models.user import User
 from .models.purchase import Purchase
+from .models.orderhistory import OrderHistory
 
 
 from flask import Blueprint
@@ -42,10 +43,13 @@ def login():
 def get_all_purchases():
     uid = current_user.id
     get_all_purchases = Purchase.get_all_by_uid(uid - 50)
+
+    whatIOrdered = OrderHistory.productsUserOrd(1) #HARD CODED TO 1
+    
     firstname = current_user.firstname
     return render_template('get_all_purchases.html',
                             get_all_purchases = get_all_purchases, 
-                            firstname = firstname)
+                            firstname = firstname, whatIOrdered=whatIOrdered)
 
 
 class RegistrationForm(FlaskForm):

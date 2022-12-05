@@ -7,6 +7,14 @@ from flask import Blueprint
 bp = Blueprint('sellerRatings', __name__)
 
 
+@bp.route('/get_personal_sRatings/<int:uid>')
+def get_personal_sRatings(uid):
+    swag = User.get(uid)
+    get_all_sRating = SellerRating.get(uid)
+    return render_template('get_personal_sRatings.html',uid=uid, get_all_sRating = get_all_sRating, swag=swag)
+
+    
+
 @bp.route('/get_five_seller_feedbacks/<int:id>/<name>')
 def get_five_seller_feedbacks(id, name):
     

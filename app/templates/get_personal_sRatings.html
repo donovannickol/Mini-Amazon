@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{% block scripts %}
+  <script>
+
+  </script>
+{% endblock %}
+
+<br><br>
+<!-- #user_id, seller_id, starsOutOfFive, ratingContent, submissionDate -->
+<h2>Your seller ratings, descending by date:</h2>
+<table id="sellerRatings" class='table table-hover table-bordered'>
+  <thead class="thead-dark">
+    <tr>
+      
+      <th scope="col">Seller ID</th>
+      <th scope="col">Seller name</th>
+      <th scope="col">Stars out of five</th>
+      <th scope="col">Rating content</th>
+      <th scope="col">Submission date</th>
+    </tr>
+  </thead>
+  
+    <tbody>
+
+        {% for rating in get_all_sRating%}
+      <tr>
+        
+        <td>{{rating[1]}}</td>
+        <td>{{rating[5] + " " + rating[6]}}</td>
+        <td><a href="{{ url_for('sellerRatings.update_stars_ratings', sid=rating[1], uid=1, seller_name = rating[5] + ' ' + rating[6]) }}">{{rating[2]}}</a></td> <!--replace 1 with current.user_id-->
+        <td><a href="{{ url_for('sellerRatings.update_stars_ratings', sid=rating[1], uid=1, seller_name = rating[5] + ' ' + rating[6]) }}">{{rating[3]}}</a></td> <!--replace 1 with current.user_id-->
+        <td>{{rating[4]}}</td>
+      </tr>
+    {% endfor %}
+
+    
+      
+    </tbody>
+</table>
+
+{% endblock %}
+

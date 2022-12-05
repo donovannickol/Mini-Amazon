@@ -50,6 +50,31 @@ SELECT pg_catalog.setval('public.messagethread_thread_id_seq',
 
 -- this is mostly an aesthetic table; SHOULD NOT BE USED FOR BUILDING THIS WEBSITE
 CREATE TABLE pRatingNAMES AS
-SELECT Users.firstname, Users.lastname, productRating.user_id, productRating.pid, productRating.starsOutOfFive, productRating.ratingContent, productRating.submissionDate
-FROM Users, productRating
-WHERE Users.id = productRating.user_id;
+SELECT Users.firstname, Users.lastname, productRating.user_id, productRating.pid, productRating.starsOutOfFive, productRating.ratingContent, productRating.submissionDate, Products.name
+FROM Users, productRating, Products
+WHERE Users.id = productRating.user_id
+AND productRating.pid = Products.id;
+
+
+
+CREATE TABLE sRatingNAMES AS  
+SELECT user_id, seller_id, starsOutOfFive, ratingContent, submissionDate, seller.firstname, seller.lastname
+FROM Users AS seller, sellerRating
+WHERE sellerRating.seller_id = seller.id;
+
+/*
+create or replace function insert_productRating()
+returns trigger as 
+$$
+begin  
+    insert into productRating (user_id, pid, starsOutOfFive, ratingContent, submissionDate)
+    VALUES(NEW.user_id, NEW.pid, NEW.starsOutOfFive, NEW.ratingContent, NEW.submissionDate);
+    RETURN null;
+end;
+$$ 
+language plpgsql;
+
+create trigger insert_productRating
+AFTER insert on productRating 
+for each row execute procedure insert_productRating();
+*/

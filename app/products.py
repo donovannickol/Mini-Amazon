@@ -21,11 +21,12 @@ def product(id):
     sellers = Inventory.get_by_pid_inc_name(id)
     orderHist = OrderHistory.pidOrdered(id)  #order history of a given pid
     specProRating = ProductRating.get_pRating_uid_pid(id) #product Ratings given a pid
-    whatIOrdered = OrderHistory.productsUserOrd()   #replacement for orderHist but with hardcoded current user id = 1
+    whatIOrdered = OrderHistory.productsUserOrd(id)   #replacement for orderHist but with hardcoded current user id = 1
+    test = pRatingNAMES.get(4955)
 
     allprodRatings_withNames = pRatingNAMES.getNamesRatings(id)    #get all product ratings of a product given a pid, we return names
 
-    return render_template('product.html', product=product, sellers=sellers, orderHist=orderHist, specProRating=specProRating, whatIOrdered=whatIOrdered, allprodRatings_withNames=allprodRatings_withNames)
+    return render_template('product.html', test=test, product=product, sellers=sellers, orderHist=orderHist, specProRating=specProRating, whatIOrdered=whatIOrdered, allprodRatings_withNames=allprodRatings_withNames)
 
 # route to handle product search
 @bp.route('/search', methods=['POST'])
