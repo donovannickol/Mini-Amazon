@@ -53,10 +53,23 @@ def get_all_purchases():
 def get_all_purchases_less_than_max():
     uid = current_user.id
     maxi = request.form['max']
-    if maxi == "" or int(maxi) < 0:
+    if maxi == "" or float(maxi) < 0:
         get_all_purchases = Purchase.get_all_by_uid(uid)
     else:
         get_all_purchases = Purchase.get_all_by_uid_max_price(current_user.id, maxi)
+    firstname = current_user.firstname
+    return render_template('get_all_purchases.html',
+                            get_all_purchases = get_all_purchases, 
+                            firstname = firstname)
+
+@bp.route('/purchases_less_than_items/', methods = ['GET', 'POST'])
+def get_all_purchases_less_than_items():
+    uid = current_user.id
+    items = request.form['max']
+    if items == "" or int(items) < 0:
+        get_all_purchases = Purchase.get_all_by_uid(uid)
+    else:
+        get_all_purchases = Purchase.get_all_by_uid_max_items(current_user.id, items)
     firstname = current_user.firstname
     return render_template('get_all_purchases.html',
                             get_all_purchases = get_all_purchases, 
