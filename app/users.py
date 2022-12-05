@@ -49,6 +49,19 @@ def get_all_purchases():
                             get_all_purchases = get_all_purchases, 
                             firstname = firstname)
 
+@bp.route('/purchases_less_than_max/', methods = ['GET', 'POST'])
+def get_all_purchases_less_than_max():
+    uid = current_user.id
+    maxi = request.form['max']
+    if maxi == "" or int(maxi) < 0:
+        get_all_purchases = Purchase.get_all_by_uid(uid)
+    else:
+        get_all_purchases = Purchase.get_all_by_uid_max_price(current_user.id, maxi)
+    firstname = current_user.firstname
+    return render_template('get_all_purchases.html',
+                            get_all_purchases = get_all_purchases, 
+                            firstname = firstname)
+
 @bp.route('/add_purchase/', methods=['GET','POST'])
 def add_purchase():
     id = request.args.get("pid")

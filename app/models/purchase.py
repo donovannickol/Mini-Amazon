@@ -65,4 +65,16 @@ ORDER BY time_purchased DESC
                               uid=uid)
         return [Purchase(*row) for row in rows]
 
+    @staticmethod
+    def get_all_by_uid_max_price(uid, max_price):
+        rows = app.db.execute('''
+SELECT id, uid, total_price, num_of_items, order_status, time_purchased
+FROM Purchases
+WHERE uid = :uid AND total_price <= :max_price
+ORDER BY time_purchased DESC
+''',
+                              uid=uid,
+                              max_price = max_price)
+        return [Purchase(*row) for row in rows]
+
     

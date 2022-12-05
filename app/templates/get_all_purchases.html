@@ -15,6 +15,18 @@
 <br><br>
 
 <h2>{{firstname}}'s Purchases</h2>
+<div class="col-md-5">
+    <form action="{{ url_for('users.get_all_purchases_less_than_max')}}" method="POST">
+        <div class="input-group">
+            <input type="number" name="max" class="form-control" placeholder="Maximum Price">
+            <div class="input-group-btn">
+                <button class="btn btn-default" type="submit">
+                    <i class="bi bi-search"></i>
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
 <table id="purchases" class='table table-hover table-bordered'>
     <thead class="thead-dark">
         <tr>
