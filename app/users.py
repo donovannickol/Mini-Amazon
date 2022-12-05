@@ -122,8 +122,9 @@ def publicView():
 @bp.route('/user_search', methods = ['GET', 'POST'])
 def userSearch():
     search_term = request.form['search_term']
-    if search_term == "":
-        return redirect(url_for('index.index'))
+    public = request.args.get('public', "", type = str)
+    if search_term == "" or (int(search_term) < 0):
+        return redirect(url_for('users.publicView'))
     else:
         return redirect(url_for('users.getPublicView', search_term = search_term))
 
@@ -132,14 +133,13 @@ def getPublicView():
     id_number = request.args.get('search_term', "", type=str)
     the_user = User.get(id_number)
     if the_user == None:
-        return redirect(url_for('index.index'))
-    else:
-        name = f'{the_user.firstname} {the_user.lastname}'
-        email = the_user.email
-        location = the_user.city + ", " + the_user.state
-        balance = "$" + str(the_user.balance)
-        return render_template('user_actual_public_view.html', 
-        id = id_number, name = name, email = email, location = location, balance = balance)
+        return redirect(url_for('users.public'))
+    name = f'{the_user.firstname} {the_user.lastname}'
+    email = the_user.email
+    location = the_user.city + ", " + the_user.state
+    balance = "$" + str(the_user.balance)
+    return render_template('user_actual_public_view.html', 
+    id  = id_number, name = name, email = email, location = location, balance = balance)
 
 @bp.route('/update_info', methods = ['GET', 'POST'])
 def update_info():

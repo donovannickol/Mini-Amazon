@@ -3,7 +3,7 @@
 {% block content %}
 
 <div class="row my-5">
-    <div class="col-md-5">
+    <div class="col-md-3">
         <h1>{{ name }}</h1>
         <h3>Account ID: {{ id }}</h3>
         <p>Email: {{ email }}</p>
@@ -14,8 +14,7 @@
         <a href="{{ url_for('users.update_info') }}" type="button" class="btn btn-light">Update my information</a>
         <a href="{{ url_for('users.update_balance') }}" type="button" class="btn btn-light">Update balance</a>
         <!-- Search bar for users-->
-        <br></br>
-        <form action="{{ url_for('users.userSearch')}}" method="POST">
+        <form action="{{ url_for('users.userSearch', public = 'private')}}" method="POST">
             <div class="input-group">
                 <input type="number" name="search_term" class="form-control" placeholder="Search Users (enter user ID)">
                 <div class="input-group-btn">
