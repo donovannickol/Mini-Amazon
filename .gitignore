@@ -5,6 +5,7 @@ venv/
 migrations/
 gunicorn.conf.py
 datagenconfig.py
+openai_keys.py
 
 # Compiled source #
 ###################

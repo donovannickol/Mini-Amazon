@@ -7,6 +7,8 @@ from flask_login import current_user
 from .models.product import Product
 from .models.inventory import Inventory
 
+
+
 from flask import Blueprint
 bp = Blueprint('products', __name__)
 
