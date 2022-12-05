@@ -64,3 +64,5 @@ ORDER BY time_purchased DESC
 ''',
                               uid=uid)
         return [Purchase(*row) for row in rows]
+
+    

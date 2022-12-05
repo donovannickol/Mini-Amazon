@@ -2,17 +2,10 @@
 
 {% block content %}
 
-{% block scripts %}
-  <script>
-  $(document).ready(function () {
-    $('#sellerRatings').DataTable();
-  });
-  </script>
-{% endblock %}
 
 <br><br>
 
-<h2>Ratings for seller_id {{ seller_id }}, descending by date:</h2>
+<h2>Ratings for Seller {{ seller_name }}, descending by date:</h2>
 <table id="sellerRatings" class='table table-hover table-bordered'>
   <thead class="thead-dark">
     <tr>
@@ -30,8 +23,8 @@
       <tr>
         <td>{{rating.user_id}}</td>
         <td>{{rating.starsOutOfFive}}</td>
-        {% if current_user.is_authenticated%}  <!--  and current_user.uid == rating.user_id -->>
-        <td><a href="{{ url_for('sellerRatings.update_stars_ratings', sid=seller_id, uid=rating.user_id) }}">{{rating.ratingContent}}</a></td>
+        {% if 1 == rating.user_id%}  <!--  current_user.uid == rating.user_id -->>
+        <td><a href="{{ url_for('sellerRatings.update_stars_ratings', sid=seller_id, uid=1, seller_name = seller_name) }}"> {{rating.ratingContent}}</a></td> <!--replace 1 with current.user_id-->
         {% else %}
         <td>{{rating.ratingContent}}</td>
         {% endif %}
