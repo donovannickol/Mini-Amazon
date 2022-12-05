@@ -2,8 +2,8 @@ from flask import render_template, redirect, url_for, flash, request
 from werkzeug.urls import url_parse
 from flask_login import login_user, logout_user, current_user
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField
-from wtforms.validators import ValidationError, DataRequired, Email, EqualTo
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, DecimalField
+from wtforms.validators import ValidationError, DataRequired, Email, EqualTo, NumberRange
 
 from .models.user import User
 from .models.purchase import Purchase
@@ -73,6 +73,17 @@ class UpdateForm(FlaskForm):
         'Repeat Password', validators=[DataRequired(), EqualTo('password')])
     submit = SubmitField('Update User')
 
+class UpdateBalanceForm(FlaskForm):
+    withdraw = DecimalField('Withdraw', 
+                            validators = [NumberRange(min = 0, 
+                            max = 100,
+                            message = "Must be between 0 and balance")])
+
+    top = DecimalField('Add to Balance',
+                       validators = [NumberRange(min = 0,
+                       message = "Must be greater than 0")])
+    submit = SubmitField('Update Balance')
+
 @bp.route('/account', methods = ['GET','POST'])
 def publicView():
     id_number = current_user.id
@@ -104,6 +115,21 @@ def update_info():
     form.state.data = current_user.state
     return render_template('update_info.html',
     old_user = current_user, form = form)
+
+@bp.route('/balance', methods = ['GET', 'POST'])
+def update_balance():
+    update = UpdateBalanceForm()
+    if update.validate_on_submit():
+        if User.update_balance(current_user.balance,
+                               update.withdraw.data,
+                               top.withdraw.data,
+                               current_user.id):
+            return redirect(url_for('users.publicView'))
+    update.withdraw.data = 0.00
+    update.top.data = 0.00
+    return render_template('update_balance.html',
+    update = update, balance = current_user.balance)
+    
 
 @bp.route('/register', methods=['GET', 'POST'])
 def register():

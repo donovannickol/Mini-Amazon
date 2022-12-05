@@ -6,9 +6,15 @@ from flask_login import current_user
 
 from .models.product import Product
 from .models.inventory import Inventory
+<<<<<<< HEAD
 
 
 
+=======
+from .models.productRating import ProductRating
+from .models.orderhistory import OrderHistory
+from.models.pRatingNAMES import pRatingNAMES
+>>>>>>> d7415c1d627520d3479de00080febbf139a1a5e1
 from flask import Blueprint
 bp = Blueprint('products', __name__)
 
@@ -18,8 +24,14 @@ PRODUCTS_PER_PAGE = 8
 @bp.route('/product/<int:id>')
 def product(id):
     product = Product.get(id)
-    sellers = Inventory.get_by_pid(id)
-    return render_template('product.html', product=product, sellers=sellers)
+    sellers = Inventory.get_by_pid_inc_name(id)
+    orderHist = OrderHistory.pidOrdered(id)  #order history of a given pid
+    specProRating = ProductRating.get_pRating_uid_pid(id) #product Ratings given a pid
+    whatIOrdered = OrderHistory.productsUserOrd()   #replacement for orderHist but with hardcoded current user id = 1
+
+    allprodRatings_withNames = pRatingNAMES.getNamesRatings(id)    #get all product ratings of a product given a pid, we return names
+
+    return render_template('product.html', product=product, sellers=sellers, orderHist=orderHist, specProRating=specProRating, whatIOrdered=whatIOrdered, allprodRatings_withNames=allprodRatings_withNames)
 
 # route to handle product search
 @bp.route('/search', methods=['POST'])
@@ -89,3 +101,6 @@ def k_most_expensive():
     return render_template('HW4/k_most_expensive.html',
                            k = k,
                            k_most_expensive = k_most_expensive)
+
+
+

@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+
+
+<br><br>
+<!--"{{ url_for('productRatings.update', pid=pid, user_id=1, feedback=" + document.querySelector('input[name=feedback]').value + ") }}" -->
+<div class="col-md-5">
+  <h3>Update your rating for {{ productName }}: </h3>
+    <form method="POST"> <!-- replace user_id with 1--> <!--action="{{ url_for('productRatings.update', pid=pid, user_id=1, feedback=feedback) }}"-->
+      <div class="form-group">
+        <label for="feedstars">Stars out of five:</label>
+        <!-- only allow positive integers -->
+        <input class="form-control" id="feedstars" name="feedstars" type="number" min="1" max="5" required>
+      </div>
+      <div class="form-group">
+        <label for="feedback">rating content:</label>
+        <!-- only allow positive integers -->
+        <input class="form-control" id="feedback" name="feedback" required>
+      </div>
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+
+
+    
+</div>
+
+{% block scripts %}
+<script>
+  let feedstars = document.querySelector('input[name=feedstars]').value;
+  let feedback = document.querySelector('input[name=feedback]').value;
+  document.querySelector('form').onsubmit = function() {
+    this.setAttribute('action', "{{ url_for('productRatings.update', pid=pid, user_id=1) }}") //change user_id to uid
+  }
+</script>
+{% endblock %}
+
+
+
+  
+</script>
+
+<table id="productRatings" class='table table-hover table-bordered'>
+  <thead class="thead-dark">
+    <tr>
+      
+      <th scope="col">Product</th>
+      <th scope="col">Stars out of five</th>
+      <th scope="col">Rating content</th>
+      <th scope="col">Submission date</th>
+    </tr>
+  </thead>
+  
+    <tbody>
+      
+        {% for rating in specProRating%}
+          {% if (rating.user_id | string) == (1 | string)%} <!--replace 1 with current.user_id-->
+          <h5>Your current rating</h5>
+          <tr>
+            
+            <td>{{productName}}</td>
+            <td>{{rating.starsOutOfFive}}</td>
+            <td>{{rating.ratingContent}}</td> <!--replace 1 with current.user_id-->
+            <td>{{rating.submissionDate}}</td>
+          </tr>
+          {%endif%}
+            
+          
+    {% endfor %}
+      
+    </tbody>
+</table>
+
+
+{% endblock %}
+
