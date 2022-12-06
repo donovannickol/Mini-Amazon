@@ -89,12 +89,12 @@ VALUES (:uid, :pid, :sid, :quantity, :price)
         ''', uid = uid, order_number = order_number, pid = pid, sid = sid, quantity = quantity, price = price)
 
         app.db.execute('''UPDATE Users 
-        SET balance = balance - :price * :quantity
+        SET balance = balance - :price 
         WHERE id = :uid
         ''', quantity = quantity, price = price, uid = uid)
 
         app.db.execute('''Update Users 
-        SET balance = balance + :price * :quantity
+        SET balance = balance + :price 
         WHERE id = :sid
         ''',sid = sid, price = price, quantity = quantity)
 
@@ -116,7 +116,7 @@ VALUES (:uid, :pid, :sid, :quantity, :price)
         rows = app.db.execute('''
         SELECT Products.name, Products.img_url, OrderHistory.quantity, OrderHistory.price, pid, sellerid, fullfilldate
         FROM OrderHistory, Products
-        WHERE order_number = :order_number
+        WHERE order_number = :order_number + 4
         AND OrderHistory.pid = Products.id
         ''',order_number=order_number)
         return [row for row in rows]
