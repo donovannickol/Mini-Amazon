@@ -37,8 +37,13 @@ def user_cart():
 def get_order_page():
     order_number = request.args.get('order_number')
     order = Cart.get_order_page(order_number)
+    fulfillstatus = "Fulfilled"
+    for item in order:
+        if item.fullfilldate == None:
+            fulfillstatus = "Not Fulfilled"
     return render_template('order_page.html',
-                           order = order)
+                           order = order,
+                           fulfillstatus = fulfillstatus)
 
 @bp.route('/submit_order/', methods=['GET','POST'])
 def submit_order():
@@ -54,7 +59,7 @@ def submit_order():
     for item in user_cart:
         Cart.submit_order(uid, order_number, item.pid, item.sellerid, item.quantity, item.price)
     Cart.clear_cart(uid)
-    return redirect(url_for('cart.user_cart'), error = "Your order has been submitted!")
+    return redirect(url_for('cart.user_cart', error = "Your order has been submitted!"))
 
 @bp.route('/add_to_cart/', methods=['GET','POST'])
 def add_to_cart():
