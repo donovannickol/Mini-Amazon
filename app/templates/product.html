@@ -7,6 +7,13 @@
       <img src={{product.img_url}} class='w-75' alt='Product Image' />
     </div>
     <div class="col-md-5">
+      <!-- show edit button if current user is a seller of this product -->
+      {% if current_user.id in (sellers | map(attribute='uid') | list) %}
+      <a href="{{ url_for('products.edit', id=product.id) }}" class="btn btn-primary">Edit Product</a>
+      {% endif %}   
+      {% if current_user.id in (sellers | map(attribute='uid') | list) %}
+      <a href="{{ url_for('sellers.delete_inventory', sid=current_user.id,pid=product.id) }}" class="btn btn-primary">Delete Product</a>
+      {% endif %}   
       <h1>{{product.name}}</h1>
       <div class="my-3">
         {% if product.average_rating == product.average_rating %}
@@ -88,11 +95,6 @@
         {% endif %}
         {% endwith %}
       </p>
-      <!-- show edit button if current user is a seller of this product -->
-      {% if current_user.id in (sellers | map(attribute='uid') | list) %}
-      <a href="{{ url_for('products.edit', id=product.id) }}" class="btn btn-primary">Edit Product</a>
-      {% endif %}
-      
       
 
       {% if 1 not in  (whatIOrdered | map(attribute='pid') | list) %}

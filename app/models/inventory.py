@@ -68,3 +68,15 @@ WHERE i.pid = :pid
         ''',
                                 uid=sid)
         return [Inventory(*row) for row in rows]
+
+    def delete_product(sid, pid):
+        try:
+            rows = app.db.execute('''
+DELETE FROM Inventory
+WHERE pid = :pid AND uid =:uid
+''',
+                                pid=pid,
+                                uid=sid)
+            return rows[0][0]
+        except Exception as e:
+            print(str(e))
