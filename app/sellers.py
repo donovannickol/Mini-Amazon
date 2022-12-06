@@ -9,8 +9,8 @@ bp = Blueprint('sellers', __name__)
 @bp.route('/seller_inventory/', methods=['POST','GET'])
 def seller_inventory():
     sid = request.form['sid'] if request.method == "POST" else current_user.id
-    seller_inventory = Inventory.get_by_uid(sid)
-    return render_template('HW4/seller_inventory.html',
+    seller_inventory = Inventory.get_full_details_by_uid(sid)
+    return render_template('seller_inventory.html',
                            sid = sid,
                            seller_inventory = seller_inventory)
                         
