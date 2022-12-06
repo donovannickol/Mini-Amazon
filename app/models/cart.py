@@ -110,3 +110,13 @@ VALUES (:uid, :pid, :sid, :quantity, :price)
         DELETE FROM Cart
         WHERE uid = :uid
         ''', uid=uid)
+
+    @staticmethod
+    def get_order_page(order_number):
+        rows = app.db.execute('''
+        SELECT Products.name, Products.img_url, OrderHistory.quantity, OrderHistory.price, pid, sellerid, fullfilldate
+        FROM OrderHistory, Products
+        WHERE order_number = :order_number
+        AND OrderHistory.pid = Products.id
+        ''',order_number=order_number)
+        return [row for row in rows]
