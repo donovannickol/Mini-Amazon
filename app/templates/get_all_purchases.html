@@ -14,6 +14,8 @@
 
 <br><br>
 
+{% if get_all_purchases %}
+
 <h2>{{firstname}}'s Purchases</h2>
 <div class="col-md-5">
     <form action="{{ url_for('users.get_all_purchases_less_than_max')}}" method="POST">
@@ -27,6 +29,7 @@
         </div>
     </form>
 </div>
+<h7> </h7>
 <div class="col-md-5">
     <form action="{{ url_for('users.get_all_purchases_less_than_items')}}" method="POST">
         <div class="input-group">
@@ -39,6 +42,7 @@
         </div>
     </form>
 </div>
+<h6> </h6>
 <table id="purchases" class='table table-hover table-bordered'>
     <thead class="thead-dark">
         <tr>
@@ -62,5 +66,10 @@
         {% endfor %}
     </tbody>
 </table>
+
+{% else %}
+<h1>No purchases available to display - make some purchases!</h1>
+
+{% endif %}
 
 {% endblock %}
