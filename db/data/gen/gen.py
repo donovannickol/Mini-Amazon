@@ -173,6 +173,7 @@ def gen_sales():
     purchases_df = purchases_df.groupby(by=['Personal_Order_Number', 'Buyer_ID','Fullfill_Date', "Sell_Time"], as_index=False).sum()
     print("Finished grouping purchases", flush=True)
     purchases_df["Timestamp"] = purchases_df["Fullfill_Date"]
+    purchases_df["Fullfill_Date"] = ["Fullfilled"]*purchases_df.shape[0]
     purchases_df = purchases_df[["Personal_Order_Number","Buyer_ID","Price","Quantity","Fullfill_Date","Timestamp"]]
     # purchases_df.sort_values("Fullfill_Date",inplace=True)
     purchases_df.reset_index(inplace=True, drop=True)
