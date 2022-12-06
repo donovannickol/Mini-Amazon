@@ -33,13 +33,13 @@ sales_df = pd.DataFrame()
 rng = np.random.default_rng()
 
 ##Global Variables -- values set within their respective functions
-active_users = 50000
+active_users = 5000
 # active_users=100
-average_num_sellers = 8 ## Approximate number of sellers for each products
+average_num_sellers = 2 ## Approximate number of sellers for each products
 unmarked_category = "Miscellaneous" #Default label for any product that doesn't have a category
 print_frequency = 25 ## How many times should each function indicate its progress
-avg_orders_per_person = 4 ## How many orders the average person makes
-avg_purchases_per_order = 6 ## How many products are in the average order
+avg_orders_per_person = 2 ## How many orders the average person makes
+avg_purchases_per_order = 2 ## How many products are in the average order
 email_domains = ["stuffhub.com", "live.com", "outlook.com", "duke.edu", "gmail.com", "aol.com", "protonmail.com"]
 
 person = Person()
@@ -372,7 +372,7 @@ def print_progress():
 def generate_user_details(row):
     print_progress()
     name = person.full_name().split(" ")
-    return [person.email(email_domains), person.password(hashed=True), name[0], name[1], address.address(), address.city(), address.state(), random.randint(0,5000)]
+    return [person.email(email_domains), person.password(hashed=True), name[0], name[1], address.address(), address.city(), address.state(), random.randint(0,5000) + random.random()]
 
 def gen_seller_ids(row):
     max_num_sellers = average_num_sellers*2 -1

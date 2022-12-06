@@ -6,15 +6,9 @@ from flask_login import current_user
 
 from .models.product import Product
 from .models.inventory import Inventory
-<<<<<<< HEAD
-
-
-
-=======
 from .models.productRating import ProductRating
 from .models.orderhistory import OrderHistory
 from.models.pRatingNAMES import pRatingNAMES
->>>>>>> d7415c1d627520d3479de00080febbf139a1a5e1
 from flask import Blueprint
 bp = Blueprint('products', __name__)
 
