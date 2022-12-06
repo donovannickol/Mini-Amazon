@@ -193,15 +193,17 @@ def gen_reviews():
     reviews_df["Rating"] = [""]*reviews_df.shape[0]
     reviews_df["Review"] = [""]*reviews_df.shape[0]
     # reviews_df = reviews_df[["Buyer_ID", "Product_ID", "Seller_ID", "Rating","Review","Fullfill_Date"]]
-    reviews_df = reviews_df[["Buyer_ID", "Product_ID", "Seller_ID","Fullfill_Date"]]
+    reviews_df = reviews_df[["Buyer_ID", "Product_ID", "Seller_ID","Rating","Review","Fullfill_Date"]]
 
     print_start("Reviews", reviews_df.shape[0])
 
     # reviews_df = reviews_df.apply(fetch_review, raw=True, axis=1)
-    reviews_df = pd.merge(ratings_df, reviews_df, on="Product_ID")
+    # reviews_df = pd.merge(ratings_df, reviews_df, on="Product_ID")
+    reviews_df = reviews_df.apply(fetch_review, raw=True, axis=1)
     reviews_df.reset_index(inplace=True,drop=True)
 
-    reviews_df.sort_values("Fullfill_Date")
+    # reviews_df.sort_values("Fullfill_Date")
+
 
     reviews_df = reviews_df[["Buyer_ID", "Product_ID", "Rating","Review", "Fullfill_Date"]]
 
@@ -278,7 +280,7 @@ def fetch_review(row):
     print_progress()
     valid_reviews = ratings_df.loc[ratings_df["Product_ID"] == row[1]]
     valid_reviews.reset_index(inplace=True,drop=True)
-    index = random.randrange(0,valid_reviews.shape[0])
+    index = random.randrange(0,valid_reviews.shape[0] - 1)
     row[3] = valid_reviews["Rating"][index]
     row[4] = valid_reviews["Review"][index]
     return row
