@@ -8,6 +8,8 @@ from wtforms.validators import ValidationError, DataRequired, Email, EqualTo, Nu
 from .models.user import User
 from .models.purchase import Purchase
 from .models.cart import Cart
+from .models.pRatingNAMES import pRatingNAMES
+from .models.inventory import Inventory
 from datetime import datetime
 
 
@@ -75,6 +77,14 @@ def get_all_purchases_less_than_items():
                             get_all_purchases = get_all_purchases, 
                             firstname = firstname)
 
+@bp.route('/user_reviews', methods = ['GET', 'POST'])
+def user_reviews():
+    uid = current_user.id
+    firstname = current_user.firstname
+    get_reviews = pRatingNAMES.get(uid)
+    return render_template('user_reviews.html', 
+    firstname = firstname, get_reviews = get_reviews)
+
 @bp.route('/add_purchase/', methods=['GET','POST'])
 def add_purchase():
     id = request.args.get("pid")
@@ -140,32 +150,43 @@ def publicView():
     id_number = current_user.id
     name = f'{current_user.firstname} {current_user.lastname}'
     email = current_user.email
+    get_reviews = pRatingNAMES.get(id_number)
+    get_inventory = Inventory.get_by_uid(id_number)
+    error = ''
+    if request.args.get('error'):
+        error = request.args.get('error')    
     location = current_user.city + ", " + current_user.state
     balance = "$" + str(current_user.balance)
     return render_template('user_public_view.html', 
-    id = id_number, name = name, email = email, location = location, balance = balance)
+    id = id_number, name = name, email = email, location = location, balance = balance,
+    error = error, get_reviews = get_reviews, get_inventory = get_inventory)
 
 @bp.route('/user_search', methods = ['GET', 'POST'])
 def userSearch():
     search_term = request.form['search_term']
     public = request.args.get('public', "", type = str)
-    if search_term == "" or (int(search_term) < 0):
-        return redirect(url_for('users.publicView'))
-    else:
-        return redirect(url_for('users.getPublicView', search_term = search_term))
+    if search_term == "":
+        return redirect(url_for('users.publicView', error = "Please enter an ID"))
+    if (int(search_term) < 0):
+        return redirect(url_for('users.publicView', error = "Please enter an number greater than 0"))
+    return redirect(url_for('users.getPublicView', search_term = search_term))
 
 @bp.route('/public_view', methods = ['GET','POST'])
 def getPublicView():
     id_number = request.args.get('search_term', "", type=str)
     the_user = User.get(id_number)
     if the_user == None:
-        return redirect(url_for('users.public'))
+        return redirect(url_for('users.publicView', error = "User does not exist"))
     name = f'{the_user.firstname} {the_user.lastname}'
+    firstname = the_user.firstname
     email = the_user.email
-    location = the_user.city + ", " + the_user.state
+    address = the_user.address + ", " + the_user.city + ", " + the_user.state
     balance = "$" + str(the_user.balance)
+    get_reviews = pRatingNAMES.get(id_number)
+    get_inventory = Inventory.get_by_uid(id_number)
     return render_template('user_actual_public_view.html', 
-    id  = id_number, name = name, email = email, location = location, balance = balance)
+    id  = id_number, name = name, email = email, balance = balance, get_reviews = get_reviews,
+    get_inventory = get_inventory, address = address, firstname = firstname)
 
 @bp.route('/update_info', methods = ['GET', 'POST'])
 def update_info():
