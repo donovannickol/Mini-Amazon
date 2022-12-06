@@ -22,6 +22,9 @@ def user_cart():
 def user_cart():
     uid = current_user.id
     user_cart = Cart.get_by_uid(uid)
+    error = ''
+    if request.args.get('error'):
+        error = request.args.get('error')
     # total_price = Cart.get_total_price(uid)
     num_of_items = sum([item.quantity for item in user_cart])
     total_price = sum([(item.price * item.quantity) for item in user_cart])
@@ -29,7 +32,36 @@ def user_cart():
                            uid = uid,
                            num_of_items = num_of_items,
                            user_cart = user_cart,
-                           total_price = total_price)
+                           total_price = total_price,
+                           error = error)
+
+@bp.route('/get_order_page/', methods=['GET','POST'])
+def get_order_page():
+    order_number = request.args.get('order_number')
+    order = Cart.get_order_page(order_number)
+    fulfillstatus = "Fulfilled"
+    for item in order:
+        if item.fullfilldate == None:
+            fulfillstatus = "Not Fulfilled"
+    return render_template('order_page.html',
+                           order = order,
+                           fulfillstatus = fulfillstatus)
+
+@bp.route('/submit_order/', methods=['GET','POST'])
+def submit_order():
+    uid = current_user.id
+    user_cart = Cart.get_by_uid(uid)
+    order_number = Cart.get_last_order_number() + 1
+    total_price = sum([(item.price * item.quantity) for item in user_cart])
+    if total_price > Cart.get_balance(uid):
+        return redirect(url_for('cart.user_cart', error = "Not enough money in your account!"))
+    for item in user_cart:
+        if item.quantity > Cart.get_stock(item.pid, item.sellerid):
+            return redirect(url_for('cart.user_cart', error = "Not enough stock of item " + item.pid + "!"))
+    for item in user_cart:
+        Cart.submit_order(uid, order_number, item.pid, item.sellerid, item.quantity, item.price)
+    Cart.clear_cart(uid)
+    return redirect(url_for('cart.user_cart', error = "Your order has been submitted!"))
 
 @bp.route('/add_to_cart/', methods=['GET','POST'])
 def add_to_cart():
