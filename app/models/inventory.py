@@ -59,7 +59,6 @@ WHERE i.pid = :pid
         return [Inventory(*row) for row in rows]
 
     def get_full_details_by_uid(sid):
-        # uid, pid, count, price, img="", prod_name="", category="",firstName="", lastName=""
         rows = app.db.execute('''
         SELECT i.uid AS uid, i.pid AS pid, i.count AS count, i.price AS price,  p.img_url AS img, p.name AS prod_name, p.category AS category
         FROM Inventory i
@@ -80,3 +79,25 @@ WHERE pid = :pid AND uid =:uid
             return rows[0][0]
         except Exception as e:
             print(str(e))
+    
+    def add_seller(uid,pid,count,price):
+        rows = app.db.execute('''
+        INSERT INTO Inventory (uid, pid, count, price)
+        VALUES (:uid, :pid, :count, :price)
+        ''',
+                                uid=uid,
+                                pid=pid,
+                                count=count,
+                                price=price)                 
+        return  rows
+
+    def get_seller_detailed_history(sid):
+        rows = app.db.execute('''
+        SELECT U.firstname, U.lastname, U.email, H.quantity, H.price, H.fullfilldate
+        FROM OrderHistory H
+        JOIN Users U ON u.uid = H.uid
+        WHERE H.sellerid = :sid
+        ''',
+            sid = sid)
+        return [Inventory(*row) for row in rows]
+        
