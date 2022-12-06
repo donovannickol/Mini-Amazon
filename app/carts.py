@@ -6,6 +6,8 @@ from .models.cart import Cart
 
 from flask import Blueprint
 from flask_login import current_user
+from .models.purchase import Purchase
+from datetime import datetime
 
 bp = Blueprint('cart', __name__)
 
@@ -53,6 +55,9 @@ def submit_order():
     user_cart = Cart.get_by_uid(uid)
     order_number = Cart.get_last_order_number() + 1
     total_price = sum([(item.price * item.quantity) for item in user_cart])
+    num_of_items = sum([item.quantity for item in user_cart])
+    order_status = "Ordered"
+    time_purchased = datetime.now().isoformat(sep=" ", timespec = "seconds")
     if total_price > Cart.get_balance(uid):
         return redirect(url_for('cart.user_cart', error = "Not enough money in your account!"))
     for item in user_cart:
@@ -60,6 +65,8 @@ def submit_order():
             return redirect(url_for('cart.user_cart', error = "Not enough stock of item " + item.pid + "!"))
     for item in user_cart:
         Cart.submit_order(uid, order_number, item.pid, item.sellerid, item.quantity, item.price)
+    Purchase.add_to_purchases(uid, total_price,
+    num_of_items, order_status, time_purchased)
     Cart.clear_cart(uid)
     return redirect(url_for('cart.user_cart', error = "Your order has been submitted!"))
 
