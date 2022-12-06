@@ -2,7 +2,6 @@ import pandas as pd
 import numpy as np
 import random
 
-from sympy import true
 # from print_styles import bcolors
 from gen.print_styles import bcolors
 from random import randint
@@ -33,14 +32,15 @@ sales_df = pd.DataFrame()
 rng = np.random.default_rng()
 
 ##Global Variables -- values set within their respective functions
-active_users = 5000
+active_users = 50000
 # active_users=100
-average_num_sellers = 2 ## Approximate number of sellers for each products
+average_num_sellers = 8 ## Approximate number of sellers for each products
 unmarked_category = "Miscellaneous" #Default label for any product that doesn't have a category
 print_frequency = 25 ## How many times should each function indicate its progress
-avg_orders_per_person = 2 ## How many orders the average person makes
-avg_purchases_per_order = 2 ## How many products are in the average order
+avg_orders_per_person = 4 ## How many orders the average person makes
+avg_purchases_per_order = 6 ## How many products are in the average order
 email_domains = ["stuffhub.com", "live.com", "outlook.com", "duke.edu", "gmail.com", "aol.com", "protonmail.com"]
+curr_num_orders = 0
 
 person = Person()
 address = Address()
@@ -61,7 +61,7 @@ def gen_all(num_users):
 
     t_start = perf_counter()
 
-    print(f"{bcolors.WARNING}CAUTION: Do NOT terminate the program after the first table has been generated. Exit now if you are not prepared to wait up to 3 hours.{bcolors.ENDC}")
+    print(f"{bcolors.WARNING}CAUTION: Do NOT terminate the program after the first table has been generated.{bcolors.ENDC}")
     print(f"{bcolors.OKBLUE}DETAILS: To satisfy SQL foreign key and uniqueness constraints, all data must be generated atomically. All datasets are dependent on the selected number of users and the number of products. Since these values can change at runtime (as duplicates are dropped), it is very important that the program is left to run to completion.{bcolors.ENDC}\n\n")
 
     gen_users()
@@ -93,12 +93,12 @@ def gen_users():
     df = pd.DataFrame([["","","","","","","",""]]*active_users, columns =["Email","Password","Firstname","Lastname","Address","City","State","Balance"])
     df = df.apply(generate_user_details,raw=True, axis=1)  
     password = "amazonsucks"
-    df.loc[0] = ["beff.jezos@stuffhub.com", generate_password_hash(password),"Beff", "Jezos", "21218 76th Ave. S. Kent", "Seattle", "Washington", "117500000000"] 
+    df.loc[0] = ["beff.jezos@stuffhub.com", generate_password_hash(password),"Beff", "Jezos", "21218 76th Ave. S. Kent", "Seattle", "Washington", f"{117500000000+ random.random()}"] 
     df = df.drop_duplicates(subset=["Email"])
     df.reset_index(inplace=True,drop=True)
     active_users = df.shape[0]
 
-    df.to_csv("complete/users.csv",quoting=1, quotechar='"', line_terminator="\n",header=False, sep=delimiter)
+    df.to_csv("complete/users.csv",quoting=1, quotechar='"', lineterminator="\n",header=False, sep=delimiter)
 
     df = pd.DataFrame()
 
@@ -124,7 +124,7 @@ def gen_inventory():
 
     sellers_df.reset_index(inplace=True,drop=True)
 
-    sellers_df.to_csv("complete/inventory.csv",header=False, index=False, line_terminator="\n", sep=delimiter)
+    sellers_df.to_csv("complete/inventory.csv",header=False, index=False, lineterminator="\n", sep=delimiter)
 
     print_end("Sellers")
 
@@ -152,19 +152,20 @@ def gen_sales():
     print_start_counting("orders")
     sales_df.sort_values("Fullfill_Date", inplace=True)
 
-    orders_df = sales_df[["Buyer_ID","Personal_Purchase_Number","Product_ID","Seller_ID","Quantity","Price","Fullfill_Date"]].copy(deep=True)
+    orders_df = sales_df[["Buyer_ID","Personal_Order_Number","Product_ID","Seller_ID","Quantity","Price","Fullfill_Date"]].copy(deep=True)
     purchases_df = sales_df[["Personal_Order_Number","Buyer_ID","Price","Quantity","Fullfill_Date","Sell_Time"]].copy(deep=True)
 
     orders_df["Timestamp"] = sales_df["Fullfill_Date"] + " " + sales_df["Sell_Time"]
     purchases_df["Fullfill_Date"] = orders_df["Timestamp"]
 
 
-    orders_df = orders_df[["Buyer_ID","Personal_Purchase_Number","Product_ID","Seller_ID","Quantity","Price","Timestamp"]]
+    orders_df = orders_df[["Buyer_ID","Personal_Order_Number","Product_ID","Seller_ID","Quantity","Price","Timestamp"]]
     # orders_df.sort_values("Timestamp",inplace=True)
     orders_df.reset_index(inplace=True,drop=True)
-    orders_df["Personal_Purchase_Number"] = orders_df.index
 
-    orders_df.to_csv("complete/orderhistory.csv",header=False, index=False, line_terminator="\n", sep=delimiter)
+    orders_df.drop_duplicates(subset=["Buyer_ID","Personal_Order_Number","Product_ID","Seller_ID"],inplace=True)
+
+    orders_df.to_csv("complete/orderhistory.csv",header=False, index=False, lineterminator="\n", sep=delimiter)
     orders_df = pd.DataFrame()
     
     print_start_counting("purchases")
@@ -178,7 +179,7 @@ def gen_sales():
 
     purchases_df["Personal_Order_Number"] = purchases_df.index
 
-    purchases_df.to_csv("complete/purchases.csv", header=False, index=False, line_terminator="\n", sep=delimiter)
+    purchases_df.to_csv("complete/purchases.csv", header=False, index=False, lineterminator="\n", sep=delimiter)
     purchases_df = pd.DataFrame()
 
     print("Exported purchases", flush=True)
@@ -205,7 +206,7 @@ def gen_reviews():
 
     reviews_df.drop_duplicates(subset=["Buyer_ID","Product_ID"],inplace=True)
 
-    reviews_df.to_csv("complete/reviews.csv", header=False, index=False, line_terminator="\n", sep=delimiter)
+    reviews_df.to_csv("complete/reviews.csv", header=False, index=False, lineterminator="\n", sep=delimiter)
 
     print_end("Reviews")
 
@@ -282,8 +283,10 @@ def fetch_review(row):
     return row
 
 def determine_num_orders(row):
+    global curr_num_orders
     num_orders = random.randint(0,avg_orders_per_person*2)
-    row[1] = np.arange(0,num_orders)
+    row[1] = np.arange(curr_num_orders,num_orders + curr_num_orders)
+    curr_num_orders += num_orders
     row[2] = [np.arange(1,randint(1,avg_purchases_per_order*2)+1) for i in range(num_orders)]
     row[7] = str(datetime.date())
     row[8] = str(datetime.time()).split(".")[0]
@@ -310,7 +313,7 @@ def clean_up_products():
 
     products_df = products_df.apply(isolate_category, raw=True, axis=1)
 
-    products_df.to_csv("complete/products.csv", header=False, index=False, line_terminator="\n", sep=delimiter)
+    products_df.to_csv("complete/products.csv", header=False, index=False, lineterminator="\n", sep=delimiter)
 
     categories_df = pd.DataFrame(products_df["Product_Category"]).drop_duplicates()
     categories_df.reset_index(inplace=True,drop=True)
@@ -318,7 +321,7 @@ def clean_up_products():
     categories_df["Index"] = categories_df.index
     categories_df = categories_df[["Index","Product_Category"]]
 
-    categories_df.to_csv("complete/categories.csv", header=False, index=False, line_terminator="\n", sep=delimiter)
+    categories_df.to_csv("complete/categories.csv", header=False, index=False, lineterminator="\n", sep=delimiter)
 
     print_end("Products")
 
@@ -341,10 +344,11 @@ def add_amazon():
     
     products_df.loc[num_products] = [num_products, "Amazon.com", "An up-and-coming e-retailing platform based out of Washington.", "data:image/png;base64,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", "Website"]
 
-    sellers_df.loc[num_sellers] = [0,num_products,1, 960280000000]
+    sellers_df.loc[num_sellers] = [0,num_products,1, 960280000000 + random.random()]
+    sellers_df[["Seller_ID", "Product_ID","Inventory"]] = sellers_df[["Seller_ID", "Product_ID","Inventory"]].astype("int")
 
-    products_df.to_csv("complete/products.csv",header=False, index=False, line_terminator="\n", sep=delimiter)
-    sellers_df.to_csv("complete/inventory.csv",header=False, index=False, line_terminator="\n", sep=delimiter)
+    products_df.to_csv("complete/products.csv",header=False, index=False, lineterminator="\n", sep=delimiter)
+    sellers_df.to_csv("complete/inventory.csv",header=False, index=False, lineterminator="\n", sep=delimiter)
 
 def print_start(data,quantity):
     global start_index, curr_index, curr_count
