@@ -2,8 +2,8 @@ import pandas as pd
 import numpy as np
 import random
 
-# from print_styles import bcolors
-from gen.print_styles import bcolors
+from print_styles import bcolors
+# from gen.print_styles import bcolors
 from random import randint
 from math import floor
 from math import ceil
@@ -19,7 +19,7 @@ delimiter="^"
 
 
 ###SETUP
-products_df = pd.read_csv("gen/ai_supplemented/complete/products.csv", sep=delimiter)
+products_df = pd.read_csv("ai_supplemented/complete/products.csv", sep=delimiter)
 products_df = products_df.drop(columns=["Unnamed: 0"])
 ratings_df = pd.DataFrame()
 conversations_df = pd.DataFrame()
@@ -32,7 +32,7 @@ sales_df = pd.DataFrame()
 rng = np.random.default_rng()
 
 ##Global Variables -- values set within their respective functions
-active_users = 50000
+active_users = 500
 # active_users=100
 average_num_sellers = 8 ## Approximate number of sellers for each products
 unmarked_category = "Miscellaneous" #Default label for any product that doesn't have a category
@@ -150,35 +150,42 @@ def gen_sales():
     print_end("Sales")
 
     print_start_counting("orders")
-    sales_df.sort_values("Fullfill_Date", inplace=True)
+    # sales_df.sort_values("Fullfill_Date", inplace=True)
+
+
+    sales_df.drop_duplicates(subset=["Buyer_ID","Personal_Order_Number","Product_ID","Seller_ID"],inplace=True)
 
     orders_df = sales_df[["Buyer_ID","Personal_Order_Number","Product_ID","Seller_ID","Quantity","Price","Fullfill_Date"]].copy(deep=True)
-    purchases_df = sales_df[["Personal_Order_Number","Buyer_ID","Price","Quantity","Fullfill_Date","Sell_Time"]].copy(deep=True)
+    # purchases_df = sales_df[["Personal_Order_Number","Buyer_ID","Price","Quantity","Fullfill_Date","Sell_Time"]].copy(deep=True)
 
     orders_df["Timestamp"] = sales_df["Fullfill_Date"] + " " + sales_df["Sell_Time"]
-    purchases_df["Fullfill_Date"] = orders_df["Timestamp"]
+    # purchases_df["Fullfill_Date"] = orders_df["Timestamp"]
 
 
     orders_df = orders_df[["Buyer_ID","Personal_Order_Number","Product_ID","Seller_ID","Quantity","Price","Timestamp"]]
     # orders_df.sort_values("Timestamp",inplace=True)
     orders_df.reset_index(inplace=True,drop=True)
 
-    orders_df.drop_duplicates(subset=["Buyer_ID","Personal_Order_Number","Product_ID","Seller_ID"],inplace=True)
+    purchases_df = orders_df[["Personal_Order_Number","Buyer_ID","Price","Quantity","Timestamp"]].copy(deep=True)
+
+    # orders_df.drop_duplicates(subset=["Buyer_ID","Personal_Order_Number","Product_ID","Seller_ID"],inplace=True)
 
     orders_df.to_csv("complete/orderhistory.csv",header=False, index=False, lineterminator="\n", sep=delimiter)
     orders_df = pd.DataFrame()
     
     print_start_counting("purchases")
 
-    purchases_df = purchases_df.groupby(by=['Personal_Order_Number', 'Buyer_ID','Fullfill_Date', "Sell_Time"], as_index=False).sum()
+    purchases_df = purchases_df.groupby(by=['Personal_Order_Number', 'Buyer_ID','Timestamp'], as_index=False).sum()
     print("Finished grouping purchases", flush=True)
-    purchases_df["Timestamp"] = purchases_df["Fullfill_Date"]
+    # purchases_df["Timestamp"] = purchases_df["Fullfill_Date"]
     purchases_df["Fullfill_Date"] = ["Fullfilled"]*purchases_df.shape[0]
-    purchases_df = purchases_df[["Personal_Order_Number","Buyer_ID","Price","Quantity","Fullfill_Date","Timestamp"]]
+    # purchases_df = purchases_df[["Personal_Order_Number","Buyer_ID","Price","Quantity","Fullfill_Date","Timestamp"]]
     # purchases_df.sort_values("Fullfill_Date",inplace=True)
     purchases_df.reset_index(inplace=True, drop=True)
 
-    purchases_df["Personal_Order_Number"] = purchases_df.index
+    purchases_df["Purchase_ID"] = purchases_df.index
+
+    purchases_df = purchases_df[["Purchase_ID","Buyer_ID","Price","Quantity","Fullfill_Date","Timestamp","Personal_Order_Number"]]
 
     purchases_df.to_csv("complete/purchases.csv", header=False, index=False, lineterminator="\n", sep=delimiter)
     purchases_df = pd.DataFrame()
@@ -414,7 +421,7 @@ def gen_ratings():
 
     t1_start = perf_counter()
 
-    df = pd.read_csv("gen/ai_supplemented/complete/products.csv", sep="^")
+    df = pd.read_csv("ai_supplemented/complete/products.csv", sep="^")
 
     df["Rating"] = 0
     df["Review"] = 0
@@ -462,3 +469,5 @@ def gen_review(row):
             print("Sample review:", row[3])
     row_num += 1
     return row
+
+gen_all(active_users)
