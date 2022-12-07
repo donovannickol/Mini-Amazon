@@ -85,25 +85,6 @@ def user_reviews():
     return render_template('user_reviews.html', 
     firstname = firstname, get_reviews = get_reviews)
 
-@bp.route('/add_purchase/', methods=['GET','POST'])
-def add_purchase():
-    id = request.args.get("pid")
-    uid = current_user.id
-    user_cart = Cart.get_by_uid(uid)
-    total_price = sum([(item.price * item.quantity) for item in user_cart])
-    num_of_items = sum([item.quantity for item in user_cart])
-    order_status = "Ordered"
-    time_purchased = datetime.now().isoformat(sep=" ", timespec = "seconds")
-    if current_user.balance - total_price >= 0:
-        Purchase.add_to_purchases(uid, total_price,
-        num_of_items,order_status, time_purchased)
-        User.update_balance(current_user.balance, total_price, 0, uid)
-        for item in user_cart:
-            Cart.delete_from_cart(uid, item.pid, item.sellerid)
-    else:
-        return(redirect(url_for('cart.user_cart')))
-    return redirect(url_for('users.get_all_purchases'))
-
 
 class RegistrationForm(FlaskForm):
     firstname = StringField('First Name', validators=[DataRequired()])

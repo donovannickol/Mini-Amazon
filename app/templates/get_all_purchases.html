@@ -56,7 +56,8 @@
     <tbody>
         {% for purchase in get_all_purchases %}
         <tr>
-            <td><a href="{{ url_for('cart.get_order_page', order_number = purchase.id) }}">{{purchase.id - 4}}</a>
+            <td><a
+                    href="{{ url_for('cart.get_order_page', order_number = purchase.order_number) }}">{{purchase.order_number}}</a>
             </td>
             <td>{{"${:.2f}".format(purchase.total_price)}}</td>
             <td>{{purchase.num_of_items}}</td>

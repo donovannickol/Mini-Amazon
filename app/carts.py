@@ -65,8 +65,7 @@ def submit_order():
             return redirect(url_for('cart.user_cart', error = "Not enough stock of item " + item.pid + "!"))
     for item in user_cart:
         Cart.submit_order(uid, order_number, item.pid, item.sellerid, item.quantity, item.price)
-    Purchase.add_to_purchases(uid, total_price,
-    num_of_items, order_status, time_purchased)
+    Purchase.add_to_purchases(uid, total_price, num_of_items, order_status, time_purchased, order_number)
     Cart.clear_cart(uid)
     return redirect(url_for('cart.user_cart', error = "Your order has been submitted!"))
 

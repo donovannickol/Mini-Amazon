@@ -116,7 +116,7 @@ VALUES (:uid, :pid, :sid, :quantity, :price)
         rows = app.db.execute('''
         SELECT Products.name, Products.img_url, OrderHistory.quantity, OrderHistory.price, pid, sellerid, fullfilldate
         FROM OrderHistory, Products
-        WHERE order_number = :order_number + 4
+        WHERE order_number = :order_number
         AND OrderHistory.pid = Products.id
         ''',order_number=order_number)
         return [row for row in rows]
