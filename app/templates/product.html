@@ -104,10 +104,18 @@
       </p>
       
 
-      {% if 1 not in  (whatIOrdered | map(attribute='pid') | list) %}
+      <!--    -->
+
+      {% if current_user.id not in  (whatIOrdered | map(attribute='user_id') | list) %}
       <div>You haven't purchased this product. Make a purchase to leave a review! </div>
-      {% elif 1 not in (specProRating | map(attribute='user_id') | list) %}
-      <div>You made a purchase for this product. Want to leave a review? </div>
+      {% elif current_user.id not in (specProRating | map(attribute='user_id') | list) %}
+     
+
+      
+      
+      <div>You made a purchase for this product. <a href="{{ url_for('productRatings.update_stars_ratings_product', user_id=current_user.id, pid=product.id) }}">Want to leave a review?</a> <!--replace 1 with current.user_id--> </div>
+
+
       {% else %}
 
       <table id="productRatings" class='table table-hover table-bordered'>
@@ -124,14 +132,14 @@
           <tbody>
             
               {% for rating in specProRating%}
-                {% if (rating.user_id | string) == (1 | string)%} <!--replace 1 with current.user_id-->
+              {% if (rating.user_id | string) == (current_user.id | string)%} <!--replace 1 with current.user_id-->
                 <h5>Your current rating</h5>
                 <tr>
                   <td>{{rating.user_id}}</td>
                   
-                  <td><a href="{{ url_for('productRatings.update_stars_ratings_product', user_id=1, pid=product.id) }}">{{rating.starsOutOfFive}}</a></td> <!--replace 1 with current.user_id-->
+                  <td><a href="{{ url_for('productRatings.update_stars_ratings_product', user_id=current_user.id, pid=product.id) }}">{{rating.starsOutOfFive}}</a></td> <!--replace 1 with current.user_id--> <!--replace 1 with current.user_id-->
 
-                  <td><a href="{{ url_for('productRatings.update_stars_ratings_product', user_id=1, pid=product.id) }}">{{rating.ratingContent}}</a></td> <!--replace 1 with current.user_id-->
+                  <td><a href="{{ url_for('productRatings.update_stars_ratings_product', user_id=current_user.id, pid=product.id) }}">{{rating.ratingContent}}</a></td> <!--replace 1 with current.user_id-->
                   <td>{{rating.submissionDate}}</td>
                 </tr>
                 {%endif%}
@@ -163,13 +171,13 @@
                 
                 
                 <tr>
-                  <td>{{rating.user_id}}</td>
-                  <td>{{rating.firstname}}</td>
-                  <td>{{rating.lastname}}</td>
-                  <td>{{rating.starsOutOfFive}}</td> 
+                  <td>{{rating[0]}}</td>
+                  <td>{{rating[1]}}</td>
+                  <td>{{rating[2]}}</td>
+                  <td>{{rating[4]}}</td> 
 
-                  <td>{{rating.ratingContent}}</td>
-                  <td>{{rating.submissionDate}}</td>
+                  <td>{{rating[5]}}</td>
+                  <td>{{rating[6]}}</td>
                 </tr>
                 
                   
@@ -186,5 +194,5 @@
   </div>
 </div>
 </div>
-
+{{specProRating}}
 {% endblock %}
