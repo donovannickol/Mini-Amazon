@@ -60,9 +60,10 @@
   </style>
 </head>
 
+
 <body>
   <nav class="navbar navbar-expand-lg navbar-dark">
-    <a class="navbar-brand" href="{{ url_for('index.index') }}"><img src='../../static/css/images/Logo.png'
+    <a class="navbar-brand" href="{{ url_for('index.index') }}"><img src='static/css/images/Logo.png'
         width="120"></a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
       aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -72,15 +73,17 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav mr-auto">
         <a id="index.oldIndex" class="nav-link" href="{{ url_for('index.oldIndex') }}">APIs<span class="sr-only"></span></a>
+      </ul></div>
+      {% if current_user.is_authenticated %}
+    <div class="collapse navbar-collapse pr-8" id="navbarSupportedContent"></div>
+      <ul class="navbar-nav pr-4">
+      <a id="users.publicView" class="nav-link" href="{{ url_for('users.publicView') }}">Hello, {{current_user.firstname}}!<span class="sr-only"></span></a>
+      </ul>
+      <ul class="navbar-nav pr-4">
+        <a href="{{ url_for('cart.user_cart')}}" type="icon" class="bi bi-cart icon-white pr-4"
+          style="font-size: 30px"></a>
       </ul>
     </div>
-    <div class="row mt-3">
-      <!-- Search results text -->
-    <div style="text-align: right; margin-bottom: 10px; margin-top:10px" class="collapse navbar-collapse" id="navbarSupportedContent">
-      {% if current_user.is_authenticated %}
-      <a href="{{ url_for('cart.user_cart')}}" type="icon" class="bi bi-cart icon-white pr-4"
-        style="font-size: 30px"></a>
-      <a id="users.publicView" class="nav-link" href="{{ url_for('users.publicView') }}">Hello, {{current_user.firstname}}!<span class="sr-only"></span></a>
       {% else %}
       <a href="{{ url_for('users.login') }}" type="button" class="btn btn-light">Log in</a>
       <a href="{{ url_for('users.register') }}" type="button" class="btn btn-light">Register</a>
