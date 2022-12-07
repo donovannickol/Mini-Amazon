@@ -13,14 +13,14 @@
         <a href="{{ url_for('users.update_info') }}" type="button" class="btn btn-light">Update my information</a>
         <a href="{{ url_for('users.update_balance') }}" type="button" class="btn btn-light">Update balance</a>
         <a href="{{ url_for('products.new') }} " type="button" class="btn btn-light">Sell with StuffHub</a>
+        <a href="{{ url_for('productRatings.get_personal_pRatings', uid=current_user.id) }}" type="button" class="btn btn-light">Update your product feedbacks</a> <!-- change uid to current_user.id -->
+        <a href="{{ url_for('sellerRatings.get_personal_sRatings', uid=current_user.id) }}" type="button" class="btn btn-light">Update your seller feedbacks</a> <!-- change uid to current_user.id -->
         <a href="{{ url_for('users.logout') }}" type="button" class="btn btn-light">Log out</a>
         {% if get_inventory %}
         <a href="{{ url_for('sellers.seller_inventory', sid = id) }}" type="button" class="btn btn-light">My
             Inventory</a>
         <a href="{{ url_for('sellerRatings.get_five_seller_feedbacks', sid = id, name = name, you=id) }}" type="button"
             class="btn btn-light">Seller reviews for me</a>
-        <a href="{{ url_for('productRatings.get_personal_pRatings', uid=current_user.id) }}" type="button" class="btn btn-light">Update your product feedbacks</a> <!-- change uid to current_user.id -->
-        <a href="{{ url_for('sellerRatings.get_personal_sRatings', uid=current_user.id) }}" type="button" class="btn btn-light">Update your seller feedbacks</a> <!-- change uid to current_user.id -->
         <a href="{{ url_for('sellers.seller_history') }} " type="button" class="btn btn-light">Seller History</a>
         {% endif %}
         <h6> </h6>
@@ -37,8 +37,9 @@
         </form>
         <h6> </h6>
         <h5> {{error}}</h5>
+
         {% if get_reviews %}
-        <h4>My Reviews</h4>
+        <h4>My Product Reviews</h4>
         <h6> </h6>
         <table id="productRatings" class='table table-hover table-bordered'>
             <thead class="thead-dark">
@@ -52,11 +53,42 @@
             <tbody>
                 {% for review in get_reviews%}
                 <tr>
-                    <td><a href="{{ url_for('products.product', id = review.pid) }}">{{review.pid}}</a>
+                    <td><a href="{{ url_for('products.product', id = review.pid) }}">{{review[3]}}</a>
                     </td>
-                    <td>{{review.ratingContent}}</td>
-                    <td>{{review.starsOutOfFive}}</td>
-                    <td>{{review.submissionDate}}</td>
+                    <td>{{review[5]}}</td>
+                    <td>{{review[4]}}</td>
+                    <td>{{review[6]}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% endif %}
+
+        {% if get_sreviews %}
+        <h4>My Seller Reviews</h4>
+        <h6> </h6>
+        <table id="sellerRatings" class='table table-hover table-bordered'>
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Seller ID <h6></h6> (click link for seller)</th>
+                    <th scope="col">Seller first name</th>
+                    <th scope="col">Seller last name</th>
+                    <th scope="col">Rating content</th>
+                    <th scope="col">Stars</th>
+                    <th scope="col">Submitted</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for review in get_sreviews%}
+                <tr>
+                    <td><a
+                        href="{{ url_for('sellerRatings.get_five_seller_feedbacks', sid = review[1], name = review[5] + ' ' + review[6] , you=current_user.id) }}">{{review[1]}}</a>
+                    </td>
+                    <td>{{review[5]}}</td>
+                    <td>{{review[6]}}</td>
+                    <td>{{review[3]}}</td>
+                    <td>{{review[2]}}</td>
+                    <td>{{review[4]}}</td>
                 </tr>
                 {% endfor %}
             </tbody>
@@ -64,5 +96,72 @@
         {% endif %}
     </div>
 </div>
+
+
+
+{%for i in (whatIOrdered | map(attribute='pid') | list | unique)%}
+{% if i not in  (pRated | map(attribute='pid') | list | unique)%}
+
+<h4>Purchased product(s) you haven't reviewed </h4>
+        <h6> </h6>
+        <table id="productRatings" class='table table-hover table-bordered'>
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Product ID <h6></h6> (click link for product)</th>     
+                </tr>
+            </thead>
+            <tbody>
+                
+                <tr>
+                    <td><a href="{{ url_for('products.product', id = i) }}">{{i}}</a>
+                    </td>
+                    
+                </tr>
+            </tbody>
+        </table>
+
+
+{%endif%}
+{%endfor%}
+
+
+
+
+
+<h4>Seller(s) you purchased from but you haven't reviewed </h4>
+        <h6> </h6>
+        <table id="sellerRatings" class='table table-hover table-bordered'>
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Seller ID <h6></h6> (click link for product)</th>
+                    <th scope="col">Seller first name</th>     
+                    <th scope="col">Seller last name</th>     
+                </tr>
+            </thead>
+            
+               
+            <tbody>
+                {%for orders in whatIOrdered%}
+                <tr>
+                    {% if orders.sellerid not in  (sRated | map(attribute='1') | list | unique)%}
+                    {%for s in seller_names%}
+                    {%if s[0] == orders.sellerid%}
+                    <td><a
+                        href="{{ url_for('sellerRatings.get_five_seller_feedbacks', sid = s[0], name = s[3]+ ' ' + s[4] , you=current_user.id) }}">{{s[0]}}</a>
+                    </td>
+                    <td>{{s[3]}}</td>
+                    <td>{{s[4]}}</td>
+                    
+                </tr>
+                {%endif%}
+                {%endfor%}
+                {%endif%}
+                {%endfor%}
+            </tbody>
+        </table>
+
+        
+
+
 
 {% endblock %}
