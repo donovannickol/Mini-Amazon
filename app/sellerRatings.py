@@ -19,7 +19,7 @@ def get_personal_sRatings(uid):
 @bp.route('/get_five_seller_feedbacks/<int:sid>/<name>/<int:you>/')
 def get_five_seller_feedbacks(sid, name, you):
     
-    whatIOrdered = OrderHistory.sidOrdered(you)
+    whatIOrdered = OrderHistory.sidOrdered(sid)
     specProRating = SellerRating.get_by_seller_id(sid) #product Ratings given a pid
 
     seller_id = sid
