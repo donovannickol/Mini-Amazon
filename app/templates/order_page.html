@@ -17,7 +17,8 @@
     <tbody>
         {% for item in order %}
         <tr>
-            <td><img src = "{{item.img_url}}" width = "100" height = "100"></img></td>
+            <td> <a href="{{url_for('products.product', id = item.pid)}}"><img src="{{item.img_url}}" width="100"
+                        height="100"></img></a> </td>
             <td>{{item.name}}</td>
             <td>${{item.price}}</td>
             <td>{{item.quantity}}</td>
