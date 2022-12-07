@@ -85,11 +85,15 @@ def user_reviews():
     return render_template('user_reviews.html', 
     firstname = firstname, get_reviews = get_reviews)
 
+def validate_email(form, field):
+    if (User.email_exists(field.data)):
+        raise ValidationError("Please enter a different email.")
+
 
 class RegistrationForm(FlaskForm):
     firstname = StringField('First Name', validators=[DataRequired()])
     lastname = StringField('Last Name', validators=[DataRequired()])
-    email = StringField('Email', validators=[DataRequired(), Email()])
+    email = StringField('Email', validators=[DataRequired(), Email(), validate_email])
     address = StringField('Address', validators=[DataRequired()])
     city = StringField('City', validators=[DataRequired()])
     state = StringField('State', validators=[DataRequired()])
