@@ -36,7 +36,7 @@ SELECT pg_catalog.setval('public.purchases_id_seq',
 \COPY productRating FROM '/home/vcm/mini-amazon/db/data/complete/reviews.csv' WITH DELIMITER '^' NULL '' CSV
 -- \COPY productRating FROM 'productRating.csv' WITH DELIMITER ',' NULL '' CSV
 
-\COPY SellerRating FROM 'sellerRating.csv' WITH DELIMITER ',' NULL '' CSV
+\COPY sellerRating FROM '/home/vcm/mini-amazon/db/data/complete/reviews.csv' WITH DELIMITER ',' NULL '' CSV
 
 -- \COPY message FROM 'messageThread.csv' WITH DELIMITER ',' NULL '' CSV
 SELECT pg_catalog.setval('public.messagethread_thread_id_seq',

@@ -135,17 +135,16 @@ WHERE id = :id
                                   description=description,
                                   img_url=img_url,
                                   category=category)
-
             # update Inventory as well
             app.db.execute('''
 UPDATE Inventory
-SET price = :price, count = :stock
+SET uid = :uid, pid = :pid, count = :stock, price = :price
 WHERE uid = :uid AND pid = :pid
 ''',
                             uid=uid,
                             pid=id,
-                            price=price,
-                            stock=stock)
+                            stock=stock,
+                            price=price)
             return rows
         except Exception as e:
             print(str(e))

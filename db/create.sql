@@ -65,7 +65,7 @@ CREATE TABLE OrderHistory(
     sellerid INT NOT NULL REFERENCES Users(id),
     quantity INT NOT NULL,
     price DECIMAL(16,2) NOT NULL,
-    fullfilldate timestamp without time zone NOT NULL DEFAULT (current_timestamp AT TIME ZONE 'UTC'),
+    fullfilldate timestamp without time zone,
     PRIMARY KEY(uid,order_number, pid, sellerid)
 );
 
