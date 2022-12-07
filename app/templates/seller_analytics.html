@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>Seller Analytics:</h2>
+
+
+<div class="col-md-5 text-center">
+    <img src={{monthly_revenue}} class='w-90' alt='Revenue by Month' />
+</div>
+
+<div class="col-md-5 text-center">
+    <img src={{monthly_volume}} class='w-90' alt='Volume by Month' />
+</div>
+
+<div class="col-md-5 text-center">
+    <img src={{product_volume}} class='w-90' alt='Volume by Product' />
+</div>
+
+
+{% endblock %}

@@ -45,6 +45,7 @@
         <a href="{{ url_for('sellerRatings.get_five_seller_feedbacks', sid = id, name = name, you=id) }}" type="button"
             class="btn btn-light">Seller reviews for me</a>
         <a href="{{ url_for('sellers.seller_history') }} " type="button" class="btn btn-light">Seller History</a>
+        <a href="{{ url_for('sellers.seller_analytics',sid=id) }} " type="button" class="btn btn-light">Seller Analytics</a>
         {% endif %}
         <h6> </h6>
         <!-- Search bar for users-->

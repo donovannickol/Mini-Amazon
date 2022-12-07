@@ -125,5 +125,15 @@ WHERE pid = :pid AND uid =:uid
         # ''',
         return rows
     
-
+    def get_seller_revenue(sid):
+        rows = app.db.execute('''
+        SELECT SUM(H.quantity), SUM(H.price), P.time_purchased
+        FROM OrderHistory H
+        JOIN Purchases P ON P.order_number = H.order_number
+        WHERE H.sellerid = :sid
+        GROUP BY P.time_purchased
+        ''',
+            sid = sid)
+        print(rows)
+        return rows
         

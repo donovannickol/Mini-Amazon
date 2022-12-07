@@ -14,10 +14,6 @@ class OrderHistory:
         self.price = price
         self.fullfilldate = fullfilldate
 
-
-    
-    
-        
     @staticmethod
     def pidOrdered(pid):
     #get order histories given a product id
@@ -48,7 +44,6 @@ class OrderHistory:
 
     @staticmethod
     def flip_fulfilled(order_number, sid):
-        print("reached")
         f = '%Y-%m-%d %H:%M:%S'
         rows = app.db.execute('''
         UPDATE OrderHistory
@@ -60,4 +55,34 @@ class OrderHistory:
         order_number = order_number,
         seller_id = sid,
         )
-        print(rows)
+
+    @staticmethod
+    def get_monthly_sales(sid):
+        #         self.uid = uid
+        # self.order_number = order_number
+        # self.pid = pid
+        # self.sellerid = sellerid
+        # self.quantity = quantity
+        # self.price = price
+        # self.fullfilldate = fullfilldate
+        rows = app.db.execute('''
+        SELECT SUM(H.quantity),SUM(H.price), P.purchase_date
+        FROM OrderHistory H
+        JOIN Purchases P ON H.order_number = P.ordernumber
+        WHERE sellerid = :sid
+        GROUPBY P.purchase_date
+        ''',
+        sid = sid)
+        return rows
+    
+    @staticmethod
+    def get_seller_quantity_by_item(sid):
+        rows = app.db.execute('''
+        SELECT SUM(H.quantity), P.name
+        FROM OrderHistory H
+        JOIN Products P ON H.pid = P.id
+        WHERE sellerid = :sid
+        GROUP BY P.name
+        ''',
+        sid = sid)
+        return rows

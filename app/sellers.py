@@ -4,6 +4,10 @@ from app import products
 from .models.product import Product
 from .models.inventory import Inventory
 from .models.orderhistory import OrderHistory
+import base64
+from io import BytesIO
+from matplotlib.figure import Figure
+import matplotlib.pyplot as plt
 
 from flask import render_template, request, redirect, url_for
 
@@ -67,3 +71,78 @@ def add_seller(id):
     form.price.data = product.price
     form.stock.data = 1
     return render_template('product_form.html', form=form, action="Edit Product")
+
+@bp.route('/sellers/seller_analytics/<int:sid>', methods=['GET','POST'])
+def seller_analytics(sid):
+    sales = Inventory.get_seller_revenue(sid)
+    item_sales = OrderHistory.get_seller_quantity_by_item(sid)
+
+
+    values_map = {}
+    volume_map = {}
+    for row in sales:
+        date = str(row[2].date())[:7]
+        values_map[date] = row[1]*row[0]
+        volume_map[date] = row[0]
+        print(values_map[date], volume_map[date])
+    
+    product_map = {}
+    for row in item_sales:
+        product_name = row[1][:15]
+        product_map[product_name] = row[0]
+
+    courses = list(values_map.keys())
+    values = list(values_map.values())
+
+    fig = Figure()
+    fig = plt.figure(figsize = (10, 5))
+
+    plt.bar(courses, values, color ='maroon',
+            width = 0.4)
+    
+    plt.xlabel("Month")
+    plt.ylabel("Revenue")
+    plt.title("Revenue by Month")
+    plt.show()
+    #save to temp buffer
+    buf1= BytesIO()
+    fig.savefig(buf1, format="png")
+
+    fig = Figure()
+    fig = plt.figure(figsize = (10, 5))
+    # creating the bar plot
+    plt.bar(volume_map.keys(), volume_map.values(), color ='maroon',
+            width = 0.4)
+    
+    plt.xlabel("Month")
+    plt.ylabel("Volume")
+    plt.title("Quantity Sold by Month")
+    plt.show()
+    #save to temp buffer
+    buf2= BytesIO()
+    fig.savefig(buf2, format="png")
+
+    fig = Figure()
+    fig = plt.figure(figsize = (10, 5))
+    # creating the bar plot
+    plt.bar(product_map.keys(), product_map.values(), color ='maroon',
+            width = 0.4)
+    print(product_map.keys())
+    print(product_map.values())
+
+    plt.xlabel("Product Name")
+    plt.ylabel("Volume")
+    plt.title("Quantity Sold by Product")
+    plt.show()
+    #save to temp buffer
+    buf3= BytesIO()
+    fig.savefig(buf3, format="png")
+
+    # Embed the result in the html output.
+    monthly_revenue = base64.b64encode(buf1.getbuffer()).decode("ascii")
+    monthly_volume = base64.b64encode(buf2.getbuffer()).decode("ascii")
+    product_volume = base64.b64encode(buf3.getbuffer()).decode("ascii")
+    return render_template("seller_analytics.html", monthly_revenue=f"data:image/png;base64,{monthly_revenue}",
+    monthly_volume=f"data:image/png;base64,{monthly_volume}",product_volume=f"data:image/png;base64,{product_volume}")
+    # return f"<img src='data:image/png;base64,{data}'/>"
+
