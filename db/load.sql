@@ -36,10 +36,47 @@ SELECT pg_catalog.setval('public.purchases_id_seq',
 \COPY productRating FROM '/home/vcm/mini-amazon/db/data/complete/reviews.csv' WITH DELIMITER '^' NULL '' CSV
 -- \COPY productRating FROM 'productRating.csv' WITH DELIMITER ',' NULL '' CSV
 
+<<<<<<< HEAD
 \COPY sellerRating FROM '/home/vcm/mini-amazon/db/data/complete/reviews.csv' WITH DELIMITER ',' NULL '' CSV
+=======
+\COPY SellerRating FROM 'sellerRating.csv' WITH DELIMITER ',' NULL '' CSV
+
+-- \COPY message FROM 'messageThread.csv' WITH DELIMITER ',' NULL '' CSV
+SELECT pg_catalog.setval('public.messagethread_thread_id_seq',
+                         (SELECT MAX(thread_id)+1 FROM messageThread),
+                         false);
+
+-- \COPY message FROM 'message.csv' WITH DELIMITER ',' NULL '' CSV
+
+>>>>>>> 093f693f010e9d5883ea296655bcb3ab95154997
 
 -- this is mostly an aesthetic table; SHOULD NOT BE USED FOR BUILDING THIS WEBSITE
 CREATE TABLE pRatingNAMES AS
-SELECT Users.firstname, Users.lastname, productRating.user_id, productRating.pid, productRating.starsOutOfFive, productRating.ratingContent, productRating.submissionDate
-FROM Users, productRating
-WHERE Users.id = productRating.user_id;
+SELECT Users.firstname, Users.lastname, productRating.user_id, productRating.pid, productRating.starsOutOfFive, productRating.ratingContent, productRating.submissionDate, Products.name
+FROM Users, productRating, Products
+WHERE Users.id = productRating.user_id
+AND productRating.pid = Products.id;
+
+
+
+CREATE TABLE sRatingNAMES AS  
+SELECT user_id, seller_id, starsOutOfFive, ratingContent, submissionDate, seller.firstname, seller.lastname
+FROM Users AS seller, SellerRating
+WHERE SellerRating.seller_id = seller.id;
+
+/*
+create or replace function insert_productRating()
+returns trigger as 
+$$
+begin  
+    insert into productRating (user_id, pid, starsOutOfFive, ratingContent, submissionDate)
+    VALUES(NEW.user_id, NEW.pid, NEW.starsOutOfFive, NEW.ratingContent, NEW.submissionDate);
+    RETURN null;
+end;
+$$ 
+language plpgsql;
+
+create trigger insert_productRating
+AFTER insert on productRating 
+for each row execute procedure insert_productRating();
+*/

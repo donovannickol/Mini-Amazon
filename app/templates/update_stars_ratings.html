@@ -31,7 +31,7 @@
   let feedstars = document.querySelector('input[name=feedstars]').value;
   let feedback = document.querySelector('input[name=feedback]').value;
   document.querySelector('form').onsubmit = function() {
-    this.setAttribute('action', "{{ url_for('sellerRatings.update', sid=sid, user_id=1, seller_name=seller_name) }}") //change user_id to uid
+    this.setAttribute('action', "{{ url_for('sellerRatings.update', sid=sid, user_id=uid, seller_name=seller_name) }}") //change user_id to uid
   }
 </script>
 {% endblock %}
@@ -55,7 +55,7 @@
     <tbody>
       
         {% for rating in get_sellRate%}
-          {% if (rating.user_id | string) == (1 | string)%} <!--replace 1 with current.user_id-->
+          {% if (rating.user_id | string) == (uid | string)%} <!--replace 1 with current.user_id-->
           <h5>Your current rating</h5>
           <tr>
             

@@ -6,27 +6,15 @@
     <div class="col-md-3">
         <h1>{{ name }}</h1>
         <h3>Account ID: {{ id }}</h3>
-        <p>Email: {{ email }}</p>
-        <p>Location: {{ location }}</p>
-        <!-- Private Account View -->
-        {% if current_user.id == id %}
-        <p>Balance: {{ balance }}</p>
-        <a href="{{ url_for('users.get_all_purchases') }}" type="button" class="btn btn-light">My purchases</a>
         {% if get_inventory %}
-        <a href="{{ url_for('sellers.seller_inventory', sid = id) }}" type="button" class="btn btn-light">My
-            Inventory</a>
+        <p>Email: {{ email }}</p>
+        <p>Address: {{ address }}</p>
         <a href="{{ url_for('sellerRatings.get_five_seller_feedbacks', id = id, name = name) }}" type="button"
-            class="btn btn-light">Seller reviews for me</a>
-        {% endif %}
-        <a href="{{ url_for('users.update_info') }}" type="button" class="btn btn-light">Update my information</a>
-        <a href="{{ url_for('users.update_balance') }}" type="button" class="btn btn-light">Update balance</a>
-        <a href="{{ url_for('products.new') }} " type="button" class="btn btn-light">Sell with StuffHub</a>
-        <a href="{{ url_for('sellers.seller_history') }} " type="button" class="btn btn-light">Seller History</a>
-        <a href="{{ url_for('users.logout') }}" type="button" class="btn btn-light">Log out</a>
+            class="btn btn-light">Seller reviews for {{firstname}}</a>
         {% endif %}
         <h6> </h6>
         <!-- Search bar for users-->
-        <form action="{{ url_for('users.userSearch', public = 'private')}}" method="POST">
+        <form action="{{ url_for('users.userSearch', public = 'public')}}" method="POST">
             <div class="input-group">
                 <input type="number" name="search_term" class="form-control" placeholder="Search Users (enter user ID)">
                 <div class="input-group-btn">
@@ -36,10 +24,9 @@
                 </div>
             </div>
         </form>
-        <h6> </h6>
-        <h5> {{error}}</h5>
+        <br></br>
         {% if get_reviews %}
-        <h4>My Reviews</h4>
+        <h4>{{firstname}}'s Reviews</h4>
         <h6> </h6>
         <table id="productRatings" class='table table-hover table-bordered'>
             <thead class="thead-dark">
@@ -62,6 +49,7 @@
                 {% endfor %}
             </tbody>
         </table>
+        <h6> </h6>
         {% endif %}
     </div>
 </div>
