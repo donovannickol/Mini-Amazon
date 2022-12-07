@@ -100,4 +100,19 @@ def change_quantity():
     quantity = request.form['quantity']
     Cart.change_quantity(uid, pid, sid, quantity)
     return redirect(url_for('cart.user_cart'))
+
+@bp.route('/get_order_for_seller/<int:sid>/<int:order_number>', methods=['GET','POST'])
+def get_order_for_seller(sid, order_number):
+    order = Cart.get_order_page_for_seller(sid,order_number)
+    fulfillstatus = "Fulfilled"
+    for item in order:
+        if item.fullfilldate == None:
+            fulfillstatus = "Not Fulfilled"
+    return render_template('order_page.html',
+                           order = order,
+                           fulfillstatus = fulfillstatus)
+
+
+
+
     

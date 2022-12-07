@@ -14,9 +14,9 @@
 
 <br><br>
 
-{% set inv_size = (seller_inventory) | length %}
+{% set inv_size = (detailed_seller_inventory) | length %}
 
-<h2>{{ Your Inventory }}:</h2>
+<!-- <h2>Inventory:</h2>
 <table id="inventory" class='table table-hover table-bordered'>
   <thead class="thead-dark">
     <tr>
@@ -28,12 +28,40 @@
   <tbody>
     {% for product in seller_inventory %}
       <tr>
-        <td scope="row"><a href="{{ url_for('products.product', id=product.pid) }}">{{product.pid}}</a></td>
+        <td scope="row"><a href="{{ url_for('products.product', id=product.pid) }}">{%if product.name|length > 120 and product.name[116] != " "%} {{product.name[:117] + "..."}} {% elif product.name|length > 120 %} {{product.name[:120]}} {% else %} {{product.name}}  {%endif%}</td>
         <td>{{product.count}}</td>
         <td>{{product.price}}</td>
       </tr>
     {% endfor %}
   </tbody>
-</table>
+</table> -->
+
+<!-- Content cards -->
+<h2 style="padding-left: 8%">Inventory:</h2>
+<div class="my-2" style="overflow-y: scroll; max-height: 80vh; overflow-x: hidden;">
+  {% for product_row in seller_inventory | batch(4, '&nbsp;') %}
+  <div class="row justify-content-center">
+      {% for product in product_row %}
+      {% if product is not string %}
+      <div class="card m-4 col-md-2 p-0" style="width:300px">
+        <img class="card-img-top" src="{{product.img}}" alt="Card image" style="width:100%; height:50%">
+        <div class="card-body">
+          <h4 class="card-title">{%if product.prod_name|length > 33 and product.prod_name[29] != " "%} {{product.prod_name[:30] + "..."}} {% elif product.prod_name|length > 33 %} {{product.prod_name[:30]}} {% else %} {{product.prod_name}}  {%endif%}</h4>
+          <p class="card-text">Price: {{"$" + (product.price | string) if (product.price == product.price) else 'Unavailable'}}<a href="{{ url_for('index.index', category=product.category, search_term=search_term, sort_by=sort_by) }}">
+            <br><span class="badge rounded-pill bg-info text-light">{%if product.category|length > 20 and product.category[16] != " "%} {{product.category[:17] + "..."}} {% elif product.category|length > 20 %} {{product.category[:17]}} {% else %} {{product.category}}  {%endif%}</span></a></p>
+          <!-- link to individual product page -->
+          <a href="{{ url_for('products.product', id=product.pid) }}" class="btn btn-primary stretched-link">View</a>
+          <!-- display out of stock message if stock is 0 -->
+          {% if product.stock == 0 %}
+            <span class="text-danger mx-5">Out of stock</span>
+          {% else %}
+          <p class="card-text">Stock: {{(product.count | string) + " Units"}}</span>
+          {% endif %}
+        </div>
+      </div>
+      {% endif %}
+      {% endfor %}
+  </div>
+  {% endfor %}
 
 {% endblock %}

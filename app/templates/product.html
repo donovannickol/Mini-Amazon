@@ -10,11 +10,8 @@
       <!-- show edit button if current user is a seller of this product -->
       {% if current_user.id in (sellers | map(attribute='uid') | list) %}
       <a href="{{ url_for('products.edit', id=product.id) }}" class="btn btn-primary">Edit Product</a>
-      {%if (sellers | map(attribute='uid') |list ) | length != 1%}
       <a href="{{ url_for('sellers.delete_inventory', sid=current_user.id,pid=product.id) }}" class="btn btn-primary">Delete Product</a>
       <!-- TODO: eventually make it possible so that the only seller of a product could delete it entirely -->
-
-      {% endif %}   
       {% endif %}   
       <h1>{{product.name}}</h1>
       <div class="my-3">

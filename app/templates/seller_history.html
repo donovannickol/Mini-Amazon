@@ -6,7 +6,7 @@
   <script>
     $(document).ready(function () {
       $('#inventory').DataTable({
-        "order": [[ 3, "desc" ]]
+        "order": [[7, "desc" ]]
       });
     });
   </script>
@@ -26,23 +26,31 @@
         <th scope="col">Quantity</th>
         <th scope="col">Price</th>
         <th scope="price">Fullfilled</th>
+        <th scope="price">Purchase Time</th>
     </tr>
   </thead>
   <tbody>
       {% for sale in seller_history %}
       <tr>
           <!-- SELECT H.order_number, U.firstname, U.lastname, U.address, U.email, SUM(H.quantity), SUM(H.price), H.fullfilldate -->
-        <td scope="row"><a href="{{ url_for('cart.get_order_page', order_number = sale[0]) }}">{{sale[0]}}</a></td>
+        <td scope="row"><a href="{{ url_for('cart.get_order_for_seller',sid=current_user.id, order_number = sale[0]) }}">{{sale[0]}}</a></td>
         <td>{{sale[1] + " " + sale[2]}}</td>
         <td>{{sale[3]}}</td>
         <td>{{sale[4]}}</td>
         <td>{{sale[5]}}</td>
         <td>{{sale[6]}}</td>
-        <td><div class="form-check form-switch">
-            <input class="form-check-input" type="checkbox" id="mySwitch" name="darkmode" value="no" checked>
-            <label class="form-check-label" for="mySwitch"></label>
-          </div></td>
-
+        {% if sale[7] == None %}
+        <td class="text-center">
+          <a href="{{ url_for('sellers.flip_fulfill', order_number=sale[0])}}" type="icon" class="bi bi-toggle-off"
+          style="font-size: 30px"></a>
+        </td> 
+        {% else %}
+        <td class="text-center">
+          <a href="{{ url_for('sellers.flip_fulfill', order_number=sale[0])}}" type="icon" class="bi bi-toggle-on"
+          style="font-size: 30px"></a>
+        </td>
+        {% endif %}
+        <td>{{sale[8]}}</td>
       </tr>
       {% endfor %}
   </tbody>

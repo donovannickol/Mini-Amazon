@@ -3,6 +3,7 @@ from flask_login import current_user
 from app import products
 from .models.product import Product
 from .models.inventory import Inventory
+from .models.orderhistory import OrderHistory
 
 from flask import render_template, request, redirect, url_for
 
@@ -13,7 +14,15 @@ bp = Blueprint('sellers', __name__)
 def seller_inventory():
     sid = request.args.get('sid')
     seller_inventory = Inventory.get_by_uid(sid)
-    return render_template('HW4/seller_inventory.html',
+    return render_template('inventory.html',
+                           sid = sid,
+                           seller_inventory = seller_inventory)
+
+@bp.route('/full_seller_inventory/', methods=['POST', 'GET'])
+def get_full_seller_inventory():
+    sid = request.args.get('sid')
+    seller_inventory = Inventory.get_full_details_by_uid(sid)
+    return render_template('inventory.html',
                            sid = sid,
                            seller_inventory = seller_inventory)
 
@@ -28,7 +37,18 @@ def seller_history():
     seller_inventory = Inventory.get_seller_detailed_history(sid)
     return render_template('seller_history.html',
                            sid = sid,
-                           seller_history = seller_inventory)
+                           seller_history = seller_inventory,
+                           order_history = OrderHistory)
+
+@bp.route('/seller_history/fulfill/<int:order_number>', methods=['POST','GET'])
+def flip_fulfill(order_number):
+    sid = request.form['sid'] if request.method == "POST" else current_user.id
+    OrderHistory.flip_fulfilled(order_number,sid)
+    seller_inventory = Inventory.get_seller_detailed_history(sid)
+    return render_template('seller_history.html',
+                           sid = sid,
+                           seller_history = seller_inventory,
+                           order_history = OrderHistory)
 
 @bp.route('/sellers/add/<int:id>', methods=['GET', 'POST'])
 def add_seller(id):
@@ -45,5 +65,5 @@ def add_seller(id):
     form.img_url.data = product.img_url
     form.category.data = product.category
     form.price.data = product.price
-    form.stock.data = product.stock
+    form.stock.data = 1
     return render_template('product_form.html', form=form, action="Edit Product")
