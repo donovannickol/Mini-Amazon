@@ -10,6 +10,7 @@ from .models.purchase import Purchase
 from .models.cart import Cart
 from .models.pRatingNAMES import pRatingNAMES
 from .models.inventory import Inventory
+from .models.orderhistory import OrderHistory
 from datetime import datetime
 
 
@@ -47,6 +48,7 @@ def get_all_purchases():
     uid = current_user.id
     get_all_purchases = Purchase.get_all_by_uid(uid)
     firstname = current_user.firstname
+    whatIOrdered = OrderHistory.productsUserOrd(uid)  #order history of a given pid
     return render_template('get_all_purchases.html',
                             get_all_purchases = get_all_purchases, 
                             firstname = firstname, whatIOrdered=whatIOrdered)
