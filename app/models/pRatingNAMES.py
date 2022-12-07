@@ -15,6 +15,7 @@ class pRatingNAMES:
         self.starsOutOfFive = starsOutOfFive
         self.ratingContent = ratingContent
         self.submissionDate = submissionDate
+        
 
     @staticmethod
     def get(user_id):
@@ -22,9 +23,9 @@ class pRatingNAMES:
             SELECT *
             FROM pRatingNAMES
             WHERE user_id = :user_id
-            
+            ORDER BY submissionDate DESC
             ''', user_id= user_id)
-        return [pRatingNAMES(*row) for row in rows]
+        return rows
 
     @staticmethod
     def getNamesRatings(pid):
@@ -34,7 +35,19 @@ class pRatingNAMES:
             WHERE pid = :pid
             
             ''', pid=pid)
-        return [pRatingNAMES(*row) for row in rows]
+        #return [pRatingNAMES(*row) for row in rows]
+        return rows
+
+    @staticmethod
+    #insert a rating
+    def insert_p_rating(user_id, pid, newfeedback, newstars, fName, lName):
+        rows = app.db.execute('''
+            INSERT INTO pRatingNAMES (firstname, lastname, user_id, pid, starsOutOfFive, ratingContent, submissionDate)
+            VALUES (:fName, :lName, :user_id, :pid, :newstars, :newfeedback, NOW())
+            ''', newfeedback = newfeedback, newstars=newstars, user_id=user_id, pid=pid, fName=fName, lName=lName)
+        #return [ProductRating(*row) for row in rows]
+        return rows
+     
 
     @staticmethod
     #update a rating

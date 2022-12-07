@@ -1,5 +1,6 @@
 from flask import current_app as app
 #from .user import User
+from .product import Product
 
 
 
@@ -13,7 +14,38 @@ class ProductRating:
         self.ratingContent = ratingContent
         self.submissionDate = submissionDate
 
-    
+    @staticmethod
+    def pidNameMerger(uid):
+        rows = app.db.execute('''
+                
+
+                SELECT *
+                FROM productRating 
+                WHERE user_id = :uid
+                
+                ''',
+                              uid=uid)
+
+        prows = app.db.execute('''
+                SELECT *
+                FROM Products
+                              
+                ''')
+
+        merged_tables = []
+        
+
+        for srow in rows:
+            for urow in prows:
+                if srow[1] == urow[0]:
+                    temp = list(srow)
+                    urow = list(urow)
+                    temp.append(urow[1])
+                    
+                    merged_tables.append(temp)
+                    
+        
+        return merged_tables
     
     @staticmethod
     #get all product rating given user id and pid
@@ -86,6 +118,18 @@ class ProductRating:
             AND pid = :pid''', user_id=user_id, pid=pid)
         #return [ProductRating(*row) for row in rows]
         return rows
+    
+    @staticmethod
+    #insert a rating
+    def insert_p_rating(user_id, pid, newfeedback, newstars):
+        rows = app.db.execute('''
+            INSERT INTO productRating (user_id, pid, starsOutOfFive, ratingContent, submissionDate)
+            VALUES (:user_id, :pid, :newstars, :newfeedback, NOW())
+            ''', newfeedback = newfeedback, newstars=newstars, user_id=user_id, pid=pid)
+        #return [ProductRating(*row) for row in rows]
+        return rows
+
+    
 
     
 

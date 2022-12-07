@@ -13,7 +13,8 @@
         <a href="{{ url_for('sellers.seller_inventory') }}" type="button" class="btn btn-light">My Inventory</a>
         <a href="{{ url_for('users.update_info') }}" type="button" class="btn btn-light">Update my information</a>
         <a href="{{ url_for('users.update_balance') }}" type="button" class="btn btn-light">Update balance</a>
-
+        <a href="{{ url_for('productRatings.get_personal_pRatings', uid=current_user.id) }}" type="button" class="btn btn-light">Update your product feedbacks</a> <!-- change uid to current_user.id -->
+        <a href="{{ url_for('sellerRatings.get_personal_sRatings', uid=current_user.id) }}" type="button" class="btn btn-light">Update your seller feedbacks</a> <!-- change uid to current_user.id -->
     </div>
 </div>
 
