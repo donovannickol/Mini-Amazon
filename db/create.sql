@@ -37,8 +37,7 @@ CREATE TABLE Purchases (
     total_price DECIMAL(16,2) NOT NULL,
     num_of_items INT NOT NULL,
     order_status VARCHAR(255) NOT NULL,
-    time_purchased timestamp without time zone NOT NULL DEFAULT (current_timestamp AT TIME ZONE 'UTC'),
-    order_number INT NOT NULL 
+    time_purchased timestamp without time zone NOT NULL DEFAULT (current_timestamp AT TIME ZONE 'UTC')
 );
 
 CREATE TABLE Cart(
