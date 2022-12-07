@@ -32,7 +32,7 @@ sales_df = pd.DataFrame()
 rng = np.random.default_rng()
 
 ##Global Variables -- values set within their respective functions
-active_users = 500
+active_users = 5000
 # active_users=100
 average_num_sellers = 8 ## Approximate number of sellers for each products
 unmarked_category = "Miscellaneous" #Default label for any product that doesn't have a category
