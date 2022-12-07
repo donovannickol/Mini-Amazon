@@ -57,7 +57,7 @@ WHERE email = :email
             WHERE id = :id
             """, firstname = firstname, lastname = lastname,
                 email = email, address = address,
-                city = city, state = state, password = password, id = id)
+                city = city, state = state, password = generate_password_hash(password), id = id)
             return rows
         except Exception as e:
            print(str(e))
@@ -69,8 +69,8 @@ WHERE email = :email
             UPDATE Users
             SET balance = (:balance + :add - :withdraw)
             WHERE id = :id
-            """, balance = balance, add = add, 
-                 withdraw = withdraw, id = id)
+            """, balance = balance, withdraw = withdraw,
+                 add = add, id = id)
             return rows
         except Exception as e:
             print(str(e))

@@ -14,7 +14,35 @@
 
 <br><br>
 
+{% if get_all_purchases %}
+
 <h2>{{firstname}}'s Purchases</h2>
+<div class="col-md-5">
+    <form action="{{ url_for('users.get_all_purchases_less_than_max')}}" method="POST">
+        <div class="input-group">
+            <input type="decimal" name="max" class="form-control" placeholder="Maximum Price">
+            <div class="input-group-btn">
+                <button class="btn btn-default" type="submit">
+                    <i class="bi bi-search"></i>
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+<h7> </h7>
+<div class="col-md-5">
+    <form action="{{ url_for('users.get_all_purchases_less_than_items')}}" method="POST">
+        <div class="input-group">
+            <input type="number" name="max" class="form-control" placeholder="Max. Number of Items">
+            <div class="input-group-btn">
+                <button class="btn btn-default" type="submit">
+                    <i class="bi bi-search"></i>
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+<h6> </h6>
 <table id="purchases" class='table table-hover table-bordered'>
     <thead class="thead-dark">
         <tr>
@@ -28,7 +56,9 @@
     <tbody>
         {% for purchase in get_all_purchases %}
         <tr>
-            <td>{{purchase.id}}</td>
+            <td><a
+                    href="{{ url_for('cart.get_order_page', order_number = purchase.order_number) }}">{{purchase.order_number}}</a>
+            </td>
             <td>{{"${:.2f}".format(purchase.total_price)}}</td>
             <td>{{purchase.num_of_items}}</td>
             <td>{{purchase.order_status}}</td>
@@ -37,5 +67,10 @@
         {% endfor %}
     </tbody>
 </table>
+
+{% else %}
+<h1>No purchases available to display - make some purchases!</h1>
+
+{% endif %}
 
 {% endblock %}

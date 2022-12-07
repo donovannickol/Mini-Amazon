@@ -89,12 +89,12 @@ VALUES (:uid, :pid, :sid, :quantity, :price)
         ''', uid = uid, order_number = order_number, pid = pid, sid = sid, quantity = quantity, price = price)
 
         app.db.execute('''UPDATE Users 
-        SET balance = balance - :price * :quantity
+        SET balance = balance - :price 
         WHERE id = :uid
         ''', quantity = quantity, price = price, uid = uid)
 
         app.db.execute('''Update Users 
-        SET balance = balance + :price * :quantity
+        SET balance = balance + :price 
         WHERE id = :sid
         ''',sid = sid, price = price, quantity = quantity)
 
