@@ -10,13 +10,13 @@
         <p>Location: {{ location }}</p>
         <p>Balance: {{ balance }}</p>
         <a href="{{ url_for('users.get_all_purchases') }}" type="button" class="btn btn-light">My purchases</a>
+        <a href="{{ url_for('users.update_info') }}" type="button" class="btn btn-light">Update my information</a>
+        <a href="{{ url_for('users.update_balance') }}" type="button" class="btn btn-light">Update balance</a>
         {% if get_inventory %}
         <a href="{{ url_for('sellers.seller_inventory', sid = id) }}" type="button" class="btn btn-light">My
             Inventory</a>
         <a href="{{ url_for('sellerRatings.get_five_seller_feedbacks', sid = id, name = name, you=id) }}" type="button"
             class="btn btn-light">Seller reviews for me</a>
-        <a href="{{ url_for('users.update_info') }}" type="button" class="btn btn-light">Update my information</a>
-        <a href="{{ url_for('users.update_balance') }}" type="button" class="btn btn-light">Update balance</a>
         <a href="{{ url_for('products.new') }} " type="button" class="btn btn-light">Sell with StuffHub</a>
         <a href="{{ url_for('sellers.seller_history') }} " type="button" class="btn btn-light">Seller History</a>
         <a href="{{ url_for('users.logout') }}" type="button" class="btn btn-light">Log out</a>
