@@ -120,3 +120,14 @@ VALUES (:uid, :pid, :sid, :quantity, :price)
         AND OrderHistory.pid = Products.id
         ''',order_number=order_number)
         return [row for row in rows]
+
+    @staticmethod
+    def get_order_page_for_seller(sid,order_number):
+        rows = app.db.execute('''
+        SELECT Products.name, Products.img_url, OrderHistory.quantity, OrderHistory.price, pid, sellerid, fullfilldate
+        FROM OrderHistory, Products
+        WHERE order_number = :order_number AND OrderHistory.sellerid =:sellerid
+        AND OrderHistory.pid = Products.id
+        ''',order_number=order_number,
+        sellerid=sid)
+        return [row for row in rows]

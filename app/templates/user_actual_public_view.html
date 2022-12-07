@@ -9,7 +9,7 @@
         {% if get_inventory %}
         <p>Email: {{ email }}</p>
         <p>Address: {{ address }}</p>
-        <a href="{{ url_for('sellerRatings.get_five_seller_feedbacks', id = id, name = name) }}" type="button"
+        <a href="{{ url_for('sellerRatings.get_five_seller_feedbacks', sid = id, name = name,you=id) }}" type="button"
             class="btn btn-light">Seller reviews for {{firstname}}</a>
         {% endif %}
         <h6> </h6>
