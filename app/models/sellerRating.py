@@ -174,7 +174,7 @@ class SellerRating:
         #return [ProductRating(*row) for row in rows]
         return rows
     
-    staticmethod
+    @staticmethod
     #update date
     def updateDate(user_id, sid):
         
@@ -186,3 +186,31 @@ class SellerRating:
             AND seller_id = :sid''', user_id=user_id, sid=sid)
         #return [ProductRating(*row) for row in rows]
         return rows
+
+    @staticmethod
+    def get_average_rating(seller_id):
+        rows = app.db.execute('''
+        SELECT AVG(starsOutOfFive)
+        FROM SellerRating
+        WHERE seller_id = :seller_id
+        GROUP BY seller_id
+        ''',
+        seller_id = seller_id)
+        print("this",rows)
+        if(len(rows) == 0):
+            return None
+        return rows[0][0]
+    
+    @staticmethod
+    def get_numbers_of_rating(user_id):
+        rows = app.db.execute('''
+        SELECT COUNT(*)
+        FROM SellerRating
+        WHERE user_id = :user_id
+        GROUP BY user_id
+        ''',
+        user_id = user_id)
+        print("this",rows)
+        if(len(rows) == 0):
+            return None
+        return rows[0][0]
