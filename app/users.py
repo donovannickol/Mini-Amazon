@@ -143,6 +143,8 @@ def publicView():
     get_reviews = pRatingNAMES.get(id_number)
     get_sreviews = SellerRating.get_personal(current_user.id)
     get_inventory = Inventory.get_by_uid(id_number)
+    average_review =SellerRating.get_average_rating(current_user.id)
+    number_of_reviews = SellerRating.get_numbers_of_rating(current_user.id)
 
     pRated = ProductRating.get_by_user_id_tot(id_number)
     whatIOrdered = OrderHistory.productsUserOrd(id_number)
@@ -156,7 +158,8 @@ def publicView():
     balance = "$" + str(current_user.balance)
     return render_template('user_public_view.html', 
     id = id_number, name = name, email = email, location = location, balance = balance,
-    error = error, get_reviews = get_reviews, get_inventory = get_inventory, get_sreviews=get_sreviews, whatIOrdered=whatIOrdered, pRated=pRated, sRated=sRated, seller_names=seller_names)
+    error = error, get_reviews = get_reviews, get_inventory = get_inventory, get_sreviews=get_sreviews, whatIOrdered=whatIOrdered, pRated=pRated, sRated=sRated, seller_names=seller_names,
+    number_of_reviews = number_of_reviews, rating=average_review)
 
 @bp.route('/user_search', methods = ['GET', 'POST'])
 def userSearch():
@@ -174,6 +177,8 @@ def getPublicView():
     the_user = User.get(id_number)
     if the_user == None:
         return redirect(url_for('users.publicView', error = "User does not exist"))
+    average_review =SellerRating.get_average_rating(id_number)
+    number_of_reviews = SellerRating.get_numbers_of_rating(id_number)
     name = f'{the_user.firstname} {the_user.lastname}'
     firstname = the_user.firstname
     email = the_user.email
@@ -183,7 +188,7 @@ def getPublicView():
     get_inventory = Inventory.get_by_uid(id_number)
     return render_template('user_actual_public_view.html', 
     id  = id_number, name = name, email = email, balance = balance, get_reviews = get_reviews,
-    get_inventory = get_inventory, address = address, firstname = firstname)
+    get_inventory = get_inventory, address = address, firstname = firstname, number_of_reviews = number_of_reviews, rating=average_review)
 
 @bp.route('/update_info', methods = ['GET', 'POST'])
 def update_info():
