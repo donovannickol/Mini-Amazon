@@ -4,9 +4,10 @@ Team name: Rainforest
 Gitlab repository: https://gitlab.oit.duke.edu/cs-316-team-rainforest/mini-amazon
 Demo video: http://youtu.be/stfeceOZUkk
 
-All the code for generating and populating code can be found within db/generated. This is done in several steps. The first layer 
-data_cleaner which interacts with data scraped from amazon and reformats it in a meaningful way. Then, there are gen_extras and gen_decsriptions
-which interact with Faker and OpenAI to produce realistic data. Finally, there is gen.py which reformats all the previously produced data to fit the SQL schemas
+
+All the code for generating and populating the databases can be found within db/data. The data was generated in steps. The first level is the source level, within db/data/gen/sources. In here there is code to take scraped data and plain texts and reformat them into a more usable format.
+At the second level, in the db/data/gen/ai_supplemented directory, the python file gen.py calls on products.py, reviews.py, and conversations.py to generate realistic data
+using GPT-3. Then, at the third and final level, the raw data that has been transformed is finally used to atomically generate all the daatasets such that they all satisfy foreign key and uniqueness constraints, and this is through data/gen.
 
 Donovan's updates: Created add to cart button on product page, created cart page, created remove from cart button, created change quantity feature.
 Joshua's weekly update: Created wireframe for feedback, view of product reviews, view of seller reviews, view of reviews by user, and messaging. Added code for creating sample product and seller feedback, as well as messaging.
