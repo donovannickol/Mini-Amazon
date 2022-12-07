@@ -36,10 +36,7 @@ SELECT pg_catalog.setval('public.purchases_id_seq',
 \COPY productRating FROM '/home/vcm/mini-amazon/db/data/complete/reviews.csv' WITH DELIMITER '^' NULL '' CSV
 -- \COPY productRating FROM 'productRating.csv' WITH DELIMITER ',' NULL '' CSV
 
-<<<<<<< HEAD
 \COPY sellerRating FROM '/home/vcm/mini-amazon/db/data/complete/reviews.csv' WITH DELIMITER ',' NULL '' CSV
-=======
-\COPY SellerRating FROM 'sellerRating.csv' WITH DELIMITER ',' NULL '' CSV
 
 -- \COPY message FROM 'messageThread.csv' WITH DELIMITER ',' NULL '' CSV
 SELECT pg_catalog.setval('public.messagethread_thread_id_seq',
@@ -48,7 +45,6 @@ SELECT pg_catalog.setval('public.messagethread_thread_id_seq',
 
 -- \COPY message FROM 'message.csv' WITH DELIMITER ',' NULL '' CSV
 
->>>>>>> 093f693f010e9d5883ea296655bcb3ab95154997
 
 -- this is mostly an aesthetic table; SHOULD NOT BE USED FOR BUILDING THIS WEBSITE
 CREATE TABLE pRatingNAMES AS

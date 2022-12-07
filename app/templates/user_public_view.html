@@ -8,16 +8,13 @@
         <h3>Account ID: {{ id }}</h3>
         <p>Email: {{ email }}</p>
         <p>Location: {{ location }}</p>
-        <!-- Private Account View -->
-        {% if current_user.id == id %}
         <p>Balance: {{ balance }}</p>
         <a href="{{ url_for('users.get_all_purchases') }}" type="button" class="btn btn-light">My purchases</a>
         {% if get_inventory %}
         <a href="{{ url_for('sellers.seller_inventory', sid = id) }}" type="button" class="btn btn-light">My
             Inventory</a>
-        <a href="{{ url_for('sellerRatings.get_five_seller_feedbacks', id = id, name = name) }}" type="button"
+        <a href="{{ url_for('sellerRatings.get_five_seller_feedbacks', sid = id, name = name, you=id) }}" type="button"
             class="btn btn-light">Seller reviews for me</a>
-        {% endif %}
         <a href="{{ url_for('users.update_info') }}" type="button" class="btn btn-light">Update my information</a>
         <a href="{{ url_for('users.update_balance') }}" type="button" class="btn btn-light">Update balance</a>
         <a href="{{ url_for('products.new') }} " type="button" class="btn btn-light">Sell with StuffHub</a>
