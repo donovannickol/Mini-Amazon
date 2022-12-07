@@ -13,8 +13,7 @@
       {%if (sellers | map(attribute='uid') |list ) | length != 1%}
       <a href="{{ url_for('sellers.delete_inventory', sid=current_user.id,pid=product.id) }}" class="btn btn-primary">Delete Product</a>
       <!-- TODO: eventually make it possible so that the only seller of a product could delete it entirely -->
-      <!-- {% else %}
-      <a href="{{ url_for('products.delete_product',id=product.id) }}" class="btn btn-primary">Delete Product</a> -->
+
       {% endif %}   
       {% endif %}   
       <h1>{{product.name}}</h1>

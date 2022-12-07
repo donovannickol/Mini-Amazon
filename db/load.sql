@@ -36,7 +36,7 @@ SELECT pg_catalog.setval('public.purchases_id_seq',
 \COPY productRating FROM '/home/vcm/mini-amazon/db/data/complete/reviews.csv' WITH DELIMITER '^' NULL '' CSV
 -- \COPY productRating FROM 'productRating.csv' WITH DELIMITER ',' NULL '' CSV
 
-\COPY sellerRating FROM 'sellerRating.csv' WITH DELIMITER ',' NULL '' CSV
+\COPY sellerRating FROM '/home/vcm/mini-amazon/db/data/complete/reviews.csv' WITH DELIMITER ',' NULL '' CSV
 
 -- this is mostly an aesthetic table; SHOULD NOT BE USED FOR BUILDING THIS WEBSITE
 CREATE TABLE pRatingNAMES AS

@@ -1,6 +1,5 @@
 from flask import current_app as app
 
-
 class Inventory:
     """
     This is just a TEMPLATE for Inventory, you should change this by adding or 
@@ -93,11 +92,19 @@ WHERE pid = :pid AND uid =:uid
 
     def get_seller_detailed_history(sid):
         rows = app.db.execute('''
-        SELECT U.firstname, U.lastname, U.email, H.quantity, H.price, H.fullfilldate
+        SELECT H.order_number, U.firstname, U.lastname, U.address, U.email, SUM(H.quantity), SUM(H.price), H.fullfilldate
         FROM OrderHistory H
-        JOIN Users U ON u.uid = H.uid
+        JOIN Users U ON u.id = H.uid
         WHERE H.sellerid = :sid
+        GROUP BY H.order_number, H.fullfilldate, U.firstname, U.lastname, U.email, U.address
         ''',
             sid = sid)
-        return [Inventory(*row) for row in rows]
+        #                         rows = app.db.execute('''
+        # SELECT H.order_number, U.firstname, U.lastname, U.email, H.quantity, H.price, H.fullfilldate
+        # FROM OrderHistory H
+        # JOIN Users U ON u.id = H.uid
+        # ''',
+        return rows
+    
+
         

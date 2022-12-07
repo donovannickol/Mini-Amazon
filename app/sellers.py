@@ -3,9 +3,6 @@ from flask_login import current_user
 from app import products
 from .models.product import Product
 from .models.inventory import Inventory
-from .models.productRating import ProductRating
-from .models.orderhistory import OrderHistory
-from.models.pRatingNAMES import pRatingNAMES
 
 from flask import render_template, request, redirect, url_for
 
@@ -31,7 +28,7 @@ def seller_history():
     seller_inventory = Inventory.get_seller_detailed_history(sid)
     return render_template('seller_history.html',
                            sid = sid,
-                           seller_history = seller_history)
+                           seller_history = seller_inventory)
 
 @bp.route('/sellers/add/<int:id>', methods=['GET', 'POST'])
 def add_seller(id):
