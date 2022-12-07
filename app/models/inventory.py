@@ -26,6 +26,17 @@ WHERE pid = :pid
         return [Inventory(*row) for row in rows]
 
     @staticmethod
+    def get_by_pid_and_sid(pid, sid):
+        rows = app.db.execute('''
+        SELECT uid, pid, count, price
+        FROM Inventory
+        WHERE pid = :pid AND uid = :uid
+        ''',
+                pid=pid,
+            uid=sid)
+        return [Inventory(*row) for row in rows][0]
+
+    @staticmethod
     def get_by_uid(uid):
         rows = app.db.execute('''
 SELECT uid, pid, count, price

@@ -14,7 +14,15 @@ bp = Blueprint('sellers', __name__)
 def seller_inventory():
     sid = request.args.get('sid')
     seller_inventory = Inventory.get_by_uid(sid)
-    return render_template('HW4/seller_inventory.html',
+    return render_template('inventory.html',
+                           sid = sid,
+                           seller_inventory = seller_inventory)
+
+@bp.route('/full_seller_inventory/', methods=['POST', 'GET'])
+def get_full_seller_inventory():
+    sid = request.args.get('sid')
+    seller_inventory = Inventory.get_full_details_by_uid(sid)
+    return render_template('inventory.html',
                            sid = sid,
                            seller_inventory = seller_inventory)
 
@@ -57,5 +65,5 @@ def add_seller(id):
     form.img_url.data = product.img_url
     form.category.data = product.category
     form.price.data = product.price
-    form.stock.data = product.stock
+    form.stock.data = 1
     return render_template('product_form.html', form=form, action="Edit Product")

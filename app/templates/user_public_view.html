@@ -17,7 +17,7 @@
         <a href="{{ url_for('sellerRatings.get_personal_sRatings', uid=current_user.id) }}" type="button" class="btn btn-light">Update your seller feedbacks</a> <!-- change uid to current_user.id -->
         <a href="{{ url_for('users.logout') }}" type="button" class="btn btn-light">Log out</a>
         {% if get_inventory %}
-        <a href="{{ url_for('sellers.seller_inventory', sid = id) }}" type="button" class="btn btn-light">My
+        <a href="{{ url_for('sellers.get_full_seller_inventory', sid = id) }}" type="button" class="btn btn-light">My
             Inventory</a>
         <a href="{{ url_for('sellerRatings.get_five_seller_feedbacks', sid = id, name = name, you=id) }}" type="button"
             class="btn btn-light">Seller reviews for me</a>

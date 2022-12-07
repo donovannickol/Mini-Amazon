@@ -69,7 +69,8 @@ def edit(id):
     form.img_url.data = product.img_url
     form.category.data = product.category
     form.price.data = product.price
-    form.stock.data = product.stock
+    product_stock = (Inventory.get_by_pid_and_sid(product.id, current_user.id)).count
+    form.stock.data = product_stock
     return render_template('product_form.html', form=form, action="Edit Product")
 
 @bp.route('/products/new', methods=['GET', 'POST'])
