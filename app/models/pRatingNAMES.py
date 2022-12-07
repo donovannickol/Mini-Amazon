@@ -33,7 +33,7 @@ class pRatingNAMES:
             SELECT *
             FROM pRatingNAMES
             WHERE pid = :pid
-            
+            ORDER BY submissionDate DESC
             ''', pid=pid)
         #return [pRatingNAMES(*row) for row in rows]
         return rows

@@ -106,7 +106,7 @@
 
       <!--    -->
 
-      {% if current_user.id not in  (whatIOrdered | map(attribute='user_id') | list) %}
+      {% if current_user.id not in  (whatIOrdered | map(attribute='uid') | list) %}
       <div>You haven't purchased this product. Make a purchase to leave a review! </div>
       {% elif current_user.id not in (specProRating | map(attribute='user_id') | list) %}
      
@@ -194,5 +194,5 @@
   </div>
 </div>
 </div>
-{{specProRating}}
+
 {% endblock %}

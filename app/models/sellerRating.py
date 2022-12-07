@@ -14,6 +14,16 @@ class SellerRating:
         self.submissionDate = submissionDate
 
     @staticmethod
+    def get_pot_sellers():
+        #user_id, seller_id, starsOutOfFive, ratingContent, submissionDate
+        rows = app.db.execute('''
+            SELECT *
+            FROM Users
+            ''')
+        return rows
+        #return rows
+
+    @staticmethod
     def get_all():
         #user_id, seller_id, starsOutOfFive, ratingContent, submissionDate
         rows = app.db.execute('''

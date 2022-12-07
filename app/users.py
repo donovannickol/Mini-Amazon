@@ -10,6 +10,10 @@ from .models.purchase import Purchase
 from .models.cart import Cart
 from .models.pRatingNAMES import pRatingNAMES
 from .models.inventory import Inventory
+from .models.orderhistory import OrderHistory
+from .models.sellerRating import SellerRating
+from .models.productRating import ProductRating
+
 from datetime import datetime
 
 
@@ -47,6 +51,7 @@ def get_all_purchases():
     uid = current_user.id
     get_all_purchases = Purchase.get_all_by_uid(uid)
     firstname = current_user.firstname
+    whatIOrdered = OrderHistory.productsUserOrd(uid)  #order history of a given pid
     return render_template('get_all_purchases.html',
                             get_all_purchases = get_all_purchases, 
                             firstname = firstname, whatIOrdered=whatIOrdered)
@@ -136,7 +141,14 @@ def publicView():
     name = f'{current_user.firstname} {current_user.lastname}'
     email = current_user.email
     get_reviews = pRatingNAMES.get(id_number)
+    get_sreviews = SellerRating.get_personal(current_user.id)
     get_inventory = Inventory.get_by_uid(id_number)
+
+    pRated = ProductRating.get_by_user_id_tot(id_number)
+    whatIOrdered = OrderHistory.productsUserOrd(id_number)
+    sRated = SellerRating.get_personal(id_number)
+    seller_names = SellerRating.get_pot_sellers()
+
     error = ''
     if request.args.get('error'):
         error = request.args.get('error')    
@@ -144,7 +156,7 @@ def publicView():
     balance = "$" + str(current_user.balance)
     return render_template('user_public_view.html', 
     id = id_number, name = name, email = email, location = location, balance = balance,
-    error = error, get_reviews = get_reviews, get_inventory = get_inventory)
+    error = error, get_reviews = get_reviews, get_inventory = get_inventory, get_sreviews=get_sreviews, whatIOrdered=whatIOrdered, pRated=pRated, sRated=sRated, seller_names=seller_names)
 
 @bp.route('/user_search', methods = ['GET', 'POST'])
 def userSearch():
