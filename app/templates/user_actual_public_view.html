@@ -42,9 +42,9 @@
                 <tr>
                     <td><a href="{{ url_for('products.product', id = review.pid) }}">{{review.pid}}</a>
                     </td>
-                    <td>{{review.ratingContent}}</td>
-                    <td>{{review.starsOutOfFive}}</td>
-                    <td>{{review.submissionDate}}</td>
+                    <td>{{review[5]}}</td>
+                    <td>{{review[4]}}</td>
+                    <td>{{review[6]}}</td>
                 </tr>
                 {% endfor %}
             </tbody>
