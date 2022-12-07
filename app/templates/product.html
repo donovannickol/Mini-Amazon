@@ -93,7 +93,6 @@
         </tbody>
       </table>
       {% endif %}
-      {% endwith %}
     </p>
     <!-- show edit button if current user is a seller of this product -->
     {% if current_user.id in (sellers | map(attribute='uid') | list) %}
@@ -184,7 +183,6 @@
 
         {% endfor %}
 
-      {% endif %}
       <h5>All ratings</h5>
       <table id="productRatings" class='table table-hover table-bordered'>
         <thead class="thead-dark">
