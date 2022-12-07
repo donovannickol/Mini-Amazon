@@ -12,5 +12,5 @@ using GPT-3. Then, at the third and final level, the raw data that has been tran
 Donovan's updates: Created add to cart button on product page, created cart page, created remove from cart button, created change quantity feature.
 Joshua's weekly update: Created wireframe for feedback, view of product reviews, view of seller reviews, view of reviews by user, and messaging. Added code for creating sample product and seller feedback, as well as messaging.
 Akash's updates: Minor UI updates.
-Mazen's Weekly Update: added a seller inventory page and created a realistic database for products, sales, reviews, etc.
+Mazen's Weekly Update: Refind seller inventory page to conform to card view, added seller analytics and seller history, as well as a mechanism to mark orders as fulfilled.
 Jamael's update: Created public view page for account as well as button to access account, added buttons to that page for user to access their purchase history and update information/balance. Also added address, city, and state fields for registration window. 
