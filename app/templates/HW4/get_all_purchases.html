@@ -26,13 +26,32 @@
         </tr>
     </thead>
     <tbody>
-        {% for purchase in get_all_purchases %}
+        {% for purchase in get_all_purchases %} 
         <tr>
             <td>{{purchase.id}}</td>
             <td>{{"${:.2f}".format(purchase.total_price)}}</td>
             <td>{{purchase.num_of_items}}</td>
             <td>{{purchase.order_status}}</td>
             <td>{{purchase.time_purchased}}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<h2>Products you've bought and their sellers:</h2>
+<table id="purchases" class='table table-hover table-bordered'>
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col">Product ID</th>
+            <th scope="col">Seller</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for purchase in whatIOrdered %} 
+        <!-- uid, order_number, pid, sellerid, quantity, price, fullfilldate -->
+        <tr>
+            <td>{{purchase.pid}}</td>
+            <td>{{purchase.sellerid}}</td>
         </tr>
         {% endfor %}
     </tbody>

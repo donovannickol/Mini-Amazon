@@ -49,7 +49,7 @@ def get_all_purchases():
     firstname = current_user.firstname
     return render_template('get_all_purchases.html',
                             get_all_purchases = get_all_purchases, 
-                            firstname = firstname)
+                            firstname = firstname, whatIOrdered=whatIOrdered)
 
 @bp.route('/purchases_less_than_max/', methods = ['GET', 'POST'])
 def get_all_purchases_less_than_max():

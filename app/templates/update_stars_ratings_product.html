@@ -3,12 +3,13 @@
 {% block content %}
 
 
-
+{{raterFName}}
+{{raterLName}}
 <br><br>
-<!--"{{ url_for('productRatings.update', pid=pid, user_id=1, feedback=" + document.querySelector('input[name=feedback]').value + ") }}" -->
+
 <div class="col-md-5">
   <h3>Update your rating for {{ productName }}: </h3>
-    <form method="POST"> <!-- replace user_id with 1--> <!--action="{{ url_for('productRatings.update', pid=pid, user_id=1, feedback=feedback) }}"-->
+    <form method="POST"> <!-- replace user_id with 1--> 
       <div class="form-group">
         <label for="feedstars">Stars out of five:</label>
         <!-- only allow positive integers -->
@@ -31,7 +32,7 @@
   let feedstars = document.querySelector('input[name=feedstars]').value;
   let feedback = document.querySelector('input[name=feedback]').value;
   document.querySelector('form').onsubmit = function() {
-    this.setAttribute('action', "{{ url_for('productRatings.update', pid=pid, user_id=1) }}") //change user_id to uid
+    this.setAttribute('action', "{{ url_for('productRatings.update', pid=pid, user_id=current_user.id, raterFName=raterFName, raterLName=raterLName) }}") //change user_id to uid
   }
 </script>
 {% endblock %}
@@ -55,13 +56,13 @@
     <tbody>
       
         {% for rating in specProRating%}
-          {% if (rating.user_id | string) == (1 | string)%} <!--replace 1 with current.user_id-->
+          {% if (rating.user_id | string) == (current_user.id | string)%} <!--replace 1 with current_user.id-->
           <h5>Your current rating</h5>
           <tr>
             
             <td>{{productName}}</td>
             <td>{{rating.starsOutOfFive}}</td>
-            <td>{{rating.ratingContent}}</td> <!--replace 1 with current.user_id-->
+            <td>{{rating.ratingContent}}</td> <!--replace 1 with current_user.id-->
             <td>{{rating.submissionDate}}</td>
           </tr>
           {%endif%}
