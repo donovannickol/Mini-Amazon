@@ -43,12 +43,12 @@
   </div>
 
   <!-- Dropdown for sort options -->
-  <div class="dropdown">
-    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
+  <div class="dropdown text-right mr-auto">
+    <button class="btn btn-secondary dropdown-toggle text-left" type="button" id="dropdownMenuButton" data-toggle="dropdown"
       aria-haspopup="true" aria-expanded="false">
       Sort by: {{ sort_by }}
     </button>
-    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+    <div class="dropdown-menu text-right" aria-labelledby="dropdownMenuButton">
       {% set sort_options=['Default', 'Price: Low to High', 'Price: High to Low', 'Rating: Low to High', 'Rating: High to Low'] %}
       {% for option in sort_options %}
       {% if option != sort_by %}
