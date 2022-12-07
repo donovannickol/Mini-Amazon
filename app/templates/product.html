@@ -93,96 +93,62 @@
         </tbody>
       </table>
       {% endif %}
-      {% endwith %}
-    </p>
-    <!-- show edit button if current user is a seller of this product -->
-    {% if current_user.id in (sellers | map(attribute='uid') | list) %}
-    <a href="{{ url_for('products.edit', id=product.id) }}" class="btn btn-primary">Edit Product</a>
-    {% endif %}
+      <p>
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+          {% for message in messages %}
+          {{ message }}
+          {% endfor %}
+        {% endif %}
+        {% endwith %}
+      </p>
+      
+
+      <!--    -->
+
+      {% if current_user.id not in  (whatIOrdered | map(attribute='uid') | list) %}
+      <div>You haven't purchased this product. Make a purchase to leave a review! </div>
+      {% elif current_user.id not in (specProRating | map(attribute='user_id') | list) %}
+     
+
+      
+      
+      <div>You made a purchase for this product. <a href="{{ url_for('productRatings.update_stars_ratings_product', user_id=current_user.id, pid=product.id) }}">Want to leave a review?</a> <!--replace 1 with current.user_id--> </div>
 
 
-    {% if current_user.id not in (whatIOrdered | map(attribute='uid') | list) %}
-    <div>You haven't purchased this product. Make a purchase to leave a review! </div>
-    {% elif current_user.id not in (specProRating | map(attribute='user_id') | list) %}
-    <div>You made a purchase for this product. <a
-      href="{{ url_for('productRatings.update_stars_ratings_product', user_id=current_user.id, pid=product.id) }}">Want to leave a review? </a></div>
-    {% else %}
+      {% else %}
 
-    <table id="productRatings" class='table table-hover table-bordered'>
-      <thead class="thead-dark">
-        <tr>
-          <th scope="col">User ID</th>
+      <table id="productRatings" class='table table-hover table-bordered'>
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">User ID</th>
+            
+            <th scope="col">Stars out of five</th>
+            <th scope="col">Rating content</th>
+            <th scope="col">Submission date</th>
+          </tr>
+        </thead>
+        
+          <tbody>
+            
+              {% for rating in specProRating%}
+              {% if (rating.user_id | string) == (current_user.id | string)%} <!--replace 1 with current.user_id-->
+                <h5>Your current rating</h5>
+                <tr>
+                  <td>{{rating.user_id}}</td>
+                  
+                  <td><a href="{{ url_for('productRatings.update_stars_ratings_product', user_id=current_user.id, pid=product.id) }}">{{rating.starsOutOfFive}}</a></td> <!--replace 1 with current.user_id--> <!--replace 1 with current.user_id-->
 
-          <th scope="col">Stars out of five</th>
-          <th scope="col">Rating content</th>
-          <th scope="col">Submission date</th>
-        </tr>
-      </thead>
-
-      <tbody>
-
-        {% for rating in specProRating%}
-        {% if (rating.user_id | string) == (current_user.id | string)%}
-        <!--replace 1 with current.user_id-->
-        <h5>Your current rating</h5>
-        <tr>
-          <td>{{rating.user_id}}</td>
-
-          <td><a
-              href="{{ url_for('productRatings.update_stars_ratings_product', user_id=current_user.id, pid=product.id) }}">{{rating.starsOutOfFive}}</a>
-          </td>
-          <!--replace 1 with current.user_id-->
-
-          <td><a
-              href="{{ url_for('productRatings.update_stars_ratings_product', user_id=current_user.id, pid=product.id) }}">{{rating.ratingContent}}</a>
-          </td>
-          <!--replace 1 with current.user_id-->
-          <td>{{rating.submissionDate}}</td>
-        </tr>
-        {%endif%}
-
-
-        {% endfor %}
-
-      </tbody>
-    </table>
-
-    
-
-    {% endif %}
-    <br><br>
-    <h5>All ratings</h5>
-    <table id="productRatings" class='table table-hover table-bordered'>
-      <thead class="thead-dark">
-        <tr>
-          <th scope="col">User ID</th>
-          <th scope="col">First name</th>
-          <th scope="col">Last name</th>
-
-          <th scope="col">Stars</th>
-          <th scope="col">Rating content</th>
-          <th scope="col">Submitted</th>
-        </tr>
-      </thead>
-
-      <tbody>
-
-        {% for rating in allprodRatings_withNames%}
-
-
-        <tr>
-          <td>{{rating[2]}}</td>
-          <td>{{rating[0]}}</td>
-          <td>{{rating[1]}}</td>
-          <td>{{rating[4]}}</td>
-
-          <td>{{rating[5]}}</td>
-          <td>{{rating[6]}}</td>
-        </tr>
-
-
-
-        {% endfor %}
+                  <td><a href="{{ url_for('productRatings.update_stars_ratings_product', user_id=current_user.id, pid=product.id) }}">{{rating.ratingContent}}</a></td> <!--replace 1 with current.user_id-->
+                  <td>{{rating.submissionDate}}</td>
+                </tr>
+                {%endif%}
+                  
+                
+          {% endfor %}
+            
+          </tbody>
+      </table>
 
       {% endif %}
       <h5>All ratings</h5>
@@ -228,5 +194,5 @@
   </div>
 </div>
 </div>
-{{specProRating}}
+
 {% endblock %}
