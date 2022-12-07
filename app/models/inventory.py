@@ -91,12 +91,20 @@ WHERE pid = :pid AND uid =:uid
         return  rows
 
     def get_seller_detailed_history(sid):
+        #         self.id = id
+        # self.uid = uid
+        # self.total_price = total_price
+        # self.num_of_items = num_of_items
+        # self.order_status = order_status
+        # self.time_purchased = time_purchased
+        # self.order_number = order_number
         rows = app.db.execute('''
-        SELECT H.order_number, U.firstname, U.lastname, U.address, U.email, SUM(H.quantity), SUM(H.price), H.fullfilldate
+        SELECT H.order_number, U.firstname, U.lastname, U.address, U.email, SUM(H.quantity), SUM(H.price), H.fullfilldate, P.time_purchased
         FROM OrderHistory H
         JOIN Users U ON u.id = H.uid
+        JOIN Purchases P ON P.order_number = H.order_number
         WHERE H.sellerid = :sid
-        GROUP BY H.order_number, H.fullfilldate, U.firstname, U.lastname, U.email, U.address
+        GROUP BY H.order_number, H.fullfilldate, U.firstname, U.lastname, U.email, U.address, P.time_purchased
         ''',
             sid = sid)
         #                         rows = app.db.execute('''

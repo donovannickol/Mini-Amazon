@@ -3,6 +3,7 @@ from flask_login import current_user
 from app import products
 from .models.product import Product
 from .models.inventory import Inventory
+from .models.orderhistory import OrderHistory
 
 from flask import render_template, request, redirect, url_for
 
@@ -28,7 +29,18 @@ def seller_history():
     seller_inventory = Inventory.get_seller_detailed_history(sid)
     return render_template('seller_history.html',
                            sid = sid,
-                           seller_history = seller_inventory)
+                           seller_history = seller_inventory,
+                           order_history = OrderHistory)
+
+@bp.route('/seller_history/fulfill/<int:order_number>', methods=['POST','GET'])
+def flip_fulfill(order_number):
+    sid = request.form['sid'] if request.method == "POST" else current_user.id
+    OrderHistory.flip_fulfilled(order_number,sid)
+    seller_inventory = Inventory.get_seller_detailed_history(sid)
+    return render_template('seller_history.html',
+                           sid = sid,
+                           seller_history = seller_inventory,
+                           order_history = OrderHistory)
 
 @bp.route('/sellers/add/<int:id>', methods=['GET', 'POST'])
 def add_seller(id):

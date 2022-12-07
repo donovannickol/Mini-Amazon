@@ -1,4 +1,5 @@
 from flask import current_app as app
+from datetime import datetime
 #i made this for productRating; apologies if this is duplicate
 
 class OrderHistory:
@@ -45,3 +46,18 @@ class OrderHistory:
         return [OrderHistory(*row) for row in rows]
         
 
+    @staticmethod
+    def flip_fulfilled(order_number, sid):
+        print("reached")
+        f = '%Y-%m-%d %H:%M:%S'
+        rows = app.db.execute('''
+        UPDATE OrderHistory
+        SET fullfilldate =
+        CASE WHEN fullfilldate IS NULL THEN NOW()
+        ELSE NULL END
+        WHERE sellerid = :seller_id AND order_number = :order_number
+        ''',
+        order_number = order_number,
+        seller_id = sid,
+        )
+        print(rows)
