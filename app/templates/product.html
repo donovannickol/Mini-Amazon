@@ -4,19 +4,17 @@
 
 {% set stars = [] %}
 
+<!-- This is the star avg rating calculations from Jinja's endpoint -->
+
 {% for num in allprodRatings_withNames %}
 {% if stars.append(num[4]) %}{% endif %}
 {% endfor %}
 {% if stars | count != 0 %}
 {% set avg = stars | sum / stars | count %}
-
 {% else %}
 {% set avg = 0 %}
-
 {%endif%}
-
 {% if avg == 0 %}
-
 {%endif%}
 
 
@@ -87,10 +85,14 @@
         <!-- Table containg seller uid, price, stock, and an add to cart with quantity form -->
         <tr>
           <th scope="row"><a></a>
+            <!-- If the current user is not authenticated, you cannot see a seller's reviews. Else, you CAN see a seller's reviews -->
             {% if current_user.is_authenticated%}
             <a
               href="{{ url_for('sellerRatings.get_five_seller_feedbacks', sid = seller.uid, name = seller.name, you=current_user.id) }}">{{seller.name}}</a>
-            {% endif %}
+            
+              {% else %}
+              {{seller.name}}
+              {% endif %}
           </th>
           <td>{{"$" + (seller.price | string) if (seller.price == seller.price) else 'Unavailable'}}</td>
           <td>{{seller.count}}</td>
@@ -131,22 +133,22 @@
     </p>
 
 
-    <!--    -->
+    <!--  If the current user is authenticated but their list of previous orders does not include the current product, prompt them to make a purchase  -->
 
     {% if current_user.is_authenticated and current_user.id not in (whatIOrdered | map(attribute='uid') | list) %}
     <div>You haven't purchased this product. Make a purchase to leave a review! </div>
+
+     <!--  If the current user is authenticated and they made a purchase of this product but haven't reviewed it, prompt them to leave a review  -->
+
     {% elif current_user.is_authenticated and current_user.id not in (specProRating | map(attribute='user_id') | list)
     %}
-
-
-
-
     <div>You made a purchase for this product. <a
         href="{{ url_for('productRatings.update_stars_ratings_product', user_id=current_user.id, pid=product.id) }}">Want
         to leave a review?</a> <!--replace 1 with current.user_id--> </div>
 
 
-    {% else %}
+      <!-- Else, if the current user is authenticated and has left a review for this product, show them their current review with an editable link. -->
+    {% elif current_user.is_authenticated %}
 
     <table id="productRatings" class='table table-hover table-bordered'>
       <thead class="thead-dark">
@@ -163,18 +165,18 @@
 
         {% for rating in specProRating%}
         {% if current_user.is_authenticated and (rating.user_id | string) == (current_user.id | string)%}
-        <!--replace 1 with current.user_id-->
+        
         <h5>Your current rating</h5>
         <tr>
           <td>{{rating.user_id}}</td>
 
           <td><a
               href="{{ url_for('productRatings.update_stars_ratings_product', user_id=current_user.id, pid=product.id) }}">{{rating.starsOutOfFive}}</a>
-          </td> <!--replace 1 with current.user_id--> <!--replace 1 with current.user_id-->
+          </td> 
 
           <td><a
               href="{{ url_for('productRatings.update_stars_ratings_product', user_id=current_user.id, pid=product.id) }}">{{rating.ratingContent}}</a>
-          </td> <!--replace 1 with current.user_id-->
+          </td> 
           <td>{{rating.submissionDate}}</td>
         </tr>
         {%endif%}
@@ -184,8 +186,15 @@
 
       </tbody>
     </table>
-
+    {% else %}
+    <div>Log in/register to see your reviews of this product.</div>
     {% endif %}
+
+    <br><br>
+
+    <!-- Show a table of all reviews of this product -->
+
+    
     <h5>All ratings</h5>
     <table id="productRatings" class='table table-hover table-bordered'>
       <thead class="thead-dark">

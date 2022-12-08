@@ -7,7 +7,7 @@
 {% endblock %}
 
 <br><br>
-
+<!-- This page is activated when a rating is deleted... redirect them back to the update page -->
 <meta http-equiv="refresh" content="0;{{ url_for('sellerRatings.update_stars_ratings', sid=sid, uid=current_user.id, seller_name=seller_name) }}" />
 
 {% endblock %}
