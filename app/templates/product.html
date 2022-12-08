@@ -88,7 +88,7 @@
         <tr>
           <th scope="row"><a></a>
             {% if current_user.is_authenticated%}
-              href="{{ url_for('sellerRatings.get_five_seller_feedbacks', sid = seller.uid, name = seller.name, you=current_user.id) }}">{{seller.name}}</a>
+              <a href="{{ url_for('sellerRatings.get_five_seller_feedbacks', sid = seller.uid, name = seller.name, you=current_user.id) }}">{{seller.name}}</a>
             {% endif %}
             </th>
           <td>{{"$" + (seller.price | string) if (seller.price == seller.price) else 'Unavailable'}}</td>
