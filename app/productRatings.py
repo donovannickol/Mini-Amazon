@@ -35,6 +35,17 @@ def update_stars_ratings_product(user_id, pid):
                             get_your_feedback = get_your_feedback, specProRating=specProRating, productName=productName, raterFName=raterFName, raterLName = raterLName)
 
 
+@bp.route('/delpRatingredir/<int:user_id>/<int:pid>')
+def rem(user_id, pid):
+    
+    ProductRating.rem(user_id, pid)
+    pRatingNAMES.rem(user_id, pid)
+    
+    return render_template('delpRatingredir.html',
+                            user_id=user_id, pid=pid)
+
+
+
 @bp.route('/updatedpRatingredir/<int:user_id>/<int:pid>/<raterFName>/<raterLName>', methods = ['POST'])
 def update(user_id, pid, raterFName, raterLName):
     feedstars = int(request.form['feedstars'])
