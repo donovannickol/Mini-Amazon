@@ -85,7 +85,51 @@
                         method="POST">
                         <button><i class="bi bi-trash"></i></button>
                       </form>
+                      
                     </div>
+                    <form action="{{ url_for('cart.move_to_saved', pid=product.pid, sid=product.sellerid, quantity=product.quantity, price=product.price) }}" method="POST">
+                        <button class="btn btn-block btn-sm" data-mdb-ripple-color="dark"><i>Add to Saved For Later</i></button>
+                      </form>
+                  </div>
+                  <hr class="my-4">
+                  {% endfor %}
+
+
+                  <div class="d-flex justify-content-between align-items-center mb-5">
+                    <h1 class="fw-bold mb-0 text-black">Saved For Later</h1>
+                    <h6 class="mb-0 text-muted">{{ num_of_saved_items }} items</h6>
+                  </div>
+                  <hr class="my-4">
+
+                  {% for product in saved_for_later %}
+                  <div class="row mb-4 d-flex justify-content-between align-items-center">
+                    <div class="col-md-2 col-lg-2 col-xl-2">
+                      <img src="{{product.img_url}}" class="img-fluid rounded-3" alt="...">
+                    </div>
+                    <div class="col-md-3 col-lg-3 col-xl-3">
+                      <h6 class="text-black mb-0">{{product.name}}</h6>
+                    </div>
+                    <div class="col-md-3 col-lg-3 col-xl-2 d-flex">
+
+                      <form action="{{ url_for('cart.change_quantity', pid=product.pid, sid=product.sellerid) }}"
+                        method="POST">
+                        <input id="form1" min="1" name="quantity" value="{{product.quantity}}" type="number"
+                          class="form-control form-control-sm" />
+                      </form>
+                    </div>
+                    <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
+                      <h6 class="mb-0">${{product.price}}</h6>
+                    </div>
+                    <div class="col-md-1 col-lg-1 col-xl-1 text-end">
+                      <form action="{{ url_for('cart.delete_from_saved', pid=product.pid, sid=product.sellerid) }}"
+                        method="POST">
+                        <button><i class="bi bi-trash"></i></button>
+                      </form>
+                      
+                    </div>
+                    <form action="{{ url_for('cart.move_to_cart', pid=product.pid, sid=product.sellerid, quantity=product.quantity, price=product.price) }}" method="POST">
+                      <button class="btn btn-block btn-sm" data-mdb-ripple-color="dark"><i>Add to Cart</i></button>
+                    </form>
                   </div>
                   <hr class="my-4">
                   {% endfor %}

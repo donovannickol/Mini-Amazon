@@ -15,6 +15,17 @@ class ProductRating:
         self.submissionDate = submissionDate
 
     @staticmethod
+    #remove rating
+    def rem(uid, pid):
+        rows = app.db.execute('''
+        DELETE FROM productRating
+        WHERE user_id=:uid
+        AND pid=:pid
+        ''',
+        pid=pid, uid=uid)
+        
+
+    @staticmethod
     def pidNameMerger(uid):
         rows = app.db.execute('''
                 

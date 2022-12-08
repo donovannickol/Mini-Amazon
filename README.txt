@@ -9,7 +9,7 @@ All the code for generating and populating the databases can be found within db/
 At the second level, in the db/data/gen/ai_supplemented directory, the python file gen.py calls on products.py, reviews.py, and conversations.py to generate realistic data
 using GPT-3. Then, at the third and final level, the raw data that has been transformed is finally used to atomically generate all the daatasets such that they all satisfy foreign key and uniqueness constraints, and this is through data/gen.
 
-Donovan's updates: Created add to cart button on product page, created cart page, created remove from cart button, created change quantity feature.
+Donovan's updates: Created detailed order page that displays info of an order. Added submit order functionality. Added a saved for later section on the cart page. Changed schema to incorporate saved for later.
 Joshua's weekly update: Created wireframe for feedback, view of product reviews, view of seller reviews, view of reviews by user, and messaging. Added code for creating sample product and seller feedback, as well as messaging.
 Akash's updates: Minor UI updates.
 Mazen's Weekly Update: Refind seller inventory page to conform to card view, added seller analytics and seller history, as well as a mechanism to mark orders as fulfilled.
