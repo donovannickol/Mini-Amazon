@@ -26,7 +26,7 @@
     </div>
     <div class="col-md-5">
       <!-- show edit button if current user is a seller of this product -->
-      {% if current_user.id in (sellers | map(attribute='uid') | list) %}
+      {% if current_user.is_authenticated and current_user.id in (sellers | map(attribute='uid') | list) %}
       <a href="{{ url_for('products.edit', id=product.id) }}" class="btn btn-primary">Edit Product</a>
       <a href="{{ url_for('sellers.delete_inventory', sid=current_user.id,pid=product.id) }}" class="btn btn-primary">Delete Product</a>
       <!-- TODO: eventually make it possible so that the only seller of a product could delete it entirely -->
@@ -86,14 +86,11 @@
         {% for seller in sellers %}
         <!-- Table containg seller uid, price, stock, and an add to cart with quantity form -->
         <tr>
-          {% if current_user.id is defined %}
-          <th scope="row"><a
+          <th scope="row"><a></a>
+            {% if current_user.is_authenticated%}
               href="{{ url_for('sellerRatings.get_five_seller_feedbacks', sid = seller.uid, name = seller.name, you=current_user.id) }}">{{seller.name}}</a>
-          </th>
-          {%else%}
-          <th scope="row">{{seller.name}}
-          </th>
-          {%endif%}
+            {% endif %}
+            </th>
           <td>{{"$" + (seller.price | string) if (seller.price == seller.price) else 'Unavailable'}}</td>
           <td>{{seller.count}}</td>
           <td>
@@ -107,7 +104,11 @@
                 <input class="form-control ml-1 mr-2" type="number" name="quantity" min="1" value="1"
                   max={{seller.count}}>
                 <span class="input-group-btn">
+                  {% if current_user.is_authenticated %}
                   <button class="btn btn-warning" type="submit">Add to Cart</button>
+                  {% else %}
+                  Sign-in to add to cart
+                  {% endif %}
                 </span>
               </div>
             </form>
@@ -133,9 +134,9 @@
 
       <!--    -->
 
-      {% if current_user.id not in  (whatIOrdered | map(attribute='uid') | list) %}
+      {% if current_user.is_authenticated and current_user.id not in  (whatIOrdered | map(attribute='uid') | list) %}
       <div>You haven't purchased this product. Make a purchase to leave a review! </div>
-      {% elif current_user.id not in (specProRating | map(attribute='user_id') | list) %}
+      {% elif current_user.is_authenticated and current_user.id not in (specProRating | map(attribute='user_id') | list) %}
      
 
       
@@ -159,7 +160,7 @@
           <tbody>
             
               {% for rating in specProRating%}
-              {% if (rating.user_id | string) == (current_user.id | string)%} <!--replace 1 with current.user_id-->
+              {% if current_user.is_authenticated and (rating.user_id | string) == (current_user.id | string)%} <!--replace 1 with current.user_id-->
                 <h5>Your current rating</h5>
                 <tr>
                   <td>{{rating.user_id}}</td>
@@ -214,7 +215,7 @@
             
           </tbody>
       </table>
-      {% if not (current_user.id in (sellers | map(attribute='uid') | list)) %}
+      {% if current_user.is_authenticated and  (not current_user.id is in (sellers | map(attribute='uid') | list)) %}
       <a href="{{ url_for('sellers.add_seller', id=product.id) }}" class="btn btn-primary">Sell This Product</a>
       {% endif %}
     </div>
