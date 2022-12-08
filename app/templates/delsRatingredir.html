@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{% block scripts %}
+
+{% endblock %}
+
+<br><br>
+
+<meta http-equiv="refresh" content="0;{{ url_for('sellerRatings.update_stars_ratings', sid=sid, uid=current_user.id, seller_name=seller_name) }}" />
+
+{% endblock %}

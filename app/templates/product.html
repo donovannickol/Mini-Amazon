@@ -2,6 +2,24 @@
 
 {% block content %}
 
+{% set stars = [] %}
+
+{% for num in allprodRatings_withNames %}
+{% if stars.append(num[4]) %}{% endif %}
+{% endfor %}
+{% if stars | count != 0 %}
+{% set avg = stars | sum / stars | count %}
+
+{% else %}
+{% set avg = 0 %}
+
+{%endif%}
+
+{% if avg == 0 %}
+
+{%endif%}
+
+
 <div class="row my-5">
   <div class="col-md-5 text-center">
     <img src={{product.img_url}} class='w-75' alt='Product Image' />
@@ -17,11 +35,11 @@
     <h1>{{product.name}}</h1>
     <div class="my-3">
       {% if product.average_rating == product.average_rating %}
-      {% set fraction = product.average_rating % 1 %}
+      {% set fraction = avg % 1 %}
       {% for i in range(1, 6) %}
-      {% if product.average_rating >= i %}
+      {% if avg >= i %}
       <span class="bi bi-star-fill"></span>
-      {% elif product.average_rating >= i - 1 %}
+      {% elif avg >= i - 1 %}
       {% if fraction >= 0.75 %}
       <span class="bi bi-star-fill"></span>
       {% elif fraction >= 0.25 and fraction < 0.75 %} <span class="bi bi-star-half"></span>
@@ -32,7 +50,7 @@
         <span class="bi bi-star"></span>
         {% endif %}
         {% endfor %}
-        <span class="text-secondary mx-2 align-text-top">{{ product.num_ratings }} rating{{ 's' if product.num_ratings >
+        <span class="text-secondary mx-2 align-text-top">{{ stars | count }} rating{{ 's' if stars | count >
           1
           }}</span>
         {% else %}
@@ -51,6 +69,10 @@
     <h3 class="text-danger">Out of stock</h3>
     {% else %}
     <!-- insert add to cart and stock per seller here -->
+    {% if current_user.id is not defined %}
+    <div>Log in/register to see these Seller's ratings.</div>
+    {%endif%}
+
     <table class="table table-striped">
       <thead>
         <tr>
@@ -97,6 +119,9 @@
       </tbody>
     </table>
     {% endif %}
+
+
+
     <p>
       {% with messages = get_flashed_messages() %}
       {% if messages %}
@@ -183,9 +208,9 @@
 
 
         <tr>
+          <td>{{rating[2]}}</td>
           <td>{{rating[0]}}</td>
           <td>{{rating[1]}}</td>
-          <td>{{rating[2]}}</td>
           <td>{{rating[4]}}</td>
 
           <td>{{rating[5]}}</td>
