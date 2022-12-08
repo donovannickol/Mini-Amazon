@@ -39,6 +39,7 @@ class SellerRating:
         rows = app.db.execute('''
             SELECT *
             FROM SellerRating
+            ORDER BY submissionDate DESC
             ''')
         return [SellerRating(*row) for row in rows]
         #return rows
@@ -52,6 +53,7 @@ class SellerRating:
                 SELECT *
                 FROM SellerRating 
                 WHERE user_id = :uid
+                ORDER BY submissionDate DESC
                 
                 ''',
                               uid=uid)
@@ -87,6 +89,7 @@ class SellerRating:
                 SELECT *
                 FROM SellerRating 
                 WHERE seller_id = :sid
+                ORDER BY submissionDate DESC
                 
                 ''',
                               sid=sid)
@@ -140,6 +143,7 @@ class SellerRating:
                 FROM SellerRating
                 WHERE user_id = :user_id
                 AND seller_id = :sid
+                ORDER BY submissionDate DESC
                 ''',
                               user_id=user_id, sid=sid)
 
