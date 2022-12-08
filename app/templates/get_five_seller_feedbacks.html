@@ -5,7 +5,7 @@
 {% set stars = [] %}
 
 {% for num in specProRating %}
-    {% if stars.append(num.starsOutOfFive) %}{% endif %}
+{% if stars.append(num.starsOutOfFive) %}{% endif %}
 {% endfor %}
 {% if stars | count != 0 %}
 {% set avg = stars | sum / stars | count %}
@@ -26,76 +26,77 @@
   {% if true %}
   {% set fraction = avg % 1 %}
   {% for i in range(1, 6) %}
-    {% if avg >= i %}
-      <span class="bi bi-star-fill"></span>
-    {% elif avg >= i - 1 %}
-      {% if fraction >= 0.75 %}
-        <span class="bi bi-star-fill"></span>
-      {% elif fraction >= 0.25 and fraction < 0.75 %}
-        <span class="bi bi-star-half"></span>
-      {% else %}
-        <span class="bi bi-star"></span>
-      {% endif %}
+  {% if avg >= i %}
+  <span class="bi bi-star-fill"></span>
+  {% elif avg >= i - 1 %}
+  {% if fraction >= 0.75 %}
+  <span class="bi bi-star-fill"></span>
+  {% elif fraction >= 0.25 and fraction < 0.75 %} <span class="bi bi-star-half"></span>
     {% else %}
-      <span class="bi bi-star"></span>
+    <span class="bi bi-star"></span>
     {% endif %}
-  {% endfor %}
-  <span class="text-secondary mx-2 align-text-top">{{ stars | count }} rating{{ 's' if stars | count >
-    1
-    }}</span>
-  {% else %}
-  <span class="text-secondary">No reviews</span>
-  {% endif %}
+    {% else %}
+    <span class="bi bi-star"></span>
+    {% endif %}
+    {% endfor %}
+    <span class="text-secondary mx-2 align-text-top">{{ stars | count }} rating{{ 's' if stars | count >
+      1
+      }}</span>
+    {% else %}
+    <span class="text-secondary">No reviews</span>
+    {% endif %}
 </div>
 
 {% if current_user.id not in (whatIOrdered | map(attribute='uid') | list) %}
 <div>You haven't purchased from this seller. Make a purchase to leave a review! </div>
 {% elif current_user.id not in (specProRating | map(attribute='user_id') | list) %}
-    <div>You made a purchase for this seller. <a
-      href="{{ url_for('sellerRatings.update_stars_ratings', sid=seller_id, uid=current_user.id, seller_name=seller_name) }}">Want to leave a review? </a></div>
-    {% else %}
+<div>You made a purchase for this seller. <a
+    href="{{ url_for('sellerRatings.update_stars_ratings', sid=seller_id, uid=current_user.id, seller_name=seller_name) }}">Want
+    to leave a review? </a></div>
+{% else %}
 
-    <table id="sellerRatings" class='table table-hover table-bordered'>
-      <thead class="thead-dark">
-        <tr>
-          <th scope="col">User ID</th>
+<table id="sellerRatings" class='table table-hover table-bordered'>
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">User ID</th>
 
-          <th scope="col">Stars out of five</th>
-          <th scope="col">Rating content</th>
-          <th scope="col">Submission date</th>
-        </tr>
-      </thead>
+      <th scope="col">Stars out of five</th>
+      <th scope="col">Rating content</th>
+      <th scope="col">Submission date</th>
+    </tr>
+  </thead>
 
-      <tbody>
+  <tbody>
 
-        {% for rating in specProRating%}
-        {% if (rating.user_id | string) == (current_user.id | string)%}
-        <!--replace 1 with current.user_id-->
-        <h5>Your current rating</h5>
-        <tr>
-          <td>{{rating.user_id}}</td>
+    {% for rating in specProRating%}
+    {% if (rating.user_id | string) == (current_user.id | string)%}
+    <!--replace 1 with current.user_id-->
+    <h5>Your current rating</h5>
+    <tr>
+      <td>{{rating.user_id}}</td>
 
-          <td><a
-            href="{{ url_for('sellerRatings.update_stars_ratings', sid=seller_id, uid=current_user.id, seller_name=seller_name) }}">{{rating.starsOutOfFive}}</a>
-          </td>
-          <!--replace 1 with current.user_id-->
+      <td><a
+          href="{{ url_for('sellerRatings.update_stars_ratings', sid=seller_id, uid=current_user.id, seller_name=seller_name) }}">{{rating.starsOutOfFive}}</a>
+      </td>
+      <!--replace 1 with current.user_id-->
 
-          <td><a
-            href="{{ url_for('sellerRatings.update_stars_ratings', sid=seller_id, uid=current_user.id, seller_name=seller_name) }}">{{rating.ratingContent}}</a>
-          </td>
-          <!--replace 1 with current.user_id-->
-          <td>{{rating.submissionDate}}</td>
-        </tr>
-        {%endif%}
+      <td><a
+          href="{{ url_for('sellerRatings.update_stars_ratings', sid=seller_id, uid=current_user.id, seller_name=seller_name) }}">{{rating.ratingContent}}</a>
+      </td>
+      <!--replace 1 with current.user_id-->
+      <td>{{rating.submissionDate}}</td>
+    </tr>
+    {%endif%}
 
 
-        {% endfor %}
+    {% endfor %}
 
-      </tbody>
-    </table>
+  </tbody>
+</table>
 
-    {% endif %}
+{% endif %}
 
+<br></br>
 
 {% if get_all_sratings %}
 <h2>All seller reviews</h2>
@@ -113,9 +114,9 @@
     <tr>
       <td>{{rating[0]}}</td>
       <td>{{rating[2]}}</td>
-      
+
       <td>{{rating[3]}}</td>
-      
+
       <td>{{rating[4]}}</td>
     </tr>
     {% endfor %}
@@ -123,7 +124,6 @@
   </tbody>
 </table>
 {% else %}
-<h1>No seller reviews available to display</h1>
 
 {% endif %}
 
