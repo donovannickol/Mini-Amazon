@@ -33,10 +33,10 @@ SELECT pg_catalog.setval('public.purchases_id_seq',
 \COPY OrderHistory FROM '/home/vcm/mini-amazon/db/data/gen/complete/orderhistory.csv' WITH DELIMITER '^' NULL '' CSV;
 -- \COPY OrderHistory FROM 'OrderHistory.csv' WITH DELIMITER ',' NULL '' CSV;
 
-\COPY productRating FROM '/home/vcm/mini-amazon/db/data/gen/complete/revtemp.csv' WITH DELIMITER '^' NULL '' CSV
+\COPY productRating FROM '/home/vcm/mini-amazon/db/data/gen/complete/Ratings.csv' WITH DELIMITER '^' NULL '' CSV
 -- \COPY productRating FROM 'productRating.csv' WITH DELIMITER ',' NULL '' CSV
 
-\COPY sellerRating FROM '/home/vcm/mini-amazon/db/data/gen/complete/revtemp.csv' WITH DELIMITER '^' NULL '' CSV
+\COPY sellerRating FROM '/home/vcm/mini-amazon/db/data/gen/complete/Ratings.csv' WITH DELIMITER '^' NULL '' CSV
 
 -- \COPY message FROM 'messageThread.csv' WITH DELIMITER ',' NULL '' CSV
 SELECT pg_catalog.setval('public.messagethread_thread_id_seq',
