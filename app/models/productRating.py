@@ -33,6 +33,7 @@ class ProductRating:
                 SELECT *
                 FROM productRating 
                 WHERE user_id = :uid
+                ORDER BY submissionDate DESC
                 
                 ''',
                               uid=uid)
@@ -64,7 +65,8 @@ class ProductRating:
         rows = app.db.execute('''
         SELECT *
         FROM productRating
-        WHERE pid = :pid''',
+        WHERE pid = :pid
+        ORDER BY submissionDate DESC''',
         pid=pid)
         return [ProductRating(*row) for row in rows]
     
@@ -76,6 +78,7 @@ class ProductRating:
                 FROM productRating
                 WHERE user_id = :user_id
                 AND pid = :pid
+                ORDER BY submissionDate DESC
                 ''',
                               user_id=user_id, pid=pid)
         return [ProductRating(*row) for row in rows]
