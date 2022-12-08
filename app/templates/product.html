@@ -148,7 +148,7 @@
 
 
       <!-- Else, if the current user is authenticated and has left a review for this product, show them their current review with an editable link. -->
-    {% else %}
+    {% elif current_user.is_authenticated %}
 
     <table id="productRatings" class='table table-hover table-bordered'>
       <thead class="thead-dark">
@@ -186,10 +186,15 @@
 
       </tbody>
     </table>
+    {% else %}
+    <div>Log in/register to see your reviews of this product.</div>
+    {% endif %}
+
+    <br><br>
 
     <!-- Show a table of all reviews of this product -->
 
-    {% endif %}
+    
     <h5>All ratings</h5>
     <table id="productRatings" class='table table-hover table-bordered'>
       <thead class="thead-dark">

@@ -74,7 +74,7 @@ def update(user_id, pid, raterFName, raterLName):
     
     return render_template('updatedpRatingredir.html',
                             user_id=user_id, pid=pid,
-                            feedback=feedback, new_feed=new_feed, productName=productName, past_feed=past_feed, feedstars=feedstars, TEST=TEST, raterFName=raterFName, raterLName=raterLName)
+                            feedback=feedback, new_feed=new_feed, productName=productName, past_feed=past_feed, feedstars=feedstars, raterFName=raterFName, raterLName=raterLName)
 
 
 
