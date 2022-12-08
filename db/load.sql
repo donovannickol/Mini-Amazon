@@ -44,7 +44,7 @@ SELECT pg_catalog.setval('public.messagethread_thread_id_seq',
                          false);
 
 -- \COPY message FROM 'message.csv' WITH DELIMITER ',' NULL '' CSV
-
+\COPY SavedForLater FROM 'SavedForLater.csv' WITH DELIMITER ',' NULL '' CSV;
 
 -- this is mostly an aesthetic table; SHOULD NOT BE USED FOR BUILDING THIS WEBSITE
 CREATE TABLE pRatingNAMES AS
