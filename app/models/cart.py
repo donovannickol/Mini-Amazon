@@ -35,10 +35,43 @@ VALUES (:uid, :pid, :sid, :quantity, :price)
                        quantity=quantity,
                        price=price)
     
+
+    @staticmethod
+    def move_to_saved(uid, pid, sid, quantity, price):
+        app.db.execute('''
+INSERT INTO SavedForLater (uid, pid, sellerid, quantity, price)
+VALUES (:uid, :pid, :sid, :quantity, :price)
+''',
+                        uid=uid,
+                        pid=pid,
+                        sid=sid,
+                        quantity=quantity,
+                        price=price)
+    
+    @staticmethod
+    def get_saved(uid):
+        rows = app.db.execute('''
+SELECT Products.name, Products.img_url, SavedForLater.quantity, SavedForLater.price, pid, sellerid
+FROM SavedForLater, Products
+WHERE uid = :uid
+AND SavedForLater.pid = Products.id
+''',
+                                uid=uid)
+        return [row for row in rows]
+
     @staticmethod
     def delete_from_cart(uid, pid, sid):
         app.db.execute('''
         DELETE FROM Cart
+        WHERE uid = :uid
+        AND pid = :pid
+        AND sellerid = :sid
+        ''', uid=uid, pid=pid, sid=sid)
+
+    @staticmethod
+    def delete_from_saved(uid, pid, sid):
+        app.db.execute('''
+        DELETE FROM SavedForLater
         WHERE uid = :uid
         AND pid = :pid
         AND sellerid = :sid

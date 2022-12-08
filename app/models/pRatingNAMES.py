@@ -16,6 +16,15 @@ class pRatingNAMES:
         self.ratingContent = ratingContent
         self.submissionDate = submissionDate
         
+    @staticmethod
+    #remove rating
+    def rem(uid, pid):
+        rows = app.db.execute('''
+        DELETE FROM pRatingNAMES
+        WHERE user_id=:uid
+        AND pid=:pid
+        ''',
+        pid=pid, uid=uid)
 
     @staticmethod
     def get(user_id):

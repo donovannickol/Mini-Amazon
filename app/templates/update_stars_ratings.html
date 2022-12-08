@@ -49,6 +49,7 @@
       <th scope="col">Stars out of five</th>
       <th scope="col">Rating content</th>
       <th scope="col">Submission date</th>
+      <th scope="col"></th>
     </tr>
   </thead>
   
@@ -63,6 +64,7 @@
             <td>{{rating.starsOutOfFive}}</td>
             <td>{{rating.ratingContent}}</td> <!--replace 1 with current.user_id-->
             <td>{{rating.submissionDate}}</td>
+            <td><a href="{{ url_for('sellerRatings.rem', user_id=uid, sid=sid, seller_name=seller_name) }}" class="btn btn-primary">delete?</a></td>
           </tr>
           {%endif%}
             

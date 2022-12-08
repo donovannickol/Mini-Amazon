@@ -24,16 +24,20 @@ def user_cart():
 def user_cart():
     uid = current_user.id
     user_cart = Cart.get_by_uid(uid)
+    saved_for_later = Cart.get_saved(uid)
     error = ''
     if request.args.get('error'):
         error = request.args.get('error')
     # total_price = Cart.get_total_price(uid)
     num_of_items = sum([item.quantity for item in user_cart])
+    num_of_saved_items = sum([item.quantity for item in saved_for_later])
     total_price = sum([(item.price * item.quantity) for item in user_cart])
     return render_template('user_cart.html',
                            uid = uid,
                            num_of_items = num_of_items,
+                           num_of_saved_items = num_of_saved_items,
                            user_cart = user_cart,
+                           saved_for_later = saved_for_later,
                            total_price = total_price,
                            error = error)
 
@@ -71,7 +75,10 @@ def submit_order():
 
 @bp.route('/add_to_cart/', methods=['GET','POST'])
 def add_to_cart():
-    uid = current_user.id
+    try:
+        uid = current_user.id
+    except:
+        return redirect(url_for('users.login'))
     pid = request.form['pid']
     sid = request.form['sid']
     quantity = request.form['quantity']
@@ -84,6 +91,28 @@ def add_to_cart():
         flash('Already in cart')
         return redirect(url_for('products.product', id=pid))
 
+@bp.route('/move_to_saved/', methods=['GET','POST'])
+def move_to_saved():
+    uid = current_user.id
+    pid = request.args.get("pid")
+    sid = request.args.get("sid")
+    quantity = request.args.get("quantity")
+    price = request.args.get("price")
+    Cart.move_to_saved(uid, pid, sid, quantity, price)
+    Cart.delete_from_cart(uid, pid, sid)
+    return redirect(url_for('cart.user_cart'))
+
+@bp.route('/move_to_cart/', methods=['GET','POST'])
+def move_to_cart():
+    uid = current_user.id
+    pid = request.args.get("pid")
+    sid = request.args.get("sid")
+    quantity = request.args.get("quantity")
+    price = request.args.get("price")
+    Cart.add_to_cart(uid, pid, sid, quantity, price)
+    Cart.delete_from_saved(uid, pid, sid)
+    return redirect(url_for('cart.user_cart'))
+
 @bp.route('/delete_from_cart/', methods=['GET','POST'])
 def delete_from_cart():
     uid = current_user.id
@@ -91,6 +120,14 @@ def delete_from_cart():
     sid = request.args.get("sid")
     Cart.delete_from_cart(uid, pid, sid)
     return redirect(url_for('cart.user_cart'))
+
+@bp.route('/delete_from_saved/', methods=['GET','POST'])
+def delete_from_saved():
+    uid = current_user.id
+    pid = request.args.get("pid")
+    sid = request.args.get("sid")
+    Cart.delete_from_saved(uid, pid, sid)
+    return redirect(url_for('cart.user_cart')) 
 
 @bp.route('/change_quantity/', methods=['GET','POST'])
 def change_quantity():
