@@ -75,9 +75,10 @@ def submit_order():
 
 @bp.route('/add_to_cart/', methods=['GET','POST'])
 def add_to_cart():
-    uid = current_user.id
-    if uid == None:
-        return redirect(url_for('login.html'))
+    try:
+        uid = current_user.id
+    except:
+        return redirect(url_for('users.login'))
     pid = request.form['pid']
     sid = request.form['sid']
     quantity = request.form['quantity']
