@@ -50,6 +50,15 @@ CREATE TABLE Cart(
     PRIMARY KEY(uid, pid, sellerid)
 );
 
+ CREATE TABLE SavedForLater(
+    uid INT NOT NULL REFERENCES Users(id),
+    pid INT NOT NULL REFERENCES Products(id),
+    sellerid INT NOT NULL REFERENCES Users(id),
+    quantity INT NOT NULL,
+    price DECIMAL(16,2) NOT NULL,
+    PRIMARY KEY(uid, pid, sellerid)
+ );
+ 
 CREATE TABLE Inventory (
     uid INT NOT NULL REFERENCES Users(id),
     pid INT NOT NULL REFERENCES Products(id),
