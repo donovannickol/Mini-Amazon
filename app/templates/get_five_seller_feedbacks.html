@@ -47,6 +47,7 @@
     {% endif %}
 </div>
 
+{% if current_user.id != seller_id %}
 {% if current_user.id not in (whatIOrdered | map(attribute='uid') | list) %}
 <div>You haven't purchased from this seller. Make a purchase to leave a review! </div>
 {% elif current_user.id not in (specProRating | map(attribute='user_id') | list) %}
@@ -95,8 +96,7 @@
 </table>
 
 {% endif %}
-
-<br></br>
+{% endif %}
 
 {% if get_all_sratings %}
 <h2>All seller reviews</h2>
