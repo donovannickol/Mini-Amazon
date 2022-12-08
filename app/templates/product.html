@@ -69,6 +69,10 @@
     <h3 class="text-danger">Out of stock</h3>
     {% else %}
     <!-- insert add to cart and stock per seller here -->
+    {% if current_user.id is not defined %}      
+    <div>Log in/register to see these Seller's ratings.</div>
+    {%endif%}
+    
     <table class="table table-striped">
       <thead>
         <tr>
@@ -82,7 +86,7 @@
         {% for seller in sellers %}
         <!-- Table containg seller uid, price, stock, and an add to cart with quantity form -->
         <tr>
-          {% if current_user.id is none %}
+          {% if current_user.id is defined %}
           <th scope="row"><a
               href="{{ url_for('sellerRatings.get_five_seller_feedbacks', sid = seller.uid, name = seller.name, you=current_user.id) }}">{{seller.name}}</a>
           </th>
@@ -113,6 +117,9 @@
         </tbody>
       </table>
       {% endif %}
+
+     
+
       <p>
         {% with messages = get_flashed_messages() %}
         {% if messages %}
@@ -191,9 +198,9 @@
                 
                 
                 <tr>
+                  <td>{{rating[2]}}</td>
                   <td>{{rating[0]}}</td>
                   <td>{{rating[1]}}</td>
-                  <td>{{rating[2]}}</td>
                   <td>{{rating[4]}}</td> 
 
                   <td>{{rating[5]}}</td>
