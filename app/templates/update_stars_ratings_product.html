@@ -6,6 +6,8 @@
 
 <br><br>
 
+<!-- Forms to prompt user's new product reviews -->
+
 <div class="col-md-5">
   <h3>Update your rating for {{ productName }}: </h3>
     <form method="POST"> <!-- replace user_id with 1--> 
@@ -16,7 +18,7 @@
       </div>
       <div class="form-group">
         <label for="feedback">rating content:</label>
-        <!-- only allow positive integers -->
+        
         <input class="form-control" id="feedback" name="feedback" required>
       </div>
       <button type="submit" class="btn btn-primary">Submit</button>
@@ -26,12 +28,14 @@
     
 </div>
 
+
+<!-- A little JS to get the feedback forms input and return them into the url for productRatings.update -->
 {% block scripts %}
 <script>
   let feedstars = document.querySelector('input[name=feedstars]').value;
   let feedback = document.querySelector('input[name=feedback]').value;
   document.querySelector('form').onsubmit = function() {
-    this.setAttribute('action', "{{ url_for('productRatings.update', pid=pid, user_id=current_user.id, raterFName=raterFName, raterLName=raterLName) }}") //change user_id to uid
+    this.setAttribute('action', "{{ url_for('productRatings.update', pid=pid, user_id=current_user.id, raterFName=raterFName, raterLName=raterLName) }}") 
   }
 </script>
 {% endblock %}
@@ -39,7 +43,7 @@
 
 
   
-</script>
+<!-- A table showing current product review -->
 
 <table id="productRatings" class='table table-hover table-bordered'>
   <thead class="thead-dark">
