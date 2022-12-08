@@ -14,6 +14,16 @@ class SellerRating:
         self.submissionDate = submissionDate
 
     @staticmethod
+    #remove rating
+    def rem(uid, sid):
+        rows = app.db.execute('''
+        DELETE FROM sellerRating
+        WHERE user_id=:uid
+        AND seller_id=:sid
+        ''',
+        sid=sid, uid=uid)
+
+    @staticmethod
     def get_pot_sellers():
         #user_id, seller_id, starsOutOfFive, ratingContent, submissionDate
         rows = app.db.execute('''

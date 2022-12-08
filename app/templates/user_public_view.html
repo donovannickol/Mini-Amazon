@@ -123,8 +123,7 @@
 
 
 
-{%for i in (whatIOrdered | map(attribute='pid') | list | unique)%}
-{% if i not in  (pRated | map(attribute='pid') | list | unique)%}
+
 
 <h4>Purchased product(s) you haven't reviewed </h4>
         <h6> </h6>
@@ -134,19 +133,22 @@
                     <th scope="col">Product ID <h6></h6> (click link for product)</th>     
                 </tr>
             </thead>
+            {%for i in (whatIOrdered | map(attribute='pid') | list | unique)%}
+            {% if i not in  (pRated | map(attribute='pid') | list | unique)%}
             <tbody>
-                
+                    
                 <tr>
                     <td><a href="{{ url_for('products.product', id = i) }}">{{i}}</a>
                     </td>
                     
                 </tr>
             </tbody>
+            {%endif%}
+{%endfor%}
         </table>
 
 
-{%endif%}
-{%endfor%}
+
 
 
 
