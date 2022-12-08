@@ -2,10 +2,52 @@
 
 {% block content %}
 
+{% set stars = [] %}
+
+{% for num in specProRating %}
+    {% if stars.append(num.starsOutOfFive) %}{% endif %}
+{% endfor %}
+{% if stars | count != 0 %}
+{% set avg = stars | sum / stars | count %}
+
+{% else %}
+{% set avg = 0 %}
+
+{%endif%}
+
+{% if avg == 0 %}
+
+{%endif%}
 
 
 <br><br>
 <h2>Seller ratings for {{seller_name}}</h2>
+<div class="my-3">
+  {% if true %}
+  {% set fraction = avg % 1 %}
+  {% for i in range(1, 6) %}
+    {% if avg >= i %}
+      <span class="bi bi-star-fill"></span>
+    {% elif avg >= i - 1 %}
+      {% if fraction >= 0.75 %}
+        <span class="bi bi-star-fill"></span>
+      {% elif fraction >= 0.25 and fraction < 0.75 %}
+        <span class="bi bi-star-half"></span>
+      {% else %}
+        <span class="bi bi-star"></span>
+      {% endif %}
+    {% else %}
+      <span class="bi bi-star"></span>
+    {% endif %}
+  {% endfor %}
+  <span class="text-secondary mx-2 align-text-top">{{ stars | count }} rating{{ 's' if stars | count >
+    1
+    }}</span>
+  {% else %}
+  <span class="text-secondary">No reviews</span>
+  {% endif %}
+</div>
+
 {% if current_user.id not in (whatIOrdered | map(attribute='uid') | list) %}
 <div>You haven't purchased from this seller. Make a purchase to leave a review! </div>
 {% elif current_user.id not in (specProRating | map(attribute='user_id') | list) %}
