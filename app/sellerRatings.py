@@ -7,7 +7,7 @@ from .models.orderhistory import OrderHistory
 from flask import Blueprint
 bp = Blueprint('sellerRatings', __name__)
 
-@bp.route('/delpRatingredir/<int:user_id>/<int:sid>/<seller_name>')
+@bp.route('/delsRatingredir/<int:user_id>/<int:sid>/<seller_name>')
 def rem(user_id, sid, seller_name):
     
     SellerRating.rem(user_id, sid)
