@@ -7,7 +7,7 @@
 {% endblock %}
 
 <br><br>
-
+<!-- Show the updated rating -->
 <table id="sellerRatings" class='table table-hover table-bordered'>
     <thead class="thead-dark">
       <tr>
@@ -28,7 +28,7 @@
               
               <td>{{seller_name}}</td>
               <td>{{rating.starsOutOfFive}}</td>
-              <td>{{rating.ratingContent}}</td> <!--replace 1 with current.user_id-->
+              <td>{{rating.ratingContent}}</td> 
               <td>{{rating.submissionDate}}</td>
             </tr>
             
@@ -38,6 +38,8 @@
         
       </tbody>
   </table>
+
+<!-- Redirect back to the seller rating's summary page -->
 <div>Redirecting back to home page in 3 seconds...</div>
 <meta http-equiv="refresh" content="3;{{ url_for('sellerRatings.get_five_seller_feedbacks', sid = sid, name = seller_name, you=current_user.id) }}" /> 
 

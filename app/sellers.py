@@ -95,6 +95,7 @@ def seller_analytics(sid):
     values = list(values_map.values())
 
     fig = Figure()
+    
     fig = plt.figure(figsize = (10, 5))
 
     plt.bar(courses, values, color ='maroon',
@@ -106,6 +107,8 @@ def seller_analytics(sid):
     plt.show()
     #save to temp buffer
     buf1= BytesIO()
+    fig.autofmt_xdate()
+    fig.tight_layout()
     fig.savefig(buf1, format="png")
 
     fig = Figure()
@@ -120,6 +123,8 @@ def seller_analytics(sid):
     plt.show()
     #save to temp buffer
     buf2= BytesIO()
+    fig.autofmt_xdate()
+    fig.tight_layout()
     fig.savefig(buf2, format="png")
 
     fig = Figure()
@@ -136,7 +141,11 @@ def seller_analytics(sid):
     plt.show()
     #save to temp buffer
     buf3= BytesIO()
+    fig.autofmt_xdate()
+    fig.tight_layout()
     fig.savefig(buf3, format="png")
+    
+    
 
     # Embed the result in the html output.
     monthly_revenue = base64.b64encode(buf1.getbuffer()).decode("ascii")

@@ -8,6 +8,8 @@
 
 <br><br>
 
+
+<!-- This page is activated when a rating is deleted... redirect them back to the update page -->
 <meta http-equiv="refresh" content="0;{{ url_for('productRatings.update_stars_ratings_product', user_id=current_user.id, pid=pid) }}" />
 
 {% endblock %}

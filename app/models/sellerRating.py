@@ -125,7 +125,7 @@ class SellerRating:
         return merged_tables
 
     @staticmethod
-    #insert a rating
+    #insert a seller rating given user id, seller id, newest feedback, and newest star ratings
     def insert_s_rating(user_id, sid, newfeedback, newstars):
         #user_id, seller_id, starsOutOfFive, ratingContent, submissionDate
         rows = app.db.execute('''
@@ -136,7 +136,7 @@ class SellerRating:
         return rows
 
     @staticmethod
-    #get product rating by user id
+    #get seller rating given a user id and seller id
     def get_by_user_id_sid(user_id, sid):
         rows = app.db.execute('''
                 SELECT user_id, seller_id, starsOutOfFive, ratingContent, submissionDate
@@ -152,7 +152,7 @@ class SellerRating:
         return [SellerRating(*row) for row in rows]
     
     @staticmethod
-    #get product rating by pid
+    #get all seller ratings given a seller id
     def get_by_seller_id(seller_id):
 		
         rows = app.db.execute('''
@@ -165,7 +165,7 @@ class SellerRating:
         return [SellerRating(*row) for row in rows]
     
     @staticmethod
-    #update a rating
+    #update a seller rating's content given seller id and user id
     def update_s_rating(user_id, sid, oldfeedback, newfeedback):
         rows = app.db.execute('''
             UPDATE SellerRating
@@ -173,11 +173,11 @@ class SellerRating:
             
             WHERE user_id = :user_id
             AND seller_id = :sid''', newfeedback = newfeedback, oldfeedback = oldfeedback, user_id=user_id, sid=sid)
-        #return [ProductRating(*row) for row in rows]
+        
         return rows
 
     @staticmethod
-    #update a stars
+    #update a seller rating's star contents given user id and seller id
     def update_s_stars(user_id, sid, oldstars, newstars):
         rows = app.db.execute('''
             UPDATE SellerRating
@@ -185,11 +185,11 @@ class SellerRating:
             
             WHERE user_id = :user_id
             AND seller_id = :sid''', newstars = newstars, oldstars = oldstars, user_id=user_id, sid=sid)
-        #return [ProductRating(*row) for row in rows]
+        
         return rows
     
     @staticmethod
-    #update date
+    #update a seller rating's submission time
     def updateDate(user_id, sid):
         
         rows = app.db.execute('''
@@ -202,6 +202,7 @@ class SellerRating:
         return rows
 
     @staticmethod
+    #get the average stars rating given a seller id
     def get_average_rating(seller_id):
         rows = app.db.execute('''
         SELECT AVG(starsOutOfFive)
@@ -216,6 +217,7 @@ class SellerRating:
         return rows[0][0]
     
     @staticmethod
+    #get the number of seller ratings of a user
     def get_numbers_of_rating(user_id):
         rows = app.db.execute('''
         SELECT COUNT(*)

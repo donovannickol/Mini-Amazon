@@ -24,7 +24,7 @@ class ProductRating:
         ''',
         pid=pid, uid=uid)
         
-
+    #Returns productRating but with an added column of the Product's name
     @staticmethod
     def pidNameMerger(uid):
         rows = app.db.execute('''
@@ -60,7 +60,7 @@ class ProductRating:
         return merged_tables
     
     @staticmethod
-    #get all product rating given user id and pid
+    #get all product rating given and pid
     def get_pRating_uid_pid(pid):
         rows = app.db.execute('''
         SELECT *
@@ -97,7 +97,7 @@ class ProductRating:
 
     
     @staticmethod
-    #update a rating
+    #update a product rating's contnet
     def update_p_rating(user_id, pid, oldfeedback, newfeedback):
         rows = app.db.execute('''
             UPDATE productRating
@@ -109,7 +109,7 @@ class ProductRating:
         return rows
 
     @staticmethod
-    #update a stars
+    #update a product rating's stars
     def update_p_stars(user_id, pid, oldstars, newstars):
         rows = app.db.execute('''
             UPDATE productRating
@@ -121,7 +121,7 @@ class ProductRating:
         return rows
     
     @staticmethod
-    #update date
+    #update a product rating's submission time
     def updateDate(user_id, pid):
         
         rows = app.db.execute('''

@@ -193,7 +193,7 @@ def userSearch():
     if search_term == "":
         return redirect(url_for('users.publicView', error = "Please enter an ID"))
     if (int(search_term) < 0):
-        return redirect(url_for('users.publicView', error = "Please enter an number greater than 0"))
+        return redirect(url_for('users.publicView', error = "Please enter a number greater than 0"))
     return redirect(url_for('users.getPublicView', search_term = search_term))
 
 @bp.route('/public_view', methods = ['GET','POST'])
