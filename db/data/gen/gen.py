@@ -25,6 +25,7 @@ ratings_df = pd.DataFrame()
 # conversations_df = pd.DataFrame()
 ratings_df = pd.read_csv("ai_supplemented/complete/reviews.csv", sep=delimiter)
 # ratings_df = pd.read_csv("ai_supplemented/complete/ratings.csv", sep=delimiter)
+seller_ratings_df = pd.read_csv("ai_supplemented/complete/seller_reviews.csv",sep=delimiter)
 # conversations_df = pd.read_csv("ai_supplemented/complete/conversations.csv", sep=delimiter)
 # conversations_df = pd.read_csv("ai_supplemented/complete/conversations.csv", sep=delimiter)
 sellers_df = pd.DataFrame()
@@ -32,7 +33,7 @@ sales_df = pd.DataFrame()
 rng = np.random.default_rng()
 
 ##Global Variables -- values set within their respective functions
-active_users = 300
+active_users = 5000
 # active_users=100
 average_num_sellers = 8 ## Approximate number of sellers for each products
 unmarked_category = "Miscellaneous" #Default label for any product that doesn't have a category
@@ -74,6 +75,7 @@ def gen_all(num_users):
     gen_sales()
     # gen_ratings()
     gen_reviews()
+    gen_seller_reviews()
 
 
     t_stop = perf_counter()
@@ -103,6 +105,25 @@ def gen_users():
     df = pd.DataFrame()
 
     print_end("Users")
+
+def gen_seller_reviews():
+    print_start_counting("Seller Reviews")
+
+    seller_reviews_df = sales_df.copy(deep=True)
+    seller_reviews_df = seller_reviews_df[["Buyer_ID","Seller_ID","Fullfill_Date"]]
+    seller_reviews_df["index"] = np.random.randint(0, seller_ratings_df.shape[0], seller_reviews_df.shape[0])
+    seller_ratings_df["index"] = seller_ratings_df.index
+    # reviews_df = reviews_df[["Buyer_ID", "Product_ID", "Seller_ID", "Rating","Review","Fullfill_Date"]]
+
+    seller_reviews_df = pd.merge(seller_ratings_df, seller_reviews_df, on="index")
+
+    seller_reviews_df = seller_reviews_df[["Buyer_ID", "Seller_ID", "Rating", "Review", "Fullfill_Date"]]
+    seller_reviews_df.drop_duplicates(subset=["Buyer_ID","Seller_ID"],inplace=True)
+
+    seller_reviews_df.to_csv("complete/seller_reviews.csv", header=False, index=False, lineterminator="\n", sep=delimiter)
+
+    print_end("Seller Reviews")
+
 
 def gen_inventory():
     global sellers_df, curr_count
