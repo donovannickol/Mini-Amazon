@@ -4,6 +4,7 @@
 
 <div class="row my-5">
     <div class="col-md-3">
+        <!-- If the user has an inventory, displays their ratings and number of reviews -->
         {% if get_inventory %}
             {% if rating != None %}
             {% set fraction = rating % 1 %}
@@ -48,7 +49,7 @@
         <a href="{{ url_for('sellers.seller_analytics',sid=id) }} " type="button" class="btn btn-light">Seller Analytics</a>
         {% endif %}
         <h6> </h6>
-        <!-- Search bar for users-->
+        <!-- Search bar for users' public views -->
         <form action="{{ url_for('users.userSearch', public = 'private')}}" method="POST">
             <div class="input-group">
                 <input type="number" name="search_term" class="form-control" placeholder="Search Users (enter user ID)">
@@ -75,6 +76,7 @@
                 </tr>
             </thead>
             <tbody>
+                <!-- If there are reviews to display, displays reviews for the user -->
                 {% for review in get_reviews%}
                 <tr>
                     <td><a href="{{ url_for('products.product', id = review.pid) }}">{{review[3]}}</a>
