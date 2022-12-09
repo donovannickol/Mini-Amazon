@@ -91,8 +91,7 @@
         <a id="reviews"class="dropdown-item" href="{{ url_for('users.reviewPage', sid = current_user.id, name = current_user.name, you=current_user.id) }}">Authored Reviews</a> 
         {% if get_inventory %}
         <a id="inventory"class="dropdown-item" href="{{ url_for('sellers.get_full_seller_inventory', sid = id) }}">My Inventory</a> 
-        <a id="reviews"class="dropdown-item" href="{{ url_for('sellerRatings.get_five_seller_feedbacks', sid = current_user.id, name = current_user.name, you=current_user.id) }}">My Reviews</a> 
-        <a id="inventory"class="dropdown-item"  href="{{ url_for('sellers.seller_analytics',sid=id) }} ">My Inventory</a> 
+        <a id="inventory"class="dropdown-item"  href="{{ url_for('sellers.seller_analytics',sid=id) }} ">Seller Analytics</a> 
         {% endif %}
         <a id="logOut"class="dropdown-item" href="{{ url_for('users.logout') }}">Sign out</a>
         </div>

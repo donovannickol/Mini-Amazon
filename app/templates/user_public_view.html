@@ -37,6 +37,9 @@
         <a href="{{ url_for('productRatings.get_personal_pRatings', uid=current_user.id) }}" type="button" class="btn btn-light">Update your product feedbacks</a> <!-- change uid to current_user.id -->
         <a href="{{ url_for('sellerRatings.get_personal_sRatings', uid=current_user.id) }}" type="button" class="btn btn-light">Update your seller feedbacks</a> <!-- change uid to current_user.id -->
         {% if get_inventory %}
+        <a href="{{ url_for('sellerRatings.get_five_seller_feedbacks', sid = id, name = name, you=id) }}" type="button"
+        class="btn btn-light">My Reviews</a>
+
         <a href="{{ url_for('sellers.seller_history') }} " type="button" class="btn btn-light">Seller History</a>
         {% endif %}
         <h6> </h6>
@@ -53,63 +56,6 @@
         </form>
         <h6> </h6>
         <h5> {{error}}</h5>
-
-        {% if get_reviews %}
-        <h4>My Product Reviews</h4>
-        <h6> </h6>
-        <table id="productRatings" class='table table-hover table-bordered'>
-            <thead class="thead-dark">
-                <tr>
-                    <th scope="col">Product ID <h6></h6> (click link for product)</th>
-                    <th scope="col">Rating content</th>
-                    <th scope="col">Stars</th>
-                    <th scope="col">Submitted</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for review in get_reviews%}
-                <tr>
-                    <td><a href="{{ url_for('products.product', id = review.pid) }}">{{review[3]}}</a>
-                    </td>
-                    <td>{{review[5]}}</td>
-                    <td>{{review[4]}}</td>
-                    <td>{{review[6]}}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-        {% endif %}
-
-        {% if get_sreviews %}
-        <h4>My Seller Reviews</h4>
-        <h6> </h6>
-        <table id="sellerRatings" class='table table-hover table-bordered'>
-            <thead class="thead-dark">
-                <tr>
-                    <th scope="col">Seller ID <h6></h6> (click link for seller)</th>
-                    <th scope="col">Seller first name</th>
-                    <th scope="col">Seller last name</th>
-                    <th scope="col">Rating content</th>
-                    <th scope="col">Stars</th>
-                    <th scope="col">Submitted</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for review in get_sreviews%}
-                <tr>
-                    <td><a
-                        href="{{ url_for('sellerRatings.get_five_seller_feedbacks', sid = review[1], name = review[5] + ' ' + review[6] , you=current_user.id) }}">{{review[1]}}</a>
-                    </td>
-                    <td>{{review[5]}}</td>
-                    <td>{{review[6]}}</td>
-                    <td>{{review[3]}}</td>
-                    <td>{{review[2]}}</td>
-                    <td>{{review[4]}}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-        {% endif %}
     </div>
 </div>
 

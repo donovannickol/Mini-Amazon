@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 
+{% block content %}
+
 {% if get_reviews %}
         <h4>My Product Reviews</h4>
         <h6> </h6>
@@ -58,7 +60,9 @@
             </tbody>
         </table>
         {% else %}
-        
+
         You have not reviewed any sellers.
 
         {% endif %}
+
+{% endblock %}
