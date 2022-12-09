@@ -22,9 +22,10 @@ delimiter="^"
 products_df = pd.read_csv("ai_supplemented/complete/products.csv", sep=delimiter)
 products_df = products_df.drop(columns=["Unnamed: 0"])
 ratings_df = pd.DataFrame()
-conversations_df = pd.DataFrame()
+# conversations_df = pd.DataFrame()
+ratings_df = pd.read_csv("ai_supplemented/complete/reviews.csv", sep=delimiter)
 # ratings_df = pd.read_csv("ai_supplemented/complete/ratings.csv", sep=delimiter)
-# ratings_df = pd.read_csv("ai_supplemented/complete/ratings.csv", sep=delimiter)
+seller_ratings_df = pd.read_csv("ai_supplemented/complete/seller_reviews.csv",sep=delimiter)
 # conversations_df = pd.read_csv("ai_supplemented/complete/conversations.csv", sep=delimiter)
 # conversations_df = pd.read_csv("ai_supplemented/complete/conversations.csv", sep=delimiter)
 sellers_df = pd.DataFrame()
@@ -55,7 +56,7 @@ def gen_all(num_users):
 
     ###dummy declarations to be deleted
     global ratings_df, conversations_df
-    ratings_df = pd.DataFrame([[i, random.randint(1,5), "Good/Bad"] for i in range(products_df.shape[0])], columns=["Product_ID","Rating","Review"])
+    # ratings_df = pd.DataFrame([[i, random.randint(1,5), "Good/Bad"] for i in range(products_df.shape[0])], columns=["Product_ID","Rating","Review"])
     conversations_df = pd.DataFrame([[i, True if i % 2 == 0 else False, "Hi/Bye"] for i in range(products_df.shape[0])])
     ####end dummies
 
@@ -72,8 +73,9 @@ def gen_all(num_users):
     gen_inventory()
     clean_up_products()
     gen_sales()
-    gen_ratings()
+    # gen_ratings()
     gen_reviews()
+    gen_seller_reviews()
 
 
     t_stop = perf_counter()
@@ -103,6 +105,25 @@ def gen_users():
     df = pd.DataFrame()
 
     print_end("Users")
+
+def gen_seller_reviews():
+    print_start_counting("Seller Reviews")
+
+    seller_reviews_df = sales_df.copy(deep=True)
+    seller_reviews_df = seller_reviews_df[["Buyer_ID","Seller_ID","Fullfill_Date"]]
+    seller_reviews_df["index"] = np.random.randint(0, seller_ratings_df.shape[0], seller_reviews_df.shape[0])
+    seller_ratings_df["index"] = seller_ratings_df.index
+    # reviews_df = reviews_df[["Buyer_ID", "Product_ID", "Seller_ID", "Rating","Review","Fullfill_Date"]]
+
+    seller_reviews_df = pd.merge(seller_ratings_df, seller_reviews_df, on="index")
+
+    seller_reviews_df = seller_reviews_df[["Buyer_ID", "Seller_ID", "Rating", "Review", "Fullfill_Date"]]
+    seller_reviews_df.drop_duplicates(subset=["Buyer_ID","Seller_ID"],inplace=True)
+
+    seller_reviews_df.to_csv("complete/seller_reviews.csv", header=False, index=False, lineterminator="\n", sep=delimiter)
+
+    print_end("Seller Reviews")
+
 
 def gen_inventory():
     global sellers_df, curr_count
@@ -448,7 +469,7 @@ def gen_ratings():
     print("\nGenerated", row_num, "reviews for", num_products, "products in", t2_stop-t1_start, "seconds.")
 
     df = df.drop(columns=["Title"])
-    ratings_df = df
+    # ratings_df = df
     # df.to_csv("complete/reviews.csv", sep="^")
 
 

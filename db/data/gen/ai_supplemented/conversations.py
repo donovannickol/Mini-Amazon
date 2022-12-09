@@ -19,57 +19,60 @@ temp=keys.temp
 
 row_num = 0
 
-def gen_conversations():
+review_map = {1: "very negative", 2: "negative", 3:"neutral", 4:"positive", 5:"very positive"}
+
+def gen_reviews():
+
     global row_num
 
     t1_start = perf_counter()
 
-    df = pd.read_csv("complete/products.csv", sep="^")
+    # df = pd.read_csv("complete/products.csv", sep="^")
 
-    df["FROM_SELLER"] = False
-    df["Message"] = 0
-    df = df[["Product_ID", "FROM_SELLER","Title","Message"]]
+    # df["Rating"] = 0
+    # df["Review"] = 0
+    # df = df[["Product_ID", "Rating","Title", "Review"]]
 
-    num_products = df.shape[0]
+    num_products = 100
 
-    print("Generating Product Conversation Distribution...", end=" ", flush=True)
+    df = pd.DataFrame([["","","",""]]*num_products, columns=["Product_ID", "Rating","Title", "Review"])
 
-    df = df.apply(gen_conversation_distribution, raw=True, axis=1)
+    print("Generating Product Review Distribution...", end=" ", flush=True)
     
+    df = df.apply(gen_review_distribution, raw=True, axis=1)
+
     ## Expand out the list distribution so that each index is its own row
-    df = df.explode("FROM_SELLER")
+    df = df.explode("Rating")
+
+    print(df.shape[0])
+    print(df.head(5))
 
     row_num = 0
 
-    print("\nGenerating Product Conversations...", end=" ", flush=True)
+    print("\nGenerating Product Reviews...", end=" ", flush=True)
 
-    df = df.apply(gen_conversation, raw=True, axis=1)
 
+    df = df.apply(gen_review, raw=True, axis=1)
 
     t2_stop = perf_counter()
 
-    print("\nGenerated", row_num, "conversations for", num_products, "products in", t2_stop-t1_start, "seconds.")
+    print("\nGenerated", row_num, "reviews for", num_products, "sellers in", t2_stop-t1_start, "seconds.")
 
-    df = df.drop(columns=["Title"])
-    df.to_csv("complete/conversations.csv", sep="^")
+    df = df.drop(columns=["Title","Product_ID"])
+    df.to_csv("complete/seller_reviews.csv", sep="^")
 
 
-def gen_conversation_distribution(row):
+def gen_review_distribution(row):
     global row_num
     if(row_num % 100 == 0):
         print(row_num, end=" ", flush=True)
     row_num += 1
-    row[1] = [True for i in range(5)] + [False for i in range(5)]
+    row[1] = [i for i in range(1,6)]
     return row
 
-def gen_conversation(row):
+def gen_review(row):
     global row_num
-    sender = "seller"
-    recepient = "buyer"
-    if(not row[1]):
-        sender = "buyer"
-        recepient = "seller"
-    prompt = "Write a message from a " + sender + " to a " + recepient + " about \"" + row[2] + "\"" 
+    prompt = "Write a " + review_map[row[1]] + " review about a seller" 
     tokens = max_tokens - len(prompt) - 1
     row[3] = openai.Completion.create(
         model=model,
@@ -80,8 +83,9 @@ def gen_conversation(row):
     if(row_num % 100 == 0):
         print(row_num, end=" ", flush=True)
         if(row_num % 500 == 0) :
-            print("Sample message:", row[3])
+            print("Sample review:", row[3])
     row_num += 1
     return row
 
-# gen_conversations()
+
+gen_reviews()

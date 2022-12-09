@@ -54,7 +54,7 @@ def gen_reviews():
     print("\nGenerated", row_num, "reviews for", num_products, "products in", t2_stop-t1_start, "seconds.")
 
     df = df.drop(columns=["Title"])
-    df.to_csv("complete/reviews.csv", sep="^")
+    # df.to_csv("complete/reviews.csv", sep="^")
 
 
 def gen_review_distribution(row):
