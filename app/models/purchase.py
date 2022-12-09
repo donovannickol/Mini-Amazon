@@ -22,10 +22,12 @@ WHERE id = :id
                               id=id)
         return Purchase(*(rows[0])) if rows else None   
     
+    # Procedure to add a submitted order to the user's purchase list
     @staticmethod
     def add_to_purchases(uid, total_price, num_of_items, 
                          order_status, time_purchased, order_number):
         try:
+            # SQL procedure to add a submitted order to the Purchase table
             rows = app.db.execute('''
             INSERT INTO Purchases(uid, total_price, num_of_items, order_status, time_purchased, order_number)
             VALUES(:uid, :total_price, :num_of_items, :order_status, :time_purchased, :order_number)

@@ -28,15 +28,17 @@
         {%endif%}
         <h1>{{ name }}</h1>
         <h3>Account ID: {{ id }}</h3>
+        <!-- If the user has an inventory, displays information relevant to sellers (e.g., email, address) -->
         {% if get_inventory %}
         <p>Email: {{ email }}</p>
         <p>Address: {{ address }}</p>
+        <!-- Displays seller-relevant buttons like seller analytics and seller feedbacks -->
         <a href="{{ url_for('sellers.seller_analytics',sid=id) }} " type="button" class="btn btn-light">Seller Analytics</a>
         <a href="{{ url_for('sellerRatings.get_five_seller_feedbacks', sid = id, name = name, you=id) }}" type="button"
             class="btn btn-light">Seller reviews for {{firstname}}</a>
         {% endif %}
         <h6> </h6>
-        <!-- Search bar for users-->
+        <!-- Search bar for other users' public views -->
         <form action="{{ url_for('users.userSearch', public = 'public')}}" method="POST">
             <div class="input-group">
                 <input type="number" name="search_term" class="form-control" placeholder="Search Users (enter user ID)">
@@ -48,9 +50,11 @@
             </div>
         </form>
         <br></br>
+        <!-- If there are reviews to display, displays reviews for the user -->
         {% if get_reviews %}
         <h4>{{firstname}}'s Reviews</h4>
         <h6> </h6>
+        <!-- Constructs table for review details -->
         <table id="productRatings" class='table table-hover table-bordered'>
             <thead class="thead-dark">
                 <tr>
@@ -61,8 +65,10 @@
                 </tr>
             </thead>
             <tbody>
+                <!-- For each review, displays ID of corresponding product, review content, number of stars, and time of submission -->
                 {% for review in get_reviews%}
                 <tr>
+                    <!-- Enables user to click on ID of product to take them to corresponding product page -->
                     <td><a href="{{ url_for('products.product', id = review.pid) }}">{{review.pid}}</a>
                     </td>
                     <td>{{review[5]}}</td>

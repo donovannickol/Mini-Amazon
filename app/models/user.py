@@ -42,9 +42,11 @@ WHERE email = :email
                               email=email)
         return len(rows) > 0
 
+    # Procedure to update the information of a user
     @staticmethod
     def update_user(firstname, lastname, email, address, city, state, password, id):
         try:
+            # SQL procedure to update the user information with specified information
             rows = app.db.execute("""
             UPDATE Users
             SET firstname = :firstname,
@@ -62,9 +64,11 @@ WHERE email = :email
         except Exception as e:
            print(str(e))
 
+    # Procedure to update the balance of a user
     @staticmethod
     def update_balance(balance, withdraw, add, id):
         try:
+            # SQL procedure to subtract and add the specified amounts to the balance
             rows = app.db.execute("""
             UPDATE Users
             SET balance = (:balance + :add - :withdraw)
