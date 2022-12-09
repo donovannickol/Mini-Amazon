@@ -161,6 +161,31 @@ def publicView():
     error = error, get_reviews = get_reviews, get_inventory = get_inventory, get_sreviews=get_sreviews, whatIOrdered=whatIOrdered, pRated=pRated, sRated=sRated, seller_names=seller_names,
     number_of_reviews = number_of_reviews, rating=average_review)
 
+@bp.route('/review_page', methods = ['GET', 'POST'])
+def reviewPage():
+    id_number = current_user.id
+    name = f'{current_user.firstname} {current_user.lastname}'
+    email = current_user.email
+    get_reviews = pRatingNAMES.get(id_number)
+    get_sreviews = SellerRating.get_personal(current_user.id)
+    get_inventory = Inventory.get_by_uid(id_number)
+    average_review =SellerRating.get_average_rating(current_user.id)
+    number_of_reviews = SellerRating.get_numbers_of_rating(current_user.id)
+
+    pRated = ProductRating.get_by_user_id_tot(id_number)
+    whatIOrdered = OrderHistory.productsUserOrd(id_number)
+    sRated = SellerRating.get_personal(id_number)
+    seller_names = SellerRating.get_pot_sellers()
+    error = ''
+    if request.args.get('error'):
+        error = request.args.get('error')    
+    location = current_user.city + ", " + current_user.state
+    balance = "$" + str(current_user.balance)
+    return render_template('review.html', 
+    id = id_number, name = name, email = email, location = location, balance = balance,
+    error = error, get_reviews = get_reviews, get_inventory = get_inventory, get_sreviews=get_sreviews, whatIOrdered=whatIOrdered, pRated=pRated, sRated=sRated, seller_names=seller_names,
+    number_of_reviews = number_of_reviews, rating=average_review)
+
 @bp.route('/user_search', methods = ['GET', 'POST'])
 def userSearch():
     search_term = request.form['search_term']

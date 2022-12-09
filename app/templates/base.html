@@ -71,13 +71,32 @@
     </button>
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav mr-auto">
-        <a id="index.oldIndex" class="nav-link" href="{{ url_for('index.oldIndex') }}">APIs<span class="sr-only"></span></a>
-      </ul></div>
+      {% if current_user.is_authenticated %}
+        <ul class="navbar-nav mr-auto">
+          <a id="index.oldIndex" class="nav-link" href="{{ url_for('index.oldIndex') }}">APIs<span class="sr-only"></span></a>
+      {% endif %}
+      </div>
       {% if current_user.is_authenticated %}
     <div class="collapse navbar-collapse pr-8" id="navbarSupportedContent"></div>
       <ul class="navbar-nav pr-4">
-      <a id="users.publicView" class="nav-link" href="{{ url_for('users.publicView') }}">Hello, {{current_user.firstname}}!<span class="sr-only"></span></a>
+      <div class="dropdown">
+        <a class="nav-link dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown"
+          aria-haspopup="true" aria-expanded="false">
+          Hello, {{current_user.firstname}}!
+      </a>
+        <div class="dropdown-menu pre-scrollable" aria-labelledby="dropdownMenuButton">
+        <a id="users.publicView"class="dropdown-item" href="{{url_for('users.publicView')}}">Account</a>
+        <a id="sell"class="dropdown-item" href="{{ url_for('users.get_all_purchases') }}">My Purchases</a> 
+        <a id="sell"class="dropdown-item" href="{{ url_for('products.new') }} ">Sell with Stuffhub</a> 
+        <a id="reviews"class="dropdown-item" href="{{ url_for('users.reviewPage', sid = current_user.id, name = current_user.name, you=current_user.id) }}">Authored Reviews</a> 
+        {% if get_inventory %}
+        <a id="inventory"class="dropdown-item" href="{{ url_for('sellers.get_full_seller_inventory', sid = id) }}">My Inventory</a> 
+        <a id="reviews"class="dropdown-item" href="{{ url_for('sellerRatings.get_five_seller_feedbacks', sid = current_user.id, name = current_user.name, you=current_user.id) }}">My Reviews</a> 
+        <a id="inventory"class="dropdown-item"  href="{{ url_for('sellers.seller_analytics',sid=id) }} ">My Inventory</a> 
+        {% endif %}
+        <a id="logOut"class="dropdown-item" href="{{ url_for('users.logout') }}">Sign out</a>
+        </div>
+      </div>
       </ul>
       <ul class="navbar-nav pr-4">
         <a href="{{ url_for('cart.user_cart')}}" type="icon" class="bi bi-cart icon-white pr-4"
@@ -85,8 +104,13 @@
       </ul>
     </div>
       {% else %}
-      <a href="{{ url_for('users.login') }}" type="button" class="btn btn-light">Log in</a>
-      <a href="{{ url_for('users.register') }}" type="button" class="btn btn-light">Register</a>
+      <ul class="navbar-nav mr-4">
+        <a id="users.publicView" class="nav-link" href="{{ url_for('users.login') }}">Sign In<span class="sr-only"></span></a>
+      </ul>
+      <ul class="navbar-nav mr-4">
+        <a id="users.publicView" class="nav-link" href="{{ url_for('users.register') }}">Register<span class="sr-only"></span></a>
+      </ul>
+    
       {% endif %}
     </div>
   </nav>
