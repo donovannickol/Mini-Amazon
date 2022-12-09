@@ -22,8 +22,8 @@ delimiter="^"
 products_df = pd.read_csv("ai_supplemented/complete/products.csv", sep=delimiter)
 products_df = products_df.drop(columns=["Unnamed: 0"])
 ratings_df = pd.DataFrame()
-conversations_df = pd.DataFrame()
-# ratings_df = pd.read_csv("ai_supplemented/complete/ratings.csv", sep=delimiter)
+# conversations_df = pd.DataFrame()
+ratings_df = pd.read_csv("ai_supplemented/complete/reviews.csv", sep=delimiter)
 # ratings_df = pd.read_csv("ai_supplemented/complete/ratings.csv", sep=delimiter)
 # conversations_df = pd.read_csv("ai_supplemented/complete/conversations.csv", sep=delimiter)
 # conversations_df = pd.read_csv("ai_supplemented/complete/conversations.csv", sep=delimiter)
@@ -32,7 +32,7 @@ sales_df = pd.DataFrame()
 rng = np.random.default_rng()
 
 ##Global Variables -- values set within their respective functions
-active_users = 5000
+active_users = 300
 # active_users=100
 average_num_sellers = 8 ## Approximate number of sellers for each products
 unmarked_category = "Miscellaneous" #Default label for any product that doesn't have a category
@@ -55,7 +55,7 @@ def gen_all(num_users):
 
     ###dummy declarations to be deleted
     global ratings_df, conversations_df
-    ratings_df = pd.DataFrame([[i, random.randint(1,5), "Good/Bad"] for i in range(products_df.shape[0])], columns=["Product_ID","Rating","Review"])
+    # ratings_df = pd.DataFrame([[i, random.randint(1,5), "Good/Bad"] for i in range(products_df.shape[0])], columns=["Product_ID","Rating","Review"])
     conversations_df = pd.DataFrame([[i, True if i % 2 == 0 else False, "Hi/Bye"] for i in range(products_df.shape[0])])
     ####end dummies
 
@@ -72,7 +72,7 @@ def gen_all(num_users):
     gen_inventory()
     clean_up_products()
     gen_sales()
-    gen_ratings()
+    # gen_ratings()
     gen_reviews()
 
 
@@ -448,7 +448,7 @@ def gen_ratings():
     print("\nGenerated", row_num, "reviews for", num_products, "products in", t2_stop-t1_start, "seconds.")
 
     df = df.drop(columns=["Title"])
-    ratings_df = df
+    # ratings_df = df
     # df.to_csv("complete/reviews.csv", sep="^")
 
 
